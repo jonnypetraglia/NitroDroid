@@ -46,6 +46,25 @@ public class ListsActivity extends ListActivity
 	         getListView().setOnItemClickListener(selectList);
 	         
 	         ArrayList<String> listContents = new ArrayList<String>(listIDs.length());
+	         //Today
+	         {
+	        	 JSONObject item = jListDetails.getJSONObject("f");
+	        	 int count = item.getJSONArray("n").length();
+	        	 listContents.add("f\n" + getResources().getString(R.string.Today) + "\r" + Integer.toString(count));
+	         }
+	         //Next
+	         {
+	        	 JSONObject item = jListDetails.getJSONObject("s");
+	        	 int count = item.getJSONArray("n").length();
+	        	 listContents.add("s\n" + getResources().getString(R.string.Next) + "\r" + Integer.toString(count));
+	         }
+	         //Logbook
+	         {
+	        	 JSONObject item = jListDetails.getJSONObject("v");
+	        	 int count = item.getJSONArray("n").length();
+	        	 listContents.add("v\n" + getResources().getString(R.string.Logbook) + "\r" + Integer.toString(count));
+	         }
+	         //All
 	         for (int i = 0; i < listIDs.length(); i++)
 	         {
 	        	 JSONObject item = jListDetails.getJSONObject(listIDs.getString(i));

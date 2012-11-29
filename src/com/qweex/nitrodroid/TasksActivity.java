@@ -2,12 +2,9 @@ package com.qweex.nitrodroid;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.qweex.nitrodroid.ListsActivity.ListsAdapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,7 +29,15 @@ public class TasksActivity extends Activity
 		try {
 			String listID = getIntent().getExtras().getString("list");
 			JSONObject list = ListsActivity.jListDetails.getJSONObject(listID);
-			String listName = list.getString("a");
+			String listName;
+			if(listID.equals("f"))
+				listName = getResources().getString(R.string.Today);
+			else if(listID.equals("s"))
+				listName = getResources().getString(R.string.Next);
+			else if(listID.equals("v"))
+				listName = getResources().getString(R.string.Logbook);
+			else
+				listName = list.getString("a");
 			setTitle(listName);
 			JSONArray tasks = list.getJSONArray("n");
 			JSONObject allTasks = ListsActivity.jObject.getJSONObject("b");
@@ -45,8 +51,9 @@ public class TasksActivity extends Activity
 				JSONObject item = allTasks.getJSONObject(id);
 				String name = item.getString("c");
 				String time = item.getString("e");
-				System.out.println();
-				tasksContents.add(id + "\n" + name + "\r" + time);
+				boolean done = !item.getString("j").equals("false");
+				System.out.println(item.getString("j") + done);
+				tasksContents.add(id + "\n" + name + "\r" + time + "\n" + done);
 			}
 			
 			lv.setAdapter(new TasksAdapter(this, R.layout.list_item, tasksContents));
@@ -78,16 +85,19 @@ public class TasksActivity extends Activity
 			TextView id=(TextView)row.findViewById(R.id.taskId);
 			TextView name=(TextView)row.findViewById(R.id.taskName);
 			TextView time=(TextView)row.findViewById(R.id.taskTime);
+			CheckBox done=(CheckBox)row.findViewById(R.id.taskDone);
 			String data = lists.get(position);
-			id.setText(data.substring(0, data.indexOf('\n')));
-			name.setText(data.substring(data.indexOf('\n')+1, data.indexOf('\r')));
+			int n1 = data.indexOf('\n');
+			id.setText(data.substring(0, n1));
+			name.setText(data.substring(n1+1, data.indexOf('\r')));
+			done.setChecked(
+					!data.substring(data.indexOf('\n',n1+1)+1).equals("false")
+					);
 			
 			String timeString = "";
 			try {
 			long c = Long.parseLong(data.substring(data.indexOf('\r')+1));
 			long d = (new Date()).getTime();
-			System.out.println(c);
-			System.out.println(d);
 			
 			if(c<d)
 			{
