@@ -65,6 +65,20 @@ public class ListsActivity extends ListActivity
 	        	 listContents.add("v\n" + getResources().getString(R.string.Logbook) + "\r" + Integer.toString(count));
 	         }
 	         //All
+	         {
+	        	 JSONObject item = ListsActivity.jObject.getJSONObject("b");
+	        	 JSONArray j = item.names();
+	        	 int count = 0;
+	        	 for(int i=0; i<j.length(); i++)
+	        	 {
+	        		 JSONObject x = item.getJSONObject(j.getString(i));
+	        		 try {
+	        			 if(x.getString("j").equals("false"))
+	        				 count++;
+	        		 } catch(Exception e){};
+	        	 }
+	        	 listContents.add(" \n" + getResources().getString(R.string.AllTasks) + "\r" + Integer.toString(count));
+	         }
 	         for (int i = 0; i < listIDs.length(); i++)
 	         {
 	        	 JSONObject item = jListDetails.getJSONObject(listIDs.getString(i));

@@ -8,18 +8,24 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class TasksActivity extends Activity
 {
 	ListView lv;
+	boolean allTasks = false;
+	View lastClicked = null;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -27,8 +33,14 @@ public class TasksActivity extends Activity
 		setContentView(R.layout.tasks);
 		lv = (ListView) findViewById(R.id.tasksListView);
 		try {
+			JSONObject list = null;
 			String listID = getIntent().getExtras().getString("list");
-			JSONObject list = ListsActivity.jListDetails.getJSONObject(listID);
+			try {
+				list = ListsActivity.jListDetails.getJSONObject(listID);
+				allTasks = false;
+			} catch(Exception e) {
+				allTasks = true;
+			}
 			String listName;
 			if(listID.equals("f"))
 				listName = getResources().getString(R.string.Today);
@@ -36,24 +48,30 @@ public class TasksActivity extends Activity
 				listName = getResources().getString(R.string.Next);
 			else if(listID.equals("v"))
 				listName = getResources().getString(R.string.Logbook);
+			else if(allTasks)
+				listName = getResources().getString(R.string.AllTasks);
 			else
 				listName = list.getString("a");
 			setTitle(listName);
-			JSONArray tasks = list.getJSONArray("n");
-			JSONObject allTasks = ListsActivity.jObject.getJSONObject("b");
 			
-			//lv.setOnItemClickListener(selectList);
+			lv.setOnItemClickListener(selectTask);
+			
+			JSONObject ALLthetasks = ListsActivity.jObject.getJSONObject("b");
+			JSONArray tasks = allTasks ? ALLthetasks.names()
+					: list.getJSONArray("n");
+			
 			
 			ArrayList<String> tasksContents = new ArrayList<String>(tasks.length());
 			for(int i=0; i<tasks.length(); i++)
 			{
 				String id = tasks.getString(i);
-				JSONObject item = allTasks.getJSONObject(id);
+				JSONObject item = ALLthetasks.getJSONObject(id);
+				try {
 				String name = item.getString("c");
 				String time = item.getString("e");
 				boolean done = !item.getString("j").equals("false");
-				System.out.println(item.getString("j") + done);
 				tasksContents.add(id + "\n" + name + "\r" + time + "\n" + done);
+				} catch(Exception e) {}
 			}
 			
 			lv.setAdapter(new TasksAdapter(this, R.layout.list_item, tasksContents));
@@ -63,6 +81,21 @@ public class TasksActivity extends Activity
 		}
 		
 	}
+	
+	OnItemClickListener selectTask = new OnItemClickListener() 
+    {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+      {
+    	  if(view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
+    		  view.findViewById(R.id.taskInfo).setVisibility(View.VISIBLE);
+    	  else
+    		  view.findViewById(R.id.taskInfo).setVisibility(View.GONE);
+    	  if(lastClicked!=null && lastClicked!=view)
+    		  lastClicked.findViewById(R.id.taskInfo).setVisibility(View.GONE);
+    	  lastClicked = view;
+      }
+    };
 	
 	public class TasksAdapter extends ArrayAdapter<String> {
 
@@ -96,9 +129,10 @@ public class TasksActivity extends Activity
 			
 			String timeString = "";
 			try {
-			long c = Long.parseLong(data.substring(data.indexOf('\r')+1));
+				int r1=data.indexOf('\r')+1;
+			long c = Long.parseLong(data.substring(r1, data.indexOf('\n',r1)));
 			long d = (new Date()).getTime();
-			
+			System.out.println("c=" + c);
 			if(c<d)
 			{
 				long days = (d - c) / 1000 / 60 / 60 / 24;

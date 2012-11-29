@@ -7,5 +7,6 @@
     <string name="Today">Today</string>
     <string name="Next">Next</string>
     <string name="Logbook">Logbook</string>
+    <string name="AllTasks">AllTasks</string>
     
 </resources>
