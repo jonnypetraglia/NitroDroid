@@ -6,10 +6,11 @@ import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class TasksActivity extends Activity
 			else
 				listName = list.getString("a");
 			setTitle(listName);
+			((TextView)findViewById(R.id.showTitle)).setText(listName);
 			
 			lv.setOnItemClickListener(selectTask);
 			
@@ -88,14 +90,68 @@ public class TasksActivity extends Activity
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
     	  if(view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
+    	  {
+    		  view.findViewById(R.id.taskName).setVisibility(View.GONE);
+    		  view.findViewById(R.id.taskTime).setVisibility(View.GONE);
+    		  view.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
+    		  ((TextView)view.findViewById(R.id.taskName_edit)).setText(((TextView)view.findViewById(R.id.taskName)).getText());
+    		  
     		  view.findViewById(R.id.taskInfo).setVisibility(View.VISIBLE);
+    	  }
     	  else
+    	  {
+    		  view.findViewById(R.id.taskName).setVisibility(View.VISIBLE);
+    		  view.findViewById(R.id.taskTime).setVisibility(View.VISIBLE);
+    		  view.findViewById(R.id.taskName_edit).setVisibility(View.GONE);
+    		  ((TextView)view.findViewById(R.id.taskName)).setText(((TextView)view.findViewById(R.id.taskName_edit)).getText());
+    		  
     		  view.findViewById(R.id.taskInfo).setVisibility(View.GONE);
-    	  if(lastClicked!=null && lastClicked!=view)
-    		  lastClicked.findViewById(R.id.taskInfo).setVisibility(View.GONE);
-    	  lastClicked = view;
+    	  }
+    	  
+    	  
+    	  if(lastClicked!=view)
+    	  {
+    		  if(lastClicked!=null)
+    			  lastClicked.findViewById(R.id.taskInfo).setVisibility(View.GONE);
+			  lastClicked = view;
+    	  }
+    	  else
+    		  lastClicked = null;
       }
     };
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            doBackThings();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
+    @TargetApi(5)
+	public void onBackPressed()
+    {
+    	doBackThings();
+    }
+    
+    void doBackThings()
+    {
+    	if(lastClicked!=null)
+    	{
+	    	View view = lastClicked;
+	 		  view.findViewById(R.id.taskName).setVisibility(View.VISIBLE);
+			  view.findViewById(R.id.taskTime).setVisibility(View.VISIBLE);
+			  view.findViewById(R.id.taskName_edit).setVisibility(View.GONE);
+			  ((TextView)view.findViewById(R.id.taskName)).setText(((TextView)view.findViewById(R.id.taskName_edit)).getText());
+			  
+			  view.findViewById(R.id.taskInfo).setVisibility(View.GONE);
+			  lastClicked = null;
+    	}
+    	else
+    		finish();
+    }
 	
 	public class TasksAdapter extends ArrayAdapter<String> {
 

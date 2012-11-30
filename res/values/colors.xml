@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="selected_list_item">#FF33A3EF</color>
-    
+    <color name="buttonDarken">#77000000</color>
+    <color name="buttonDarkenLess">#BB000000</color>
 </resources>

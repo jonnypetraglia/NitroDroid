@@ -8,46 +8,59 @@
         android:layout_height="wrap_content"
         android:background="@drawable/header" >
 
-        <ImageView
+        <TextView
+            android:id="@+id/showTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:text="Show Title"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
+
+        <ImageButton
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
             android:src="@drawable/add" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
             android:src="@drawable/delete" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
             android:src="@drawable/sort" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
-            android:src="@drawable/sync_static" />
+            android:src="@drawable/sync_static"
+            android:visibility="gone" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
-            android:src="@drawable/settings" />
+            android:src="@drawable/settings"
+            android:visibility="gone" />
 
     </LinearLayout>
 

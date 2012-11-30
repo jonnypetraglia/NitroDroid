@@ -28,11 +28,11 @@
 
         <EditText
             android:id="@+id/taskName_edit"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:ems="10"
+            android:textSize="25dp"
             android:visibility="gone" />
 
         <TextView
@@ -71,7 +71,8 @@
         android:padding="10dp"
         android:background="@drawable/border"
         android:focusable="false"
-        android:visibility="gone" >
+        android:visibility="gone"
+         >
 
         <TextView
             android:id="@+id/tags"
@@ -80,6 +81,18 @@
             android:padding="10dp"
             android:text="Tags, comma separated" />
 
+        <!-- 
+        <android.widget.CalendarView
+            android:id="@+id/calendarView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+ -->
+
+        <DatePicker
+            android:id="@+id/taskTimePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
 	    <Button
 	        android:id="@+id/priority"
 	        android:layout_width="fill_parent"
@@ -87,17 +100,20 @@
 	        android:layout_marginBottom="10dp"
 	        android:background="@drawable/hi_button"
 	        android:focusable="false"
-	        android:text="Priority" />
+	        android:padding="15dp"
+	        android:text="Priority"
+	        android:textSize="16dp" />
 	    
-        
 	    <EditText
 	        android:id="@+id/editText1"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="textMultiLine"
 	        android:focusable="false"
-	        android:hint="Notes" >
+	        android:gravity="center_vertical|top"
+	        android:hint="Notes"
+	        android:inputType="textMultiLine"
+	        android:minLines="4" >
 	
 	    </EditText>
 	    
