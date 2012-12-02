@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+.checkbox { border: 1px solid #D4D4D4;
+			border-radius: 2px;
+			background: white; }
+.checkbox.medium { border-color: #dda405;
+				 background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fdde88), color-stop(100%, #fdeab5));
+				 background: -webkit-linear-gradient(top, #fdde88 0%, #fdeab5 100%);
+				 background: -moz-linear-gradient(top, #fdde88 0%, #fdeab5 100%);
+				 background: -o-linear-gradient(top, #fdde88 0%, #fdeab5 100%);
+				 background: -ms-linear-gradient(top, #fdde88 0%, #fdeab5 100%);
+				 background: linear-gradient(top, #fdde88 0%, #fdeab5 100%); }
+-->
+<!-- LOW -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked -->
+    <item android:state_checked="true"
+        android:drawable="@drawable/logged" />
+    
+    <!-- Checked & Pressed, TODO -->
+    <item android:state_checked="true" android:state_pressed="true"
+        android:drawable="@drawable/logged"
+        android:background="#cc000000" />
+    
+    <!-- Unchecked -->
+	<item>
+		<shape android:shape="rectangle" >
+             <gradient
+                android:startColor="#fdeab5"
+                android:endColor="#fdde88"
+                android:angle="90" />
+		    <stroke android:width="2dp" android:color="#dda405" />
+		    <size android:height="30dp" android:width="30dp" />
+            <corners
+                android:radius="5dp" />
+		</shape>
+    </item>
+</selector>

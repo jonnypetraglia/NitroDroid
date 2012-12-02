@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+.checkbox { border: 1px solid #D4D4D4;
+			border-radius: 2px;
+			background: white; }
+-->
+<!-- LOW -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked -->
+    <item android:state_checked="true"
+        android:drawable="@drawable/logged" />
+    
+    <!-- Checked & Pressed, TODO -->
+    <item android:state_checked="true" android:state_pressed="true"
+        android:drawable="@drawable/logged"
+        android:background="#cc000000" />
+    
+    <!-- Unchecked -->
+	<item>
+		<shape android:shape="rectangle" >
+            <solid android:color="@android:color/white" />
+		    <stroke android:width="2dp" android:color="#D4D4D4" />
+		    <size android:height="30dp" android:width="30dp" />
+            <corners
+                android:radius="5dp" />
+		</shape>
+    </item>
+</selector>

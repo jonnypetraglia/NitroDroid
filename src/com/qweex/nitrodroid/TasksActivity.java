@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,6 +28,9 @@ public class TasksActivity extends Activity
 	ListView lv;
 	boolean allTasks = false;
 	View lastClicked = null;
+	String lastClickedID;
+	JSONArray tasks;
+	JSONObject ALLthetasks;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -58,8 +63,8 @@ public class TasksActivity extends Activity
 			
 			lv.setOnItemClickListener(selectTask);
 			
-			JSONObject ALLthetasks = ListsActivity.jObject.getJSONObject("b");
-			JSONArray tasks = allTasks ? ALLthetasks.names()
+			ALLthetasks = ListsActivity.jObject.getJSONObject("b");
+			tasks = allTasks ? ALLthetasks.names()
 					: list.getJSONArray("n");
 			
 			
@@ -67,13 +72,7 @@ public class TasksActivity extends Activity
 			for(int i=0; i<tasks.length(); i++)
 			{
 				String id = tasks.getString(i);
-				JSONObject item = ALLthetasks.getJSONObject(id);
-				try {
-				String name = item.getString("c");
-				String time = item.getString("e");
-				boolean done = !item.getString("j").equals("false");
-				tasksContents.add(id + "\n" + name + "\r" + time + "\n" + done);
-				} catch(Exception e) {}
+				tasksContents.add(id);
 			}
 			
 			lv.setAdapter(new TasksAdapter(this, R.layout.list_item, tasksContents));
@@ -84,29 +83,41 @@ public class TasksActivity extends Activity
 		
 	}
 	
+	void expand(View view)
+	{
+		if(view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
+		{
+		  view.findViewById(R.id.taskName).setVisibility(View.GONE);
+		  view.findViewById(R.id.taskTime).setVisibility(View.GONE);
+		  view.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
+		  ((TextView)view.findViewById(R.id.taskName_edit)).setText(((TextView)view.findViewById(R.id.taskName)).getText());
+		  
+		  view.findViewById(R.id.taskInfo).setVisibility(View.VISIBLE);
+		}
+	}
+	
+	void collapse(View view)
+	{
+		if(view.findViewById(R.id.taskInfo).getVisibility()!=View.GONE)
+		{
+		  view.findViewById(R.id.taskName).setVisibility(View.VISIBLE);
+		  view.findViewById(R.id.taskTime).setVisibility(View.VISIBLE);
+		  view.findViewById(R.id.taskName_edit).setVisibility(View.GONE);
+		  ((TextView)view.findViewById(R.id.taskName)).setText(((TextView)view.findViewById(R.id.taskName_edit)).getText());
+		  
+		  view.findViewById(R.id.taskInfo).setVisibility(View.GONE);
+		}
+	}
+	
 	OnItemClickListener selectTask = new OnItemClickListener() 
     {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
     	  if(view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
-    	  {
-    		  view.findViewById(R.id.taskName).setVisibility(View.GONE);
-    		  view.findViewById(R.id.taskTime).setVisibility(View.GONE);
-    		  view.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
-    		  ((TextView)view.findViewById(R.id.taskName_edit)).setText(((TextView)view.findViewById(R.id.taskName)).getText());
-    		  
-    		  view.findViewById(R.id.taskInfo).setVisibility(View.VISIBLE);
-    	  }
+    		  expand(view);
     	  else
-    	  {
-    		  view.findViewById(R.id.taskName).setVisibility(View.VISIBLE);
-    		  view.findViewById(R.id.taskTime).setVisibility(View.VISIBLE);
-    		  view.findViewById(R.id.taskName_edit).setVisibility(View.GONE);
-    		  ((TextView)view.findViewById(R.id.taskName)).setText(((TextView)view.findViewById(R.id.taskName_edit)).getText());
-    		  
-    		  view.findViewById(R.id.taskInfo).setVisibility(View.GONE);
-    	  }
+    		  collapse(view);
     	  
     	  
     	  if(lastClicked!=view)
@@ -114,9 +125,13 @@ public class TasksActivity extends Activity
     		  if(lastClicked!=null)
     			  lastClicked.findViewById(R.id.taskInfo).setVisibility(View.GONE);
 			  lastClicked = view;
+			  lastClickedID = (String) ((TextView)lastClicked.findViewById(R.id.taskId)).getText();
     	  }
     	  else
+    	  {
+    		  lastClickedID = "";
     		  lastClicked = null;
+    	  }
       }
     };
     
@@ -140,14 +155,9 @@ public class TasksActivity extends Activity
     {
     	if(lastClicked!=null)
     	{
-	    	View view = lastClicked;
-	 		  view.findViewById(R.id.taskName).setVisibility(View.VISIBLE);
-			  view.findViewById(R.id.taskTime).setVisibility(View.VISIBLE);
-			  view.findViewById(R.id.taskName_edit).setVisibility(View.GONE);
-			  ((TextView)view.findViewById(R.id.taskName)).setText(((TextView)view.findViewById(R.id.taskName_edit)).getText());
-			  
-			  view.findViewById(R.id.taskInfo).setVisibility(View.GONE);
-			  lastClicked = null;
+	    	collapse(lastClicked);
+	    	lastClicked = null;
+	    	lastClickedID = "";
     	}
     	else
     		finish();
@@ -175,18 +185,95 @@ public class TasksActivity extends Activity
 			TextView name=(TextView)row.findViewById(R.id.taskName);
 			TextView time=(TextView)row.findViewById(R.id.taskTime);
 			CheckBox done=(CheckBox)row.findViewById(R.id.taskDone);
+			TextView tags=(TextView)row.findViewById(R.id.tags);
+			Button timeButton=(Button)row.findViewById(R.id.timeButton);
+			Button priority=(Button)row.findViewById(R.id.priority);
+			EditText notes=(EditText)row.findViewById(R.id.notes);
+			
+			
 			String data = lists.get(position);
 			int n1 = data.indexOf('\n');
-			id.setText(data.substring(0, n1));
-			name.setText(data.substring(n1+1, data.indexOf('\r')));
-			done.setChecked(
-					!data.substring(data.indexOf('\n',n1+1)+1).equals("false")
-					);
 			
+			//------ID------
+			if(data.equals(lastClickedID))
+				expand(row);
+			else
+				collapse(row);
+			id.setText(data);
+			try {
+			JSONObject item = ALLthetasks.getJSONObject(data);
+			
+			//------Name------
+			name.setText(item.getString("c"));
+			
+			//------Done Checkmark------
+			done.setChecked(!item.getString("j").equals("false"));
+			
+	        /*
+        	j=Finished date ("false" if it's not done yet)
+        	c=Name
+        	
+        	y=Tags
+        	d=Priority
+        	e=Due date
+        	q=Notes
+	         */
+			
+			//------Tags
+			JSONArray tgs = item.getJSONArray("y");
+			if(tgs.length()==0)
+			{
+				tags.setText("No Tags");
+				tags.setTypeface(android.graphics.Typeface.defaultFromStyle(android.graphics.Typeface.ITALIC), android.graphics.Typeface.ITALIC);
+			}
+			else
+			{
+				tags.setText("");
+				for(int i=0; i<tgs.length(); i++)
+					tags.append( i > 0 ? ", " : "" + 
+							tgs.getString(i));
+			}
+			
+			//------Priority
+			String pri = item.getString("d");
+			if(pri.equals("low"))
+			{
+				done.setButtonDrawable(R.drawable.low_check);
+				priority.setBackgroundResource(R.drawable.low_button);
+				priority.setText(getResources().getString(R.string.Low));
+			}else if(pri.equals("medium"))
+			{
+				done.setButtonDrawable(R.drawable.med_check);
+				priority.setBackgroundResource(R.drawable.med_button);
+				priority.setText(getResources().getString(R.string.Medium));
+			} else if(pri.equals("high"))
+			{
+				done.setButtonDrawable(R.drawable.hi_check);
+				priority.setBackgroundResource(R.drawable.hi_button);
+				priority.setText(getResources().getString(R.string.High));
+			} else
+			{
+				done.setButtonDrawable(R.drawable.none_check);
+				priority.setBackgroundResource(R.drawable.none_button);
+				priority.setText("none");
+			}
+			
+			//------Date button
+			if(!item.getString("e").equals(""))
+			{
+				long x = Long.parseLong(item.getString("e"));
+				Date d = new Date(x);
+				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("E, MMM dd y");
+				timeButton.setText(sdf.format(d));
+			}
+			
+			//------Notes
+			notes.setText(item.getString("q"));
+			
+			//------Time for collapsed
 			String timeString = "";
 			try {
-				int r1=data.indexOf('\r')+1;
-			long c = Long.parseLong(data.substring(r1, data.indexOf('\n',r1)));
+			long c = Long.parseLong(item.getString("e"));
 			long d = (new Date()).getTime();
 			System.out.println("c=" + c);
 			if(c<d)
@@ -210,8 +297,9 @@ public class TasksActivity extends Activity
 			}
 			} catch(Exception e) {}
 			
-			
 			time.setText(timeString);
+			}catch(Exception E) {}
+			
 			
 			return row;
 		}

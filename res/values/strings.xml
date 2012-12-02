@@ -7,6 +7,11 @@
     <string name="Today">Today</string>
     <string name="Next">Next</string>
     <string name="Logbook">Logbook</string>
-    <string name="AllTasks">AllTasks</string>
+    <string name="AllTasks">All Tasks</string>
+    
+    <string name="Low">Low</string>
+    <string name="Medium">Medium</string>
+    <string name="High">High</string>
+    <string name="None">None</string>
     
 </resources>

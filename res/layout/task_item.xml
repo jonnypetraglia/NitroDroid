@@ -24,7 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:focusable="false"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:button="@drawable/none_check"
+             />
 
         <EditText
             android:id="@+id/taskName_edit"
@@ -51,15 +53,6 @@
             android:gravity="center_vertical"
             android:text="when due" />
 
-        <!--
-        	j=Finished date ("false" if it's not done yet)
-        	c=Name
-        	
-        	y=Tags
-        	d=Priority
-        	e=Due date
-        	q=Notes
-        -->
 
     </LinearLayout>
 
@@ -81,17 +74,14 @@
             android:padding="10dp"
             android:text="Tags, comma separated" />
 
-        <!-- 
-        <android.widget.CalendarView
-            android:id="@+id/calendarView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
- -->
 
-        <DatePicker
-            android:id="@+id/taskTimePicker"
+        <Button
+            android:id="@+id/timeButton"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Date Due" />
 
 	    <Button
 	        android:id="@+id/priority"
@@ -105,7 +95,7 @@
 	        android:textSize="16dp" />
 	    
 	    <EditText
-	        android:id="@+id/editText1"
+	        android:id="@+id/notes"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
