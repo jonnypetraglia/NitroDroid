@@ -46,6 +46,7 @@ public class TasksActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.tasks);
 		lv = (ListView) findViewById(R.id.tasksListView);
+		lv.setEmptyView(findViewById(android.R.id.empty));
 		try {
 			JSONObject list = null;
 			String listID = getIntent().getExtras().getString("list");

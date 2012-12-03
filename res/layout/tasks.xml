@@ -68,7 +68,19 @@
         android:id="@+id/tasksListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
-    </ListView>
 
+    </ListView>
+    
+	<TextView android:id="@android:id/empty"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:gravity="center_horizontal"
+               android:background="#66ffffff"
+               android:textSize="25dp"
+               android:text="No Tasks in This List"
+               android:layout_marginTop="50dp"
+               android:padding="30dp"
+               />
 
 </LinearLayout>
