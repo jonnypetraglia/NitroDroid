@@ -361,6 +361,7 @@ public class TasksActivity extends Activity
 			setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
 			setPadding((int)(10*DP), (int)(10*DP), (int)(10*DP), (int)(10*DP));
 			setTextSize(20*DP);
+			setTextColor(0xFF1C759C);
 			setOnLongClickListener(pressTag);
 			setText(s);
 		}
