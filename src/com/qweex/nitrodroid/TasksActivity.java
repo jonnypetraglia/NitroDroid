@@ -13,12 +13,16 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -27,15 +31,19 @@ public class TasksActivity extends Activity
 {
 	ListView lv;
 	boolean allTasks = false;
-	View lastClicked = null;
+	View lastClicked = null, editingTags = null;
 	String lastClickedID;
 	JSONArray tasks;
 	JSONObject ALLthetasks;
+	View separator;
+	TextView tag_bubble;
+	float DP;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.tasks);
 		lv = (ListView) findViewById(R.id.tasksListView);
 		try {
@@ -81,6 +89,7 @@ public class TasksActivity extends Activity
 			e.printStackTrace();
 		}
 		
+		DP = getResources().getDisplayMetrics().density;
 	}
 	
 	void expand(View view)
@@ -153,7 +162,14 @@ public class TasksActivity extends Activity
     
     void doBackThings()
     {
-    	if(lastClicked!=null)
+    	if(editingTags!=null)
+    	{
+    		System.out.println("Finished Editing Tags");
+    		editingTags.setVisibility(View.GONE);
+    		((LinearLayout)editingTags.getParent()).getChildAt(1).setVisibility(View.VISIBLE);
+    		editingTags = null;
+    	}
+    	else if(lastClicked!=null)
     	{
 	    	collapse(lastClicked);
 	    	lastClicked = null;
@@ -185,14 +201,14 @@ public class TasksActivity extends Activity
 			TextView name=(TextView)row.findViewById(R.id.taskName);
 			TextView time=(TextView)row.findViewById(R.id.taskTime);
 			CheckBox done=(CheckBox)row.findViewById(R.id.taskDone);
-			TextView tags=(TextView)row.findViewById(R.id.tags);
 			Button timeButton=(Button)row.findViewById(R.id.timeButton);
 			Button priority=(Button)row.findViewById(R.id.priority);
 			EditText notes=(EditText)row.findViewById(R.id.notes);
 			
+			row.findViewById(R.id.taskInfo).setVisibility(View.GONE);
+			
 			
 			String data = lists.get(position);
-			int n1 = data.indexOf('\n');
 			
 			//------ID------
 			if(data.equals(lastClickedID))
@@ -221,17 +237,20 @@ public class TasksActivity extends Activity
 			
 			//------Tags
 			JSONArray tgs = item.getJSONArray("y");
-			if(tgs.length()==0)
+			if(tgs.length()>0)
 			{
-				tags.setText("No Tags");
-				tags.setTypeface(android.graphics.Typeface.defaultFromStyle(android.graphics.Typeface.ITALIC), android.graphics.Typeface.ITALIC);
-			}
-			else
-			{
-				tags.setText("");
+				LinearLayout tag_cont = (LinearLayout)row.findViewById(R.id.tag_container);
+				tag_cont.removeAllViews();
+				int j=0;
 				for(int i=0; i<tgs.length(); i++)
-					tags.append( i > 0 ? ", " : "" + 
-							tgs.getString(i));
+				{
+					if(i>0)
+					{
+						tag_cont.addView(new Separator(tag_cont.getContext()));
+						j++;
+					}
+					tag_cont.addView(new TagView(tag_cont.getContext(), tgs.getString(i)));
+				}
 			}
 			
 			//------Priority
@@ -275,7 +294,7 @@ public class TasksActivity extends Activity
 			try {
 			long c = Long.parseLong(item.getString("e"));
 			long d = (new Date()).getTime();
-			System.out.println("c=" + c);
+			
 			if(c<d)
 			{
 				long days = (d - c) / 1000 / 60 / 60 / 24;
@@ -303,5 +322,59 @@ public class TasksActivity extends Activity
 			
 			return row;
 		}
+	}
+	
+	
+	
+	OnLongClickListener pressTag = new OnLongClickListener()
+	{
+		@Override
+		public boolean onLongClick(View v)
+		{
+			LinearLayout tagparent = (LinearLayout) ((View)v.getParent());
+			android.widget.HorizontalScrollView s = (android.widget.HorizontalScrollView) tagparent.getParent();
+			LinearLayout sParent = (LinearLayout) s.getParent();
+			EditText e = (EditText) sParent.findViewById(R.id.tags_edit);
+			for(int i=0; i<(tagparent.getChildCount()); i=i+2)
+			{
+				if(i>0)
+					e.append(", ");
+				e.append(((TextView) (tagparent.getChildAt(i))).getText());
+			}
+			e.setVisibility(View.VISIBLE);
+			int n = e.getText().toString().indexOf((String) ((TextView)v).getText());
+			e.setSelection(n, n + ((TextView)v).getText().length());
+			e.requestFocus();
+			s.setVisibility(View.GONE);
+			editingTags = e;
+			return true;
+		}
+	};
+	
+	private class TagView extends TextView {
+
+		public TagView(Context context, String s) {
+			super(context);
+			setId( //42
+					R.id.tag
+					);
+			setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+			setPadding((int)(10*DP), (int)(10*DP), (int)(10*DP), (int)(10*DP));
+			setTextSize(20*DP);
+			setOnLongClickListener(pressTag);
+			setText(s);
+		}
+	}
+	
+	private class Separator extends View {
+
+		public android.widget.LinearLayout.LayoutParams params;
+		public Separator(Context context) {
+			super(context);
+			setBackgroundColor(0xFFe6e6e6);
+			params = new android.widget.LinearLayout.LayoutParams((int) DP, android.widget.LinearLayout.LayoutParams.FILL_PARENT);
+			this.setLayoutParams(params);
+		}
+		
 	}
 }
