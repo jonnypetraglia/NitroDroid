@@ -68,4 +68,5 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="warning_msg">Are you sure you want to reset Nitro? Your data will be gone forever (a long time)</string>
     <string name="no">No, Keep it</string>
     <string name="yes">Yes, delete it</string>
+    <string name="about">About</string>
 </resources>

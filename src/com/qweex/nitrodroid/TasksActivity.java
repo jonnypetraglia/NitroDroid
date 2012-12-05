@@ -246,10 +246,15 @@ public class TasksActivity extends Activity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
-    	  if(view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
+    	  if(//lastClicked==view &&
+    			  view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
     		  expand(view);
     	  else
+    	  {
+    		  //lastClicked = view;
+    		  //return;
     		  collapse(view);
+    	  }
     	  
     	  
     	  if(lastClicked!=view)

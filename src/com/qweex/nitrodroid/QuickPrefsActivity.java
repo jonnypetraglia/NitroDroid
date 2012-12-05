@@ -18,12 +18,19 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.BitmapDrawable;
 
 
 /** The activity that allows the user to change the preferences.
@@ -33,6 +40,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 public class QuickPrefsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {    
 	public final static String DONATION_APP = "com.qweex.donation";
+	PopupWindow aboutWindow;
 	
 	/** Called when the activity is created. */
     @Override
@@ -40,10 +48,15 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         super.onCreate(savedInstanceState);        
         addPreferencesFromResource(R.xml.preferences);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        ((Preference) findPreference("clear")).setOnPreferenceClickListener(ClickReset);
+        ((Preference) findPreference("about")).setOnPreferenceClickListener(ClickAbout);
         
-        Preference myPref = (Preference) findPreference("clear");
-        myPref.setOnPreferenceClickListener(ClickReset);
-        
+    	aboutWindow = new PopupWindow(this);
+    	aboutWindow.setContentView(getLayoutInflater().inflate(R.layout.about, null, false));
+    	//while(v.getParent()!=null)
+    		//v = (View)v.getParent();
+    	aboutWindow.setBackgroundDrawable(new BitmapDrawable());
+    	aboutWindow.setAnimationStyle(R.style.AboutShow);
     }
     
     OnPreferenceClickListener ClickReset = new OnPreferenceClickListener() {
@@ -72,6 +85,33 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
        		return true;
         }
     };
+    
+    OnPreferenceClickListener ClickAbout = new OnPreferenceClickListener() {
+        public boolean onPreferenceClick(Preference preference) {
+        	
+        	Display display = getWindowManager().getDefaultDisplay(); 
+        	int width = display.getWidth();  // deprecated
+        	int height = display.getHeight();  // deprecated
+        	View v = getCurrentFocus();
+        	aboutWindow.showAtLocation(v, Gravity.CENTER, 40, 40);
+        	aboutWindow.update(0, 0, width-40, height-80);
+        	return true;
+        }
+    };
+    
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        // Override back button
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (aboutWindow.isShowing()) {
+                aboutWindow.dismiss();
+                return false;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    } 
     
     /** Called when any of the preferences is changed. Used to perform actions on certain events. */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)

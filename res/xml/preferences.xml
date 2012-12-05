@@ -69,4 +69,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        	android:enabled="false" 
 	        />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/about">
+        <Preference
+	        	android:title="@string/about" 
+	        	android:key="about"
+	        />
+    </PreferenceCategory>
 </PreferenceScreen>
