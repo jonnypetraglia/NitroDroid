@@ -17,11 +17,12 @@ Permission is granted to anyone to use this software for any purpose, including 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="?background" >
 <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/header" >
+        android:background="?header" >
 
     <ImageView
         android:id="@+id/imageView1"
@@ -44,7 +45,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 
         <ImageButton
-            android:id="@+id/imageView5"
+            android:id="@+id/sync"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
@@ -52,7 +53,7 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:src="@drawable/sync_static" />
 
         <ImageButton
-            android:id="@+id/imageView4"
+            android:id="@+id/settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
@@ -64,7 +65,8 @@ Permission is granted to anyone to use this software for any purpose, including 
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/list"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:cacheColorHint="@android:color/transparent" >
 
 </ListView>
 </LinearLayout>

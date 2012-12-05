@@ -30,4 +30,42 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="None">None</string>
     <string name="NoTasks">No Tasks in This List</string>
     
+    <string name="Settings">Settings</string>
+    <string name="General">General</string>
+    <string name="WeekStartsOn">Week Starts</string>
+    
+    <string-array name="weekdays">
+	    <item>Sunday</item>
+	    <item>Monday</item>
+	    <item>Tuesday</item>
+	    <item>Wednesday</item>
+	    <item>Thursday</item>
+	    <item>Friday</item>
+	    <item>Saturday</item>
+	</string-array>
+	<string name="weekday1">Sunday</string>
+	<string name="show_others_in_next">Show others in next</string>
+	<string name="clear_data">Clear data</string>
+	<string name="language">Language</string>
+	<string-array name="languages">
+	    <item>English</item>
+	</string-array>
+	<string name="language1">English</string>
+	
+	<string name="theme">Theme</string>
+	<string-array name="themes">
+	    <item>Default</item>
+	    <item>Wunderlist</item>
+	</string-array>
+	<string name="theme1">Default</string>
+    <string name="background">Background</string>
+    <string name="sync">Sync</string>
+    <string name="set_up">Set up</string>
+    <string name="logout">Logout</string>
+    <string name="none">None</string>
+    
+    <string name="warning">Warning!</string>
+    <string name="warning_msg">Are you sure you want to reset Nitro? Your data will be gone forever (a long time)</string>
+    <string name="no">No, Keep it</string>
+    <string name="yes">Yes, delete it</string>
 </resources>

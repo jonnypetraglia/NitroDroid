@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012 Qweex
+Copyright (c) 2012 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<style name="Default" parent="android:Theme.Light">
+    	<item name="header"> @drawable/header_default </item>
+    	<item name="action_item_btn"> @drawable/action_item_btn </item>
+    	<item name="popup"> @drawable/popup_default </item>
+    	<item name="tag_scroller"> @drawable/tag_scroller_default </item>
+    	<item name="tasks_selector"> @drawable/tasks_selector_default </item>
+    	<item name="checkbox"> @drawable/none_check </item>
+    	<item name="lists_selector"> @drawable/lists_selector_default </item>
+    	<item name="add"> @drawable/add </item>
+    	<item name="delete"> @drawable/delete </item>
+    	<item name="sort"> @drawable/sort </item>
+    	<item name="background"> @android:color/transparent </item>
+    	<item name="empty_background"> #66ffffff </item>
+	</style>
+    
+	<style name="Wunderlist" parent="Default">
+    	<item name="header"> @drawable/header_wunderlist </item>
+    	<item name="background"> @drawable/wood </item>
+	</style>
+</resources>

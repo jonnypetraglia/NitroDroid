@@ -13,7 +13,19 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<resources>
-    <color name="buttonDarken">#77000000</color>
-    <color name="buttonDarkenLess">#BB000000</color>
-</resources>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid
+                android:color="@color/tag_scroller_background_default" />
+            <stroke
+                android:width="1px"
+                android:color="@color/tag_scroller_separator_default"
+                android:dashWidth="1px"
+                android:dashGap="1px" />
+            <corners
+                android:radius="5dp" />
+        </shape>
+    </item>
+</selector>

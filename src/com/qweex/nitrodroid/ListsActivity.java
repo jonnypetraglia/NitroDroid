@@ -1,3 +1,17 @@
+/*
+Copyright (c) 2012 Qweex
+Copyright (c) 2012 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ */
 package com.qweex.nitrodroid;
 
 import java.io.InputStream;
@@ -10,12 +24,12 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -25,9 +39,12 @@ import android.widget.AdapterView.OnItemClickListener;
 public class ListsActivity extends ListActivity
 {
 	public static JSONObject jObject, jLists, jListDetails;
+	public static int themeID;
 	
 	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
 			      STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
+	
+	ArrayList<String> listContents;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -70,9 +87,7 @@ public class ListsActivity extends ListActivity
 	        		 */
 	         System.out.println("NOTPOST");
 	         
-	         getListView().setOnItemClickListener(selectList);
-	         
-	         ArrayList<String> listContents = new ArrayList<String>(listIDs.length());
+	         listContents = new ArrayList<String>(listIDs.length());
 	         //Today
 	         {
 	        	 JSONObject item = jListDetails.getJSONObject("f");
@@ -114,15 +129,43 @@ public class ListsActivity extends ListActivity
 	        	 listContents.add(listIDs.getString(i) + "\n" + item.getString("a") + "\r" + Integer.toString(count));
 	         }
 	         
-	         
-
-	         
-	         
-	         getListView().setAdapter(new ListsAdapter(this, R.layout.list_item, listContents));
+	         String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
+	         themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
+	         setTheme(themeID);
+	         doCreateStuff();
 	    } catch (Exception e) {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
 	    }
+	}
+	
+	public void doCreateStuff()
+	{
+		setContentView(R.layout.lists);
+		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Intent x = new Intent(ListsActivity.this, QuickPrefsActivity.class);
+				startActivity(x);
+			}
+         });
+         getListView().setOnItemClickListener(selectList);
+         getListView().setAdapter(new ListsAdapter(this, R.layout.list_item, listContents));
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
+		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
+		System.out.println(new_themeID + "!=" + themeID);
+		if(new_themeID!=themeID)
+		{
+			themeID = new_themeID;
+			setTheme(themeID);
+			doCreateStuff();
+		}
 	}
 	
 	OnItemClickListener selectList = new OnItemClickListener() 

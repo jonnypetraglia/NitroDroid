@@ -10,7 +10,7 @@
 	android:focusable="true"
 	android:padding="10dp"
 	android:paddingLeft="5dp"
-	android:background="@drawable/action_item_btn">
+	android:background="?action_item_btn">
         	
 	<ImageView
 		android:id="@+id/iv_icon" 

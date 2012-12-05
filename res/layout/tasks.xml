@@ -17,11 +17,13 @@ Permission is granted to anyone to use this software for any purpose, including 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="?background"
+     >
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/header" >
+        android:background="?header" >
 
         <TextView
             android:id="@+id/showTitle"
@@ -40,7 +42,7 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
-            android:src="@drawable/add" />
+            android:src="?add" />
 
         <ImageButton
             android:id="@+id/imageView2"
@@ -48,7 +50,7 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
-            android:src="@drawable/delete" />
+            android:src="?delete" />
 
         <ImageButton
             android:id="@+id/sortbutton"
@@ -56,33 +58,15 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
-            android:src="@drawable/sort" />
-
-
-        <ImageButton
-            android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/toolbar_buttons"
-            android:padding="10dp"
-            android:src="@drawable/sync_static"
-            android:visibility="gone" />
-
-        <ImageButton
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/toolbar_buttons"
-            android:padding="10dp"
-            android:src="@drawable/settings"
-            android:visibility="gone" />
+            android:src="?sort" />
 
     </LinearLayout>
 
     <ListView
         android:id="@+id/tasksListView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:cacheColorHint="@android:color/transparent" >
 
     </ListView>
     
@@ -91,7 +75,7 @@ Permission is granted to anyone to use this software for any purpose, including 
                android:layout_height="wrap_content"
                android:layout_gravity="center_horizontal"
                android:gravity="center_horizontal"
-               android:background="#66ffffff"
+               android:background="?empty_background"
                android:textSize="25dp"
                android:text="@string/NoTasks"
                android:layout_marginTop="50dp"

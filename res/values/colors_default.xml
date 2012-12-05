@@ -14,8 +14,9 @@ Permission is granted to anyone to use this software for any purpose, including 
     3. This notice may not be removed or altered from any source distribution.
  -->
 <resources>
-<style name="button_style">   
-    <item name="android:shadowColor">#BB000000</item>
-    <item name="android:shadowRadius">2.75</item>
-</style>
+    <color name="popMenuSelection_default">#FF292929</color>
+    <color name="headerBackground_default">#FF333333</color>
+    <color name="tag_scroller_background_default">#FFf6f6f6</color>
+    <color name="tag_scroller_separator_default">#ddd</color>
+    <color name="selected_list_item_default">#FF33A3EF</color>
 </resources>

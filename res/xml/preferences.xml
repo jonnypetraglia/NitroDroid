@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012 Qweex
+Copyright (c) 2012 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/Settings">
+
+    <PreferenceCategory android:title="@string/General">
+	    <ListPreference 
+		        android:title="@string/WeekStartsOn"
+		        android:key="week_starts_on"
+	            android:entries="@array/weekdays"
+	            android:entryValues="@array/weekdays"
+	            android:defaultValue="@string/weekday1"
+		        />
+	    <CheckBoxPreference 
+		        android:key="show_others_in_next"
+		        android:title="@string/show_others_in_next"
+		        />
+	    <Preference
+	        	android:title="@string/clear_data"
+	        	android:key="clear"
+	        />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/language">
+	    <ListPreference 
+		        android:title="@string/language"
+		        android:key="language"
+	            android:entries="@array/languages"
+	            android:entryValues="@array/languages"
+	            android:defaultValue="@string/language1"
+		        />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/theme">
+	    <ListPreference 
+		        android:title="@string/theme"
+		        android:key="theme"
+	            android:entries="@array/themes"
+	            android:entryValues="@array/themes"
+	            android:defaultValue="@string/theme1"
+		        />
+	    <!-- http://stackoverflow.com/questions/3679330/choosing-background-for-live-wallpaper -->
+	    <Preference
+	        	android:title="@string/background" 
+	        />
+	    <!-- <Preference
+	        	android:title="Background Size"
+        	<Preference
+	        	android:title="Heading Color" 
+	        /> -->
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/sync">
+        <Preference
+	        	android:title="@string/set_up" 
+	        />
+        <Preference
+	        	android:title="@string/logout"
+	        	android:enabled="false" 
+	        />
+    </PreferenceCategory>
+</PreferenceScreen>

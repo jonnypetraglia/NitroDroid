@@ -18,7 +18,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    android:background="@drawable/lists_selector"
+    android:background="?attr/lists_selector"
      >
 
     <TextView
