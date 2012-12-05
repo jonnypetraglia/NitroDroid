@@ -141,6 +141,7 @@ public class ListsActivity extends ListActivity
 	
 	public void doCreateStuff()
 	{
+		setTheme(themeID);
 		setContentView(R.layout.lists);
 		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
 			@Override
@@ -163,7 +164,6 @@ public class ListsActivity extends ListActivity
 		if(new_themeID!=themeID)
 		{
 			themeID = new_themeID;
-			setTheme(themeID);
 			doCreateStuff();
 		}
 	}

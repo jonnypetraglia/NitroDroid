@@ -23,6 +23,7 @@ import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -34,6 +35,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,15 +71,15 @@ public class TasksActivity extends Activity
 	View separator;
 	TextView tag_bubble;
 	float DP;
+	String listName;
+	ArrayList<String> tasksContents;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.tasks);
-		lv = (ListView) findViewById(R.id.tasksListView);
-		lv.setEmptyView(findViewById(android.R.id.empty));
+		
 		try {
 			JSONObject list = null;
 			String listID = getIntent().getExtras().getString("list");
@@ -87,7 +89,6 @@ public class TasksActivity extends Activity
 			} catch(Exception e) {
 				allTasks = true;
 			}
-			String listName;
 			if(listID.equals("f"))
 				listName = getResources().getString(R.string.Today);
 			else if(listID.equals("s"))
@@ -99,23 +100,19 @@ public class TasksActivity extends Activity
 			else
 				listName = list.getString("a");
 			setTitle(listName);
-			((TextView)findViewById(R.id.showTitle)).setText(listName);
-			
-			lv.setOnItemClickListener(selectTask);
 			
 			ALLthetasks = ListsActivity.jObject.getJSONObject("b");
 			tasks = allTasks ? ALLthetasks.names()
 					: list.getJSONArray("n");
 			
 			
-			ArrayList<String> tasksContents = new ArrayList<String>(tasks.length());
+			tasksContents = new ArrayList<String>(tasks.length());
 			for(int i=0; i<tasks.length(); i++)
 			{
 				String id = tasks.getString(i);
 				tasksContents.add(id);
 			}
-			
-			lv.setAdapter(new TasksAdapter(this, R.layout.list_item, tasksContents));
+			doCreateStuff();
 		} catch(Exception e)
 		{
 			e.printStackTrace();
@@ -124,15 +121,6 @@ public class TasksActivity extends Activity
 		DP = getResources().getDisplayMetrics().density;
 		
 		
-        ImageButton sortButton = ((ImageButton)findViewById(R.id.sortbutton));
-        sortButton.setOnClickListener(new OnClickListener()
-    	{
-    		@Override
-    		public void onClick(View v)
-    		{
-    			sortPopup.show(v);
-    		}
-        });
         sortPopup = new QuickAction(this, QuickAction.VERTICAL);
 		
         sortPopup.addActionItem(new ActionItem(ID_MAGIC, "Magic", getResources().getDrawable(R.drawable.magic)));
@@ -171,6 +159,43 @@ public class TasksActivity extends Activity
 	
 	
 	QuickAction sortPopup;
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
+		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
+		System.out.println(new_themeID + "!=" + ListsActivity.themeID);
+		if(new_themeID!=ListsActivity.themeID)
+		{
+			ListsActivity.themeID = new_themeID;
+			doCreateStuff();
+		}
+	}
+	
+	public void doCreateStuff()
+	{
+		setTheme(ListsActivity.themeID);
+		setContentView(R.layout.tasks);
+		lv = (ListView) findViewById(R.id.tasksListView);
+		lv.setEmptyView(findViewById(android.R.id.empty));
+		((TextView)findViewById(R.id.showTitle)).setText(listName);
+		
+		lv.setOnItemClickListener(selectTask);
+		lv.setAdapter(new TasksAdapter(this, R.layout.list_item, tasksContents));
+		
+		ImageButton sortButton = ((ImageButton)findViewById(R.id.sortbutton));
+        sortButton.setOnClickListener(new OnClickListener()
+    	{
+    		@Override
+    		public void onClick(View v)
+    		{
+    			sortPopup.show(v);
+    		}
+        });
+		
+	}
 	
     
 	QuickAction.OnActionItemClickListener selectSort = new QuickAction.OnActionItemClickListener() {			
@@ -353,6 +378,7 @@ public class TasksActivity extends Activity
 			
 			//------Priority
 			String pri = item.getString("d");
+			System.out.println("Pri" + pri);
 			if(pri.equals("low"))
 			{
 				done.setButtonDrawable(R.drawable.low_check);

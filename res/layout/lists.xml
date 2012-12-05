@@ -66,6 +66,9 @@ Permission is granted to anyone to use this software for any purpose, including 
     android:id="@android:id/list"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:padding="?lists_padding"
+    android:dividerHeight="?lists_padding"
+    android:divider="@android:color/transparent"
     android:cacheColorHint="@android:color/transparent" >
 
 </ListView>

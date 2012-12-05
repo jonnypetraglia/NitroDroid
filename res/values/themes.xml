@@ -27,10 +27,16 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="sort"> @drawable/sort </item>
     	<item name="background"> @android:color/transparent </item>
     	<item name="empty_background"> #66ffffff </item>
+    	<item name="tasks_padding"> 0dp </item>
+    	<item name="lists_padding"> 0dp </item>
 	</style>
     
 	<style name="Wunderlist" parent="Default">
     	<item name="header"> @drawable/header_wunderlist </item>
     	<item name="background"> @drawable/wood </item>
+    	<item name="lists_selector"> @drawable/lists_selector_wunderlist </item>
+    	<item name="tasks_selector"> @drawable/tasks_selector_wunderlist </item>
+    	<item name="tasks_padding"> 5dp </item>
+    	<item name="lists_padding"> 10dp </item>
 	</style>
 </resources>

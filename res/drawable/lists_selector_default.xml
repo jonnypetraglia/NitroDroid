@@ -16,9 +16,9 @@ Permission is granted to anyone to use this software for any purpose, including 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:state_enabled="false"
       	android:state_focused="true"
-        android:drawable="@android:color/white" />
+        android:drawable="@android:color/transparent" />
   <item android:state_pressed="true"
         android:drawable="@color/selected_list_item_default" />
   <item android:state_focused="true"
-        android:drawable="@android:color/white" />
+        android:drawable="@android:color/transparent" />
 </selector>

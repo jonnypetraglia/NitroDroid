@@ -13,19 +13,26 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<resources>
-    <attr format="reference" name="header" />
-    <attr format="reference" name="action_item_btn" />
-    <attr format="reference" name="popup" />
-    <attr format="reference" name="tag_scroller" />
-    <attr format="reference" name="tasks_selector" />
-    <attr format="reference" name="checkbox" />
-    <attr format="reference" name="lists_selector" />
-    <attr format="reference" name="add" />
-    <attr format="reference" name="delete" />
-    <attr format="reference" name="sort" />
-    <attr format="reference" name="background" />
-    <attr format="color" name="empty_background" />
-    <attr format="dimension" name="tasks_padding" />
-    <attr format="dimension" name="lists_padding" />
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:state_enabled="false"
+      	android:state_focused="true"
+        android:drawable="@android:color/white" />
+  <item android:state_pressed="true" >
+	      <shape android:shape="rectangle" >
+	        <solid android:color="@color/selected_list_item_wunderlist" />
+		    
+	         <corners
+	           android:radius="5dp" />
+		</shape>
+  </item>
+  <item android:state_focused="true"
+        android:drawable="@android:color/white" />
+  <item>
+		<shape android:shape="rectangle" >
+	        <solid android:color="#77ffffff" />
+		    
+	         <corners
+	           android:radius="5dp" />
+		</shape>
+  </item>
+</selector>
