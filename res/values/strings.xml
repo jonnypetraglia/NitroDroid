@@ -13,5 +13,6 @@
     <string name="Medium">Medium</string>
     <string name="High">High</string>
     <string name="None">None</string>
+    <string name="NoTasks">No Tasks in This List</string>
     
 </resources>

@@ -1,5 +1,8 @@
 package com.qweex.nitrodroid;
 
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,6 +12,14 @@ import org.json.JSONObject;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +41,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class TasksActivity extends Activity
 {
+	private static final int ID_MAGIC     = 1;
+	private static final int ID_HAND   = 2;
+	private static final int ID_TITLE = 3;
+	private static final int ID_DATE   = 4;
+	private static final int ID_PRIORITY  = 5;	
+	
 	ListView lv;
 	boolean allTasks = false;
 	View lastClicked = null, editingTags = null;
@@ -91,7 +109,73 @@ public class TasksActivity extends Activity
 		}
 		
 		DP = getResources().getDisplayMetrics().density;
+		
+		
+        ImageButton sortButton = ((ImageButton)findViewById(R.id.sortbutton));
+        sortButton.setOnClickListener(new OnClickListener()
+    	{
+    		@Override
+    		public void onClick(View v)
+    		{
+    			sortPopup.show(v);
+    		}
+        });
+        sortPopup = new QuickAction(this, QuickAction.VERTICAL);
+		
+        sortPopup.addActionItem(new ActionItem(ID_MAGIC, "Magic", getResources().getDrawable(R.drawable.magic)));
+        sortPopup.addActionItem(new ActionItem(ID_HAND, "By hand", getResources().getDrawable(R.drawable.hand)));
+        sortPopup.addActionItem(new ActionItem(ID_TITLE, "By title", createTitleDrawable()));
+        sortPopup.addActionItem(new ActionItem(ID_DATE, "By date", getResources().getDrawable(R.drawable.date)));
+        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, "By priority", getResources().getDrawable(R.drawable.priority)));
 	}
+	
+	
+	public Drawable createTitleDrawable()
+	{
+		final int DIM = 24;
+
+		Bitmap canvasBitmap = Bitmap.createBitmap(DIM, 
+		                                          DIM, 
+		                                          Bitmap.Config.ARGB_8888);
+		Canvas imageCanvas = new Canvas(canvasBitmap);
+		
+		Paint imagePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		imagePaint.setTypeface(Typeface.SERIF);
+		imagePaint.setTextAlign(Align.CENTER);
+		imagePaint.setTextSize(30f);
+		imagePaint.setAntiAlias(true);
+		imagePaint.setColor(0xffffffff);
+
+		imageCanvas.drawText("A", 
+		                         DIM / 2, 
+		                         DIM, 
+		                         imagePaint); 
+		BitmapDrawable finalImage = new BitmapDrawable(canvasBitmap);
+		
+		return finalImage.getCurrent();
+	}
+	
+	
+	
+	QuickAction sortPopup;
+	
+    
+	QuickAction.OnActionItemClickListener selectSort = new QuickAction.OnActionItemClickListener() {			
+		@Override
+		public void onItemClick(QuickAction source, int pos, int actionId) {				
+			ActionItem actionItem = sortPopup.getActionItem(pos);
+             
+			switch(actionId)
+			{
+			case ID_MAGIC:
+			case ID_HAND:
+			case ID_TITLE:
+			case ID_DATE:
+			case ID_PRIORITY:
+			}
+		}
+	};
+    
 	
 	void expand(View view)
 	{

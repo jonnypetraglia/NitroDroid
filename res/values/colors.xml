@@ -3,4 +3,6 @@
     <color name="selected_list_item">#FF33A3EF</color>
     <color name="buttonDarken">#77000000</color>
     <color name="buttonDarkenLess">#BB000000</color>
+    <color name="popMenuSelection">#FF292929</color>
+    <color name="popMenuBackground">#FF333333</color>
 </resources>

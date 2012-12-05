@@ -12,10 +12,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -23,9 +26,22 @@ public class ListsActivity extends ListActivity
 {
 	public static JSONObject jObject, jLists, jListDetails;
 	
+	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
+			      STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		SERVICE = "dropbox";
+		OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
+		OATH_TOKEN = "5bnt7mpm6sgoprb";
+		UID = "336890";
+		STATS__UID = "notbryant@gmail.com";
+		STATS__OS = "android";
+		STATS__LANGUAGE = "english";
+		STATS__VERSION = "1.5";
+		
+		
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.lists);
@@ -36,14 +52,23 @@ public class ListsActivity extends ListActivity
 	         byte[] buffer = new byte[size];
 	         input.read(buffer);
 	         input.close();
+	         
 	
 	         // byte buffer into a string
 	         String text = new String(buffer);
+	         
 	         
 	         jObject = new JSONObject(text);
 	         jLists = jObject.getJSONObject("i");
 	         JSONArray listIDs = jLists.getJSONArray("n");
 	         jListDetails = jLists.getJSONObject("r");
+	         
+	         sync s = new sync();
+	         /*s.postData(jObject,
+	        		 SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
+	        		 STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION);
+	        		 */
+	         System.out.println("NOTPOST");
 	         
 	         getListView().setOnItemClickListener(selectList);
 	         
@@ -90,6 +115,8 @@ public class ListsActivity extends ListActivity
 	         }
 	         
 	         
+
+	         
 	         
 	         getListView().setAdapter(new ListsAdapter(this, R.layout.list_item, listContents));
 	    } catch (Exception e) {
@@ -97,9 +124,6 @@ public class ListsActivity extends ListActivity
 	        e.printStackTrace();
 	    }
 	}
-	
-	
-	
 	
 	OnItemClickListener selectList = new OnItemClickListener() 
     {
