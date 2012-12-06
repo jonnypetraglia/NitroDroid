@@ -22,7 +22,6 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.app.AlertDialog;
 import android.content.Context;

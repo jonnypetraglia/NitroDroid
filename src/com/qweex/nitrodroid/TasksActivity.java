@@ -54,7 +54,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class TasksActivity extends Activity
+public class TasksActivity
 {
 	private static final int ID_MAGIC     = 1;
 	private static final int ID_HAND   = 2;
@@ -73,16 +73,17 @@ public class TasksActivity extends Activity
 	float DP;
 	String listName;
 	ArrayList<String> tasksContents;
+	public Activity context;
+	public String listID;
 	
-	@Override
+	//@Overload
 	public void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//super.onCreate(savedInstanceState)
+		//context.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		try {
 			JSONObject list = null;
-			String listID = getIntent().getExtras().getString("list");
 			try {
 				list = ListsActivity.jListDetails.getJSONObject(listID);
 				allTasks = false;
@@ -90,16 +91,17 @@ public class TasksActivity extends Activity
 				allTasks = true;
 			}
 			if(listID.equals("f"))
-				listName = getResources().getString(R.string.Today);
+				listName = context.getResources().getString(R.string.Today);
 			else if(listID.equals("s"))
-				listName = getResources().getString(R.string.Next);
+				listName = context.getResources().getString(R.string.Next);
 			else if(listID.equals("v"))
-				listName = getResources().getString(R.string.Logbook);
+				listName = context.getResources().getString(R.string.Logbook);
 			else if(allTasks)
-				listName = getResources().getString(R.string.AllTasks);
+				listName = context.getResources().getString(R.string.AllTasks);
 			else
 				listName = list.getString("a");
-			setTitle(listName);
+			context.setTitle(listName);
+			
 			
 			ALLthetasks = ListsActivity.jObject.getJSONObject("b");
 			tasks = allTasks ? ALLthetasks.names()
@@ -118,16 +120,16 @@ public class TasksActivity extends Activity
 			e.printStackTrace();
 		}
 		
-		DP = getResources().getDisplayMetrics().density;
+		DP = context.getResources().getDisplayMetrics().density;
 		
 		
-        sortPopup = new QuickAction(this, QuickAction.VERTICAL);
+        sortPopup = new QuickAction(context, QuickAction.VERTICAL);
 		
-        sortPopup.addActionItem(new ActionItem(ID_MAGIC, "Magic", getResources().getDrawable(R.drawable.magic)));
-        sortPopup.addActionItem(new ActionItem(ID_HAND, "By hand", getResources().getDrawable(R.drawable.hand)));
+        sortPopup.addActionItem(new ActionItem(ID_MAGIC, "Magic", context.getResources().getDrawable(R.drawable.magic)));
+        sortPopup.addActionItem(new ActionItem(ID_HAND, "By hand", context.getResources().getDrawable(R.drawable.hand)));
         sortPopup.addActionItem(new ActionItem(ID_TITLE, "By title", createTitleDrawable()));
-        sortPopup.addActionItem(new ActionItem(ID_DATE, "By date", getResources().getDrawable(R.drawable.date)));
-        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, "By priority", getResources().getDrawable(R.drawable.priority)));
+        sortPopup.addActionItem(new ActionItem(ID_DATE, "By date", context.getResources().getDrawable(R.drawable.date)));
+        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, "By priority", context.getResources().getDrawable(R.drawable.priority)));
 	}
 	
 	
@@ -160,12 +162,12 @@ public class TasksActivity extends Activity
 	
 	QuickAction sortPopup;
 	
-	@Override
+	//@Override
 	public void onResume()
 	{
-		super.onResume();
-		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
-		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
+		//super.onResume();
+		String new_theme = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("theme", "Default");
+		int new_themeID = context.getResources().getIdentifier(new_theme, "style", context.getApplicationContext().getPackageName());
 		System.out.println(new_themeID + "!=" + ListsActivity.themeID);
 		if(new_themeID!=ListsActivity.themeID)
 		{
@@ -176,16 +178,17 @@ public class TasksActivity extends Activity
 	
 	public void doCreateStuff()
 	{
-		setTheme(ListsActivity.themeID);
-		setContentView(R.layout.tasks);
-		lv = (ListView) findViewById(R.id.tasksListView);
-		lv.setEmptyView(findViewById(android.R.id.empty));
-		((TextView)findViewById(R.id.showTitle)).setText(listName);
+		System.out.println("HERE");
+		context.setTheme(ListsActivity.themeID);
+		//context.setContentView(R.layout.tasks);
+		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
+		lv.setEmptyView(context.findViewById(android.R.id.empty));
+		((TextView)context.findViewById(R.id.showTitle)).setText(listName);
 		
 		lv.setOnItemClickListener(selectTask);
-		lv.setAdapter(new TasksAdapter(this, R.layout.list_item, tasksContents));
+		lv.setAdapter(new TasksAdapter(context, R.layout.list_item, tasksContents));
 		
-		ImageButton sortButton = ((ImageButton)findViewById(R.id.sortbutton));
+		ImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
         sortButton.setOnClickListener(new OnClickListener()
     	{
     		@Override
@@ -272,14 +275,15 @@ public class TasksActivity extends Activity
       }
     };
     
-    @Override
+    //@Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             doBackThings();
         }
-        return super.onKeyDown(keyCode, event);
+        return true;
+        //return super.onKeyDown(keyCode, event);
     }
     
     @TargetApi(5)
@@ -288,7 +292,7 @@ public class TasksActivity extends Activity
     	doBackThings();
     }
     
-    void doBackThings()
+    boolean doBackThings()
     {
     	if(editingTags!=null)
     	{
@@ -304,9 +308,12 @@ public class TasksActivity extends Activity
 	    	lastClickedID = "";
     	}
     	else
-    		finish();
+    		return true;
+    		//context.finish();
+    	return false;
     }
-	
+    
+    
 	public class TasksAdapter extends ArrayAdapter<String> {
 
 		ArrayList<String> lists;
@@ -321,7 +328,7 @@ public class TasksActivity extends Activity
 			View row = inView;
 			if(row==null)
 			{
-				LayoutInflater inflater=getLayoutInflater();
+				LayoutInflater inflater=context.getLayoutInflater();
 				row=inflater.inflate(R.layout.task_item, parent, false);
 			}
 			
@@ -388,17 +395,17 @@ public class TasksActivity extends Activity
 			{
 				done.setButtonDrawable(R.drawable.low_check);
 				priority.setBackgroundResource(R.drawable.low_button);
-				priority.setText(getResources().getString(R.string.Low));
+				priority.setText(context.getResources().getString(R.string.Low));
 			}else if(pri.equals("medium"))
 			{
 				done.setButtonDrawable(R.drawable.med_check);
 				priority.setBackgroundResource(R.drawable.med_button);
-				priority.setText(getResources().getString(R.string.Medium));
+				priority.setText(context.getResources().getString(R.string.Medium));
 			} else if(pri.equals("high"))
 			{
 				done.setButtonDrawable(R.drawable.hi_check);
 				priority.setBackgroundResource(R.drawable.hi_button);
-				priority.setText(getResources().getString(R.string.High));
+				priority.setText(context.getResources().getString(R.string.High));
 			} else
 			{
 				done.setButtonDrawable(R.drawable.none_check);

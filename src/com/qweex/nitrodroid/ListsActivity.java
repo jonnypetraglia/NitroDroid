@@ -20,11 +20,14 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.ListActivity;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,10 +36,12 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ViewFlipper;
 
-public class ListsActivity extends ListActivity
+public class ListsActivity extends Activity
 {
 	public static JSONObject jObject, jLists, jListDetails;
 	public static int themeID;
@@ -45,6 +50,11 @@ public class ListsActivity extends ListActivity
 			      STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
 	
 	ArrayList<String> listContents;
+	public static String listID; 
+	ListView mainListView;
+	TasksActivity ta;
+	public static ViewFlipper flip;
+	public static boolean isTablet = false; 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -58,10 +68,23 @@ public class ListsActivity extends ListActivity
 		STATS__LANGUAGE = "english";
 		STATS__VERSION = "1.5";
 		
-		
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.lists);
+		try {
+		if((getResources().getConfiguration().getClass().getDeclaredField("screenLayout").getInt(getResources().getConfiguration())
+				& Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE)
+		{
+		    isTablet = true;
+		    setContentView(R.layout.lists);
+
+		}
+		} catch(Exception e)
+		{
+			isTablet = false;
+			setContentView(R.layout.phone);
+		}
+		
+		
 	    try {
 	    	InputStream input = getAssets().open("nitro_data.json");
 	         
@@ -80,12 +103,6 @@ public class ListsActivity extends ListActivity
 	         JSONArray listIDs = jLists.getJSONArray("n");
 	         jListDetails = jLists.getJSONObject("r");
 	         
-	         sync s = new sync();
-	         /*s.postData(jObject,
-	        		 SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
-	        		 STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION);
-	        		 */
-	         System.out.println("NOTPOST");
 	         
 	         listContents = new ArrayList<String>(listIDs.length());
 	         //Today
@@ -143,6 +160,7 @@ public class ListsActivity extends ListActivity
 	{
 		setTheme(themeID);
 		setContentView(R.layout.lists);
+		mainListView = (ListView) findViewById(android.R.id.list);
 		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -150,8 +168,12 @@ public class ListsActivity extends ListActivity
 				startActivity(x);
 			}
          });
-         getListView().setOnItemClickListener(selectList);
-         getListView().setAdapter(new ListsAdapter(this, R.layout.list_item, listContents));
+         mainListView.setOnItemClickListener(selectList);
+         mainListView.setAdapter(new ListsAdapter(this, R.layout.list_item, listContents));
+         
+         
+         flip = (ViewFlipper) findViewById(R.id.FLIP);
+         //flip.setFlipInterval(100);
 	}
 	
 	@Override
@@ -160,7 +182,6 @@ public class ListsActivity extends ListActivity
 		super.onResume();
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
-		System.out.println(new_themeID + "!=" + themeID);
 		if(new_themeID!=themeID)
 		{
 			themeID = new_themeID;
@@ -173,12 +194,59 @@ public class ListsActivity extends ListActivity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
+    	  
+    	  ta = new TasksActivity();
+    	  System.out.println("DSADS");
+    	  ta.listID = (String)((TextView)view.findViewById(R.id.listId)).getText();
+    	  System.out.println("DSADSSSS");
+    	  ta.context = (Activity) view.getContext();
+    	  System.out.println("DSADSASDSA");
+    	  ta.onCreate(null);
+    	  System.out.println("DSADSDDDDD");
+          flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
+          flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
+          System.out.println("DSADSAAAAAA");
+    	  flip.showNext();
+    	  /*
     	  Intent viewList = new Intent(ListsActivity.this, TasksActivity.class);
-    	  String content = (String)((TextView)view.findViewById(R.id.listId)).getText();
-    	  viewList.putExtra("list", content);
     	  startActivity(viewList);
+    	  */
       }
     };
+    
+    @TargetApi(5)
+	public void onBackPressed()
+    {
+    	doBackThings();
+    }
+    
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            doBackThings();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
+    void doBackThings()
+    {
+    	if(ta==null || isTablet)
+    		finish();
+    	else
+    	{
+    		if(!ta.doBackThings())
+    			return;
+            flip.setInAnimation(this, android.R.anim.slide_in_left);
+            flip.setOutAnimation(this, android.R.anim.slide_out_right);
+            ta = null;
+    		flip.showPrevious();
+    	}
+    	
+    }
+    
+    
 	
 	public class ListsAdapter extends ArrayAdapter<String> {
 
