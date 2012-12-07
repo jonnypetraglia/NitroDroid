@@ -15,26 +15,18 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,18 +35,17 @@ import android.widget.ViewFlipper;
 
 public class ListsActivity extends Activity
 {
-	public static JSONObject jObject, jLists, jListDetails;
-	public static int themeID;
+	public int themeID;
 	
 	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
 			      STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
 	
-	ArrayList<String> listContents;
-	public static String listID; 
+	public static String listHash; 
 	ListView mainListView;
 	TasksActivity ta;
 	public static ViewFlipper flip;
-	public static boolean isTablet = false; 
+	public static boolean isTablet = false;
+	public static SyncHelper syncHelper;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -70,14 +61,22 @@ public class ListsActivity extends Activity
 		
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	}
+	
+	public void doCreateStuff()
+	{
+		setTheme(themeID);
+		
 		try {
-		if((getResources().getConfiguration().getClass().getDeclaredField("screenLayout").getInt(getResources().getConfiguration())
-				& Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE)
-		{
-		    isTablet = true;
-		    setContentView(R.layout.lists);
-
-		}
+			if((getResources().getConfiguration().getClass().getDeclaredField("screenLayout").getInt(getResources().getConfiguration())
+					& Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE)
+			{
+			    isTablet = true;
+			    setContentView(R.layout.lists);
+	
+			}
+			else
+				throw(new Exception());
 		} catch(Exception e)
 		{
 			isTablet = false;
@@ -85,81 +84,7 @@ public class ListsActivity extends Activity
 		}
 		
 		
-	    try {
-	    	InputStream input = getAssets().open("nitro_data.json");
-	         
-	         int size = input.available();
-	         byte[] buffer = new byte[size];
-	         input.read(buffer);
-	         input.close();
-	         
-	
-	         // byte buffer into a string
-	         String text = new String(buffer);
-	         
-	         
-	         jObject = new JSONObject(text);
-	         jLists = jObject.getJSONObject("i");
-	         JSONArray listIDs = jLists.getJSONArray("n");
-	         jListDetails = jLists.getJSONObject("r");
-	         
-	         
-	         listContents = new ArrayList<String>(listIDs.length());
-	         //Today
-	         {
-	        	 JSONObject item = jListDetails.getJSONObject("f");
-	        	 int count = item.getJSONArray("n").length();
-	        	 listContents.add("f\n" + getResources().getString(R.string.Today) + "\r" + Integer.toString(count));
-	         }
-	         //Next
-	         {
-	        	 JSONObject item = jListDetails.getJSONObject("s");
-	        	 int count = item.getJSONArray("n").length();
-	        	 listContents.add("s\n" + getResources().getString(R.string.Next) + "\r" + Integer.toString(count));
-	         }
-	         //Logbook
-	         {
-	        	 JSONObject item = jListDetails.getJSONObject("v");
-	        	 int count = item.getJSONArray("n").length();
-	        	 listContents.add("v\n" + getResources().getString(R.string.Logbook) + "\r" + Integer.toString(count));
-	         }
-	         //All
-	         {
-	        	 JSONObject item = ListsActivity.jObject.getJSONObject("b");
-	        	 JSONArray j = item.names();
-	        	 int count = 0;
-	        	 for(int i=0; i<j.length(); i++)
-	        	 {
-	        		 JSONObject x = item.getJSONObject(j.getString(i));
-	        		 try {
-	        			 if(x.getString("j").equals("false"))
-	        				 count++;
-	        		 } catch(Exception e){};
-	        	 }
-	        	 listContents.add(" \n" + getResources().getString(R.string.AllTasks) + "\r" + Integer.toString(count));
-	         }
-	         for (int i = 0; i < listIDs.length(); i++)
-	         {
-	        	 JSONObject item = jListDetails.getJSONObject(listIDs.getString(i));
-	        	 int count = item.getJSONArray("n").length();
-	        	 
-	        	 listContents.add(listIDs.getString(i) + "\n" + item.getString("a") + "\r" + Integer.toString(count));
-	         }
-	         
-	         String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
-	         themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
-	         setTheme(themeID);
-	         doCreateStuff();
-	    } catch (Exception e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    }
-	}
-	
-	public void doCreateStuff()
-	{
-		setTheme(themeID);
-		setContentView(R.layout.lists);
+		flip = (ViewFlipper) findViewById(R.id.FLIP);
 		mainListView = (ListView) findViewById(android.R.id.list);
 		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
 			@Override
@@ -169,11 +94,30 @@ public class ListsActivity extends Activity
 			}
          });
          mainListView.setOnItemClickListener(selectList);
-         mainListView.setAdapter(new ListsAdapter(this, R.layout.list_item, listContents));
          
          
-         flip = (ViewFlipper) findViewById(R.id.FLIP);
-         //flip.setFlipInterval(100);
+         syncHelper = new SyncHelper(this);
+         try {
+         	InputStream input = getAssets().open("nitro_data.json");
+             
+         	 syncHelper.db.clearEverything(this);
+         	
+             int size = input.available();
+             byte[] buffer = new byte[size];
+             input.read(buffer);
+             input.close();
+             
+
+             // byte buffer into a string
+             String text = new String(buffer);
+             syncHelper.readJSONtoSQL(text, this);
+     		} catch(Exception e) {
+     			e.printStackTrace();
+     		}
+         
+         Cursor r = syncHelper.db.getAllLists();
+         System.out.println(r.getCount());
+         mainListView.setAdapter(new ListAdapter(ListsActivity.this, R.layout.list_item, r));
 	}
 	
 	@Override
@@ -194,19 +138,20 @@ public class ListsActivity extends Activity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
-    	  
-    	  ta = new TasksActivity();
-    	  System.out.println("DSADS");
-    	  ta.listID = (String)((TextView)view.findViewById(R.id.listId)).getText();
-    	  System.out.println("DSADSSSS");
+    	  //String name = (String) ((TextView)view.findViewById(R.id.listName)).getText();
+    	  //((TextView)findViewById(R.id.taskTitlebar)).setText(name);
+    	  if(ta==null)
+    		  ta = new TasksActivity();
+    	  ta.listHash = (String)((TextView)view.findViewById(R.id.listId)).getText();
+    	  System.out.println("Selected: " + ta.listHash);
     	  ta.context = (Activity) view.getContext();
-    	  System.out.println("DSADSASDSA");
     	  ta.onCreate(null);
-    	  System.out.println("DSADSDDDDD");
-          flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
-          flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
-          System.out.println("DSADSAAAAAA");
-    	  flip.showNext();
+    	  if(!isTablet && flip!=null)
+          {
+    		  flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
+    		  flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
+    		  flip.showNext();
+          }
     	  /*
     	  Intent viewList = new Intent(ListsActivity.this, TasksActivity.class);
     	  startActivity(viewList);
@@ -246,35 +191,4 @@ public class ListsActivity extends Activity
     	
     }
     
-    
-	
-	public class ListsAdapter extends ArrayAdapter<String> {
-
-		ArrayList<String> lists;
-		public ListsAdapter(Context context, int textViewResourceId, ArrayList<String> objects) {
-			super(context, textViewResourceId, objects);
-			lists = objects;
-		}
-
-		@Override
-		public View getView(int position, View inView, ViewGroup parent)
-		{
-			View row = inView;
-			if(row==null)
-			{
-				LayoutInflater inflater=getLayoutInflater();
-				row=inflater.inflate(R.layout.list_item, parent, false);
-			}
-			
-			TextView id=(TextView)row.findViewById(R.id.listId);
-			TextView name=(TextView)row.findViewById(R.id.listName);
-			TextView count=(TextView)row.findViewById(R.id.listNumber);
-			String data = lists.get(position);
-			id.setText(data.substring(0, data.indexOf('\n')));
-			name.setText(data.substring(data.indexOf('\n')+1, data.indexOf('\r')));
-			count.setText(data.substring(data.indexOf('\r')+1));
-	
-			return row;
-		}
-	}
 }

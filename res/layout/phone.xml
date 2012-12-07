@@ -15,7 +15,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 -->
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:id="@+id/FLIP"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
     

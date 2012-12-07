@@ -69,4 +69,10 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="no">No, Keep it</string>
     <string name="yes">Yes, delete it</string>
     <string name="about">About</string>
+    
+    
+    <string name="due_yesterday">Due yesterday</string>
+    <string name="due_today">Due today</string>
+    <string name="days_overdue">days overdue</string>
+    <string name="days_left">days left</string>
 </resources>

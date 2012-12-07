@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -65,62 +66,22 @@ public class TasksActivity
 	ListView lv;
 	boolean allTasks = false;
 	View lastClicked = null, editingTags = null;
-	String lastClickedID;
-	JSONArray tasks;
-	JSONObject ALLthetasks;
+	public static String lastClickedID;
 	View separator;
 	TextView tag_bubble;
-	float DP;
 	String listName;
+	public String listHash;
 	ArrayList<String> tasksContents;
 	public Activity context;
-	public String listID;
 	
 	//@Overload
 	public void onCreate(Bundle savedInstanceState)
 	{
 		//super.onCreate(savedInstanceState)
 		//context.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		
-		try {
-			JSONObject list = null;
-			try {
-				list = ListsActivity.jListDetails.getJSONObject(listID);
-				allTasks = false;
-			} catch(Exception e) {
-				allTasks = true;
-			}
-			if(listID.equals("f"))
-				listName = context.getResources().getString(R.string.Today);
-			else if(listID.equals("s"))
-				listName = context.getResources().getString(R.string.Next);
-			else if(listID.equals("v"))
-				listName = context.getResources().getString(R.string.Logbook);
-			else if(allTasks)
-				listName = context.getResources().getString(R.string.AllTasks);
-			else
-				listName = list.getString("a");
-			context.setTitle(listName);
-			
-			
-			ALLthetasks = ListsActivity.jObject.getJSONObject("b");
-			tasks = allTasks ? ALLthetasks.names()
-					: list.getJSONArray("n");
-			
-			
-			tasksContents = new ArrayList<String>(tasks.length());
-			for(int i=0; i<tasks.length(); i++)
-			{
-				String id = tasks.getString(i);
-				tasksContents.add(id);
-			}
-			doCreateStuff();
-		} catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 		
-		DP = context.getResources().getDisplayMetrics().density;
 		
 		
         sortPopup = new QuickAction(context, QuickAction.VERTICAL);
@@ -130,6 +91,7 @@ public class TasksActivity
         sortPopup.addActionItem(new ActionItem(ID_TITLE, "By title", createTitleDrawable()));
         sortPopup.addActionItem(new ActionItem(ID_DATE, "By date", context.getResources().getDrawable(R.drawable.date)));
         sortPopup.addActionItem(new ActionItem(ID_PRIORITY, "By priority", context.getResources().getDrawable(R.drawable.priority)));
+        doCreateStuff();
 	}
 	
 	
@@ -163,6 +125,7 @@ public class TasksActivity
 	QuickAction sortPopup;
 	
 	//@Override
+	/*
 	public void onResume()
 	{
 		//super.onResume();
@@ -175,18 +138,14 @@ public class TasksActivity
 			doCreateStuff();
 		}
 	}
+	*/
 	
 	public void doCreateStuff()
 	{
 		System.out.println("HERE");
-		context.setTheme(ListsActivity.themeID);
+		//context.setTheme(ListsActivity.themeID);
 		//context.setContentView(R.layout.tasks);
-		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
-		lv.setEmptyView(context.findViewById(android.R.id.empty));
-		((TextView)context.findViewById(R.id.showTitle)).setText(listName);
 		
-		lv.setOnItemClickListener(selectTask);
-		lv.setAdapter(new TasksAdapter(context, R.layout.list_item, tasksContents));
 		
 		ImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
         sortButton.setOnClickListener(new OnClickListener()
@@ -197,6 +156,15 @@ public class TasksActivity
     			sortPopup.show(v);
     		}
         });
+        
+		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
+		lv.setEmptyView(context.findViewById(android.R.id.empty));
+		((TextView)context.findViewById(R.id.showTitle)).setText(listName);		
+		lv.setOnItemClickListener(selectTask);
+        
+		Cursor r = ListsActivity.syncHelper.db.getTasksOfList(listHash);
+		System.out.println("COUNT: " + r.getCount());
+        lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
 		
 	}
 	
@@ -218,7 +186,7 @@ public class TasksActivity
 	};
     
 	
-	void expand(View view)
+	static void expand(View view)
 	{
 		if(view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
 		{
@@ -231,7 +199,7 @@ public class TasksActivity
 		}
 	}
 	
-	void collapse(View view)
+	static void collapse(View view)
 	{
 		if(view.findViewById(R.id.taskInfo).getVisibility()!=View.GONE)
 		{
@@ -313,156 +281,10 @@ public class TasksActivity
     	return false;
     }
     
-    
-	public class TasksAdapter extends ArrayAdapter<String> {
-
-		ArrayList<String> lists;
-		public TasksAdapter(Context context, int textViewResourceId, ArrayList<String> objects) {
-			super(context, textViewResourceId, objects);
-			lists = objects;
-		}
-
-		@Override
-		public View getView(int position, View inView, ViewGroup parent)
-		{
-			View row = inView;
-			if(row==null)
-			{
-				LayoutInflater inflater=context.getLayoutInflater();
-				row=inflater.inflate(R.layout.task_item, parent, false);
-			}
-			
-			TextView id=(TextView)row.findViewById(R.id.taskId);
-			TextView name=(TextView)row.findViewById(R.id.taskName);
-			TextView time=(TextView)row.findViewById(R.id.taskTime);
-			CheckBox done=(CheckBox)row.findViewById(R.id.taskDone);
-			Button timeButton=(Button)row.findViewById(R.id.timeButton);
-			Button priority=(Button)row.findViewById(R.id.priority);
-			EditText notes=(EditText)row.findViewById(R.id.notes);
-			
-			row.findViewById(R.id.taskInfo).setVisibility(View.GONE);
-			
-			
-			String data = lists.get(position);
-			
-			//------ID------
-			if(data.equals(lastClickedID))
-				expand(row);
-			else
-				collapse(row);
-			id.setText(data);
-			try {
-			JSONObject item = ALLthetasks.getJSONObject(data);
-			
-			//------Name------
-			name.setText(item.getString("c"));
-			
-			//------Done Checkmark------
-			done.setChecked(!item.getString("j").equals("false"));
-			
-	        /*
-        	j=Finished date ("false" if it's not done yet)
-        	c=Name
-        	
-        	y=Tags
-        	d=Priority
-        	e=Due date
-        	q=Notes
-	         */
-			
-			//------Tags
-			JSONArray tgs = item.getJSONArray("y");
-			if(tgs.length()>0)
-			{
-				LinearLayout tag_cont = (LinearLayout)row.findViewById(R.id.tag_container);
-				tag_cont.removeAllViews();
-				int j=0;
-				for(int i=0; i<tgs.length(); i++)
-				{
-					if(i>0)
-					{
-						tag_cont.addView(new Separator(tag_cont.getContext()));
-						j++;
-					}
-					tag_cont.addView(new TagView(tag_cont.getContext(), tgs.getString(i)));
-				}
-			}
-			
-			//------Priority
-			String pri = item.getString("d");
-			System.out.println("Pri" + pri);
-			if(pri.equals("low"))
-			{
-				done.setButtonDrawable(R.drawable.low_check);
-				priority.setBackgroundResource(R.drawable.low_button);
-				priority.setText(context.getResources().getString(R.string.Low));
-			}else if(pri.equals("medium"))
-			{
-				done.setButtonDrawable(R.drawable.med_check);
-				priority.setBackgroundResource(R.drawable.med_button);
-				priority.setText(context.getResources().getString(R.string.Medium));
-			} else if(pri.equals("high"))
-			{
-				done.setButtonDrawable(R.drawable.hi_check);
-				priority.setBackgroundResource(R.drawable.hi_button);
-				priority.setText(context.getResources().getString(R.string.High));
-			} else
-			{
-				done.setButtonDrawable(R.drawable.none_check);
-				priority.setBackgroundResource(R.drawable.none_button);
-				priority.setText("none");
-			}
-			
-			//------Date button
-			if(!item.getString("e").equals(""))
-			{
-				long x = Long.parseLong(item.getString("e"));
-				Date d = new Date(x);
-				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("E, MMM dd y");
-				timeButton.setText(sdf.format(d));
-			}
-			
-			//------Notes
-			notes.setText(item.getString("q"));
-			
-			//------Time for collapsed
-			String timeString = "";
-			try {
-			long c = Long.parseLong(item.getString("e"));
-			long d = (new Date()).getTime();
-			
-			if(c<d)
-			{
-				long days = (d - c) / 1000 / 60 / 60 / 24;
-				if(days==0)
-					timeString = "due today";
-				else if(days==1)
-					timeString = "due yesterday";
-				else
-					timeString = Long.toString(days) + " days overdue";
-			} else
-			{
-				long days = (c - d) / 1000 / 60 / 60 / 24;
-				if(days==0)
-					timeString = "due today";
-				else if(days==1)
-					timeString = "due tomorrow";
-				else
-					timeString = Long.toString(days) + " days left";
-			}
-			} catch(Exception e) {}
-			
-			time.setText(timeString);
-			}catch(Exception E) {}
-			
-			
-			return row;
-		}
-	}
 	
 	
 	
-	OnLongClickListener pressTag = new OnLongClickListener()
+	static OnLongClickListener pressTag = new OnLongClickListener()
 	{
 		@Override
 		public boolean onLongClick(View v)
@@ -482,36 +304,8 @@ public class TasksActivity
 			e.setSelection(n, n + ((TextView)v).getText().length());
 			e.requestFocus();
 			s.setVisibility(View.GONE);
-			editingTags = e;
+			//editingTags = e;
 			return true;
 		}
 	};
-	
-	private class TagView extends TextView {
-
-		public TagView(Context context, String s) {
-			super(context);
-			setId( //42
-					R.id.tag
-					);
-			setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-			setPadding((int)(10*DP), (int)(10*DP), (int)(10*DP), (int)(10*DP));
-			setTextSize(20*DP);
-			setTextColor(0xFF1C759C);
-			setOnLongClickListener(pressTag);
-			setText(s);
-		}
-	}
-	
-	private class Separator extends View {
-
-		public android.widget.LinearLayout.LayoutParams params;
-		public Separator(Context context) {
-			super(context);
-			setBackgroundColor(0xFFe6e6e6);
-			params = new android.widget.LinearLayout.LayoutParams((int) DP, android.widget.LinearLayout.LayoutParams.FILL_PARENT);
-			this.setLayoutParams(params);
-		}
-		
-	}
 }

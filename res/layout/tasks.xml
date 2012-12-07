@@ -26,7 +26,7 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:background="?header" >
 
         <TextView
-            android:id="@+id/showTitle"
+            android:id="@+id/taskTitlebar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
