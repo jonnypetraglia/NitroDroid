@@ -18,15 +18,10 @@ import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -36,18 +31,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -158,7 +146,7 @@ public class TasksActivity
         });
         
 		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
-		lv.setEmptyView(context.findViewById(android.R.id.empty));
+		lv.setEmptyView(context.findViewById(R.id.empty2));
 		((TextView)context.findViewById(R.id.showTitle)).setText(listName);		
 		lv.setOnItemClickListener(selectTask);
         

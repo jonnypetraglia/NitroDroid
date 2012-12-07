@@ -20,7 +20,6 @@ public class TaskAdapter extends SimpleCursorAdapter
 {
     private Cursor c;
     private Context context;
-    private float DP;
     
     //God I'm fucking lazy
     int[] drawsB = {R.drawable.none_button, R.drawable.low_button, R.drawable.med_button, R.drawable.hi_button};
@@ -32,7 +31,6 @@ public class TaskAdapter extends SimpleCursorAdapter
 		super(context, layout, c, new String[] {}, new int[] {});
 		this.c = c;
 		this.context = context;
-		DP = context.getResources().getDisplayMetrics().density;
 	}
 	
 	/*
@@ -146,9 +144,8 @@ public class TaskAdapter extends SimpleCursorAdapter
 
 		public TagView(Context context, String s) {
 			super(context);
-			setId( //42
-					R.id.tag
-					);
+			float DP = ListsActivity.DP;
+			setId(R.id.tag);
 			setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
 			setPadding((int)(10*DP), (int)(10*DP), (int)(10*DP), (int)(10*DP));
 			setTextSize(20*DP);
@@ -164,7 +161,7 @@ public class TaskAdapter extends SimpleCursorAdapter
 		public Separator(Context context) {
 			super(context);
 			setBackgroundColor(0xFFe6e6e6);
-			params = new android.widget.LinearLayout.LayoutParams((int) DP, android.widget.LinearLayout.LayoutParams.FILL_PARENT);
+			params = new android.widget.LinearLayout.LayoutParams((int) ListsActivity.DP, android.widget.LinearLayout.LayoutParams.FILL_PARENT);
 			this.setLayoutParams(params);
 		}
 		

@@ -42,6 +42,6 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="#"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="30dp" />
 
 </LinearLayout>

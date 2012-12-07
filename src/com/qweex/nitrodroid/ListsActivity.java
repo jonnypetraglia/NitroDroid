@@ -46,6 +46,7 @@ public class ListsActivity extends Activity
 	public static ViewFlipper flip;
 	public static boolean isTablet = false;
 	public static SyncHelper syncHelper;
+	public static float DP;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -61,27 +62,83 @@ public class ListsActivity extends Activity
 		
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		DP = this.getResources().getDisplayMetrics().density;
 	}
+	
+	
+	//WHY THE FUCK WON'T THESE WORK
+	//http://stackoverflow.com/questions/5832368/tablet-or-phone-android
+	@TargetApi(4)
+	public boolean isTablet2(android.content.Context context) {
+	    boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
+	    boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+	    return (xlarge || large);
+	}
+	
+	public boolean isTablet(android.content.Context context) {
+	    try {
+	        // Compute screen size
+	        android.util.DisplayMetrics dm = context.getResources().getDisplayMetrics();
+	        float screenWidth  = dm.widthPixels / dm.xdpi;
+	        float screenHeight = dm.heightPixels / dm.ydpi;
+	        double size = Math.sqrt(Math.pow(screenWidth, 2) +
+	                                Math.pow(screenHeight, 2));
+	        // Tablet devices should have a screen size greater than 6 inches
+	        return size >= 6;
+	    } catch(Throwable t) {
+	        return false;
+	    }
+	} 
+	
+	@TargetApi(4)
+	public static boolean isTabletDevice(android.content.Context activityContext) {
+	    // Verifies if the Generalized Size of the device is XLARGE to be
+	    // considered a Tablet
+	    boolean xlarge = ((activityContext.getResources().getConfiguration().screenLayout & 
+	                        Configuration.SCREENLAYOUT_SIZE_MASK) >=	//Changed this from == to >= because my tablet was returning 8 instead of 4. 
+	                        Configuration.SCREENLAYOUT_SIZE_LARGE);
+	    
+	    
+	    // If XLarge, checks if the Generalized Density is at least MDPI (160dpi)
+	    if (xlarge) {
+	        android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
+	        Activity activity = (Activity) activityContext;
+	        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+	        
+	        System.out.println(metrics.densityDpi + "adsadsa" + android.util.DisplayMetrics.DENSITY_MEDIUM);
+	        
+	        // MDPI=160, DEFAULT=160, DENSITY_HIGH=240, DENSITY_MEDIUM=160, DENSITY_TV=213, DENSITY_XHIGH=320
+	        if (metrics.densityDpi == android.util.DisplayMetrics.DENSITY_DEFAULT
+	                || metrics.densityDpi == android.util.DisplayMetrics.DENSITY_HIGH
+	                || metrics.densityDpi == android.util.DisplayMetrics.DENSITY_MEDIUM
+	                //|| metrics.densityDpi == android.util.DisplayMetrics.DENSITY_TV
+	                || metrics.densityDpi == android.util.DisplayMetrics.DENSITY_XHIGH) {
+
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+	
 	
 	public void doCreateStuff()
 	{
 		setTheme(themeID);
 		
-		try {
-			if((getResources().getConfiguration().getClass().getDeclaredField("screenLayout").getInt(getResources().getConfiguration())
-					& Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE)
-			{
-			    isTablet = true;
-			    setContentView(R.layout.lists);
-	
-			}
-			else
-				throw(new Exception());
-		} catch(Exception e)
+		if(isTabletDevice(this))
+		{
+		    isTablet = true;
+		    setContentView(R.layout.tablet);
+		    findViewById(R.id.taskTitlebar).setVisibility(View.GONE);
+		}
+		else
 		{
 			isTablet = false;
 			setContentView(R.layout.phone);
 		}
+		
+		System.out.println("isTablet: " + isTablet);
 		
 		
 		flip = (ViewFlipper) findViewById(R.id.FLIP);
@@ -94,6 +151,7 @@ public class ListsActivity extends Activity
 			}
          });
          mainListView.setOnItemClickListener(selectList);
+         mainListView.setEmptyView(findViewById(R.id.empty1));
          
          
          syncHelper = new SyncHelper(this);

@@ -14,53 +14,12 @@ Permission is granted to anyone to use this software for any purpose, including 
     3. This notice may not be removed or altered from any source distribution.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="?background"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="?header" >
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/toolbar_buttons"
-                android:padding="10dp"
-                android:src="@drawable/logo" />
-
-            <TextView
-                android:id="@+id/showTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:text="NitroDroid"
-                android:textColor="@android:color/white"
-                android:textSize="20dp" />
-
-            <ImageButton
-                android:id="@+id/sync"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/toolbar_buttons"
-                android:padding="10dp"
-                android:src="@drawable/sync_static" />
-
-            <ImageButton
-                android:id="@+id/settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/toolbar_buttons"
-                android:padding="10dp"
-                android:src="@drawable/settings" />
-        </LinearLayout>
-
-        <ListView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    
+    <ListView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@android:id/list"
             android:layout_width="fill_parent"
@@ -68,6 +27,18 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:cacheColorHint="@android:color/transparent"
             android:divider="@android:color/transparent"
             android:dividerHeight="?lists_padding"
-            android:padding="?lists_padding" >
-        </ListView>
-    </LinearLayout>
+            android:padding="?lists_padding"/>
+        
+        <TextView android:id="@+id/empty1"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:gravity="center_horizontal"
+               android:background="?empty_background"
+               android:textSize="25dp"
+               android:text="@string/NoTasks"
+               android:layout_marginTop="50dp"
+               android:padding="30dp"
+               />
+
+</LinearLayout>

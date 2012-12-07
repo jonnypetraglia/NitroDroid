@@ -1,5 +1,6 @@
 package com.qweex.nitrodroid;
 
+
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -39,6 +40,11 @@ public class ListAdapter extends SimpleCursorAdapter
 		{
 			LayoutInflater inflater=(LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
 			row=inflater.inflate(R.layout.list_item, parent, false);
+			if(ListsActivity.isTablet)
+			{
+				((TextView)row.findViewById(R.id.listName)).setTextSize(ListsActivity.DP*20);
+				((TextView)row.findViewById(R.id.listNumber)).setTextSize(ListsActivity.DP*12);
+			}
 		}
 		this.c = getCursor();
         this.c.moveToPosition(pos);
