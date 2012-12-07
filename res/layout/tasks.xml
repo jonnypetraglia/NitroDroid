@@ -14,20 +14,21 @@ Permission is granted to anyone to use this software for any purpose, including 
     3. This notice may not be removed or altered from any source distribution.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="?background" >
     
    <ListView
         android:id="@+id/tasksListView"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@android:color/transparent"
         android:padding="?tasks_padding"
   		android:dividerHeight="?tasks_padding"/>
     
-	<TextView android:id="@+id/empty2"
+		<TextView android:id="@+id/empty2"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_gravity="center_horizontal"

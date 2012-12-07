@@ -22,36 +22,20 @@ Permission is granted to anyone to use this software for any purpose, including 
 	<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="?background"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="?background" >
 
-    <include
+    	<include
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         layout="@layout/list_header" />
 
-        <ListView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@android:id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="?lists_padding"
-            android:padding="?lists_padding" >
-        </ListView>
+        <include
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.7"
+        layout="@layout/lists" />
         
-        <TextView android:id="@+id/empty1"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center_horizontal"
-               android:gravity="center_horizontal"
-               android:background="?empty_background"
-               android:textSize="25dp"
-               android:text="@string/NoTasks"
-               android:layout_marginTop="50dp"
-               android:padding="30dp"
-               />
     </LinearLayout>
     
     
@@ -69,28 +53,12 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:layout_height="wrap_content"
         layout="@layout/task_header" />
 
-    <ListView
-        android:id="@+id/tasksListView"
+    <include
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@android:color/transparent"
-        android:padding="?tasks_padding"
-  		android:dividerHeight="?tasks_padding" >
-
-    </ListView>
-    
-	<TextView android:id="@+id/empty2"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center_horizontal"
-               android:gravity="center_horizontal"
-               android:background="?empty_background"
-               android:textSize="25dp"
-               android:text="@string/NoTasks"
-               android:layout_marginTop="50dp"
-               android:padding="30dp"
-               />
+        android:layout_height="0dip"
+        android:layout_weight="0.3"
+        android:background="?background"
+        layout="@layout/tasks" />
 
 </LinearLayout>
 

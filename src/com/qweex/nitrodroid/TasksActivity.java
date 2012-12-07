@@ -141,13 +141,14 @@ public class TasksActivity
     		@Override
     		public void onClick(View v)
     		{
+    			System.out.println("CLICKED SORT");
     			sortPopup.show(v);
     		}
         });
         
 		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
 		lv.setEmptyView(context.findViewById(R.id.empty2));
-		((TextView)context.findViewById(R.id.showTitle)).setText(listName);		
+		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);		
 		lv.setOnItemClickListener(selectTask);
         
 		Cursor r = ListsActivity.syncHelper.db.getTasksOfList(listHash);

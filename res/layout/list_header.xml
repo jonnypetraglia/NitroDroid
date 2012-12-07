@@ -27,7 +27,7 @@ Permission is granted to anyone to use this software for any purpose, including 
                 android:src="@drawable/logo" />
 
             <TextView
-                android:id="@+id/showTitle"
+                android:id="@+id/appTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

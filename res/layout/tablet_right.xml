@@ -44,25 +44,27 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        android:orientation="horizontal"
 	        android:weightSum="1.0" >
 	    
-	    
-	    <include
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.7"
-        layout="@layout/lists" />
         
 	    <FrameLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
 	        android:background="?background"
 	        android:layout_weight="0.3">
-        <include
+	        
+	        <include
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.3"
+	        android:background="?background"
+	        layout="@layout/tasks" />
+	        
+        </FrameLayout>
+        
+	    <include
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.3"
-        android:background="?background"
-        layout="@layout/tasks" />
-        </FrameLayout>
+        android:layout_weight="0.7"
+        layout="@layout/lists" />
 	    
 	    
     </LinearLayout>
