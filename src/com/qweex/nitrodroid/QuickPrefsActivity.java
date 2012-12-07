@@ -52,8 +52,6 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         
     	aboutWindow = new PopupWindow(this);
     	aboutWindow.setContentView(getLayoutInflater().inflate(R.layout.about, null, false));
-    	//while(v.getParent()!=null)
-    		//v = (View)v.getParent();
     	aboutWindow.setBackgroundDrawable(new BitmapDrawable());
     	aboutWindow.setAnimationStyle(R.style.AboutShow);
     }

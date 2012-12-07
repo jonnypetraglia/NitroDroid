@@ -30,6 +30,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="tasks_padding"> 0dp </item>
     	<item name="lists_padding"> 0dp </item>
 	</style>
+	
+	<style name="Right" parent="Default"></style>
     
 	<style name="Wunderlist" parent="Default">
     	<item name="header"> @drawable/header_wunderlist </item>

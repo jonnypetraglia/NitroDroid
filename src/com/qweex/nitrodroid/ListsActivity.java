@@ -129,7 +129,7 @@ public class ListsActivity extends Activity
 		if(isTabletDevice(this))
 		{
 		    isTablet = true;
-		    if(themeID==R.style.Wunderlist) // || themeID==R.style.Right)
+		    if(themeID==R.style.Wunderlist || themeID==R.style.Right)
 		    	setContentView(R.layout.tablet_right);
 		    else
 		    	setContentView(R.layout.tablet);
