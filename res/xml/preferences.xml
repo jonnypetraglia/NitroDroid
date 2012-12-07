@@ -38,7 +38,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 		        android:title="@string/language"
 		        android:key="language"
 	            android:entries="@array/languages"
-	            android:entryValues="@array/languages"
+	            android:entryValues="@array/language_vals"
 	            android:defaultValue="@string/language1"
 		        />
     </PreferenceCategory>

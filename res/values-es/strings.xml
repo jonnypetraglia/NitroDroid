@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012 Qweex
+Copyright (c) 2012 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <!--
+    Focus
+    Lists
+    Scheduled
+    Add
+    Delete
+    Sort
+    Add List
+    MoveToLogbook
+    ShowCompletedTasks
+    Search
+    Notes
+    Tags
+    due date
+    schedule
+    date formatS
+    shortened days
+    months
+    delete modals
+    recurring
+    Review no ... review action ... cancel
+    hideWarnings ... next everything
+    deleteWarningsDescription
+    Use the default background
+    Background size
+    ...
+    !HeadingColor
+    !Sync Logged In
+    
+    
+    
+    !Logged in as   
+    !DEFAULT NAMES
+    !Search Results
+    !Change the Background
+    !Remove background
+     -->
+    
+    <string name="Today">Hoy</string>
+    <string name="Next">Próximas</string>
+    <string name="Logbook">Archivadas</string>
+    <string name="AllTasks">Todas las tareas</string>
+    
+    <string name="Low">Prioridad baja</string>
+    <string name="Medium">Prioridad media</string>
+    <string name="High">Prioridad alta</string>
+    <string name="None">No prioritario</string>
+    
+    <string name="NoTasks">Ninguna tarea en este grupo</string>
+    
+    <string name="General">Opciones</string>
+    <string name="WeekStartsOn">La semana comienza en</string>
+    
+    <string-array name="weekdays">
+	    <item>Domingo</item>
+	    <item>Lunes</item>
+	    <item>Martes</item>
+	    <item>Miércoles</item>
+	    <item>Jueves</item>
+	    <item>Viernes</item>
+	    <item>Sábado</item>
+	</string-array>
+	<string name="weekday1">Domingo</string>
+	<string name="show_others_in_next">Mostrar tareas de otras listas en el grupo de próximas</string>
+	<string name="clear_data">Borrar todos los datos</string>
+	<string name="language">Idioma</string>
+	
+	
+
+	<string name="theme">Tema</string>
+    <string name="background">Aplicar un tema personalizado</string>
+    <string name="sync">Sync</string>
+    <string name="set_up">Set up</string>
+    <string name="logout">Desconectar</string>
+    <string name="none">None</string>
+    
+    <string name="warning">¡Atención!</string>
+    <string name="warning_msg">Are you sure you want to reset Nitro? Your data will be gone forever (a long time)</string>
+    <string name="no">No, cancelar</string>
+    <string name="yes">Sí, eliminar</string>
+    <string name="about">Acerca de</string>
+    
+    
+    <string name="due_yesterday">Ayer</string>
+    <string name="due_today">Debe ser hoy</string>
+    <string name="due_tomorrow">Mañana</string>
+    <string name="days_overdue">dÃ­as tarde</string>	<!-- WORK ON THIS -->
+    <string name="days_left">Faltan días</string>	<!-- WORK ON THIS -->
+
+    <string name="magic">Mágico</string>
+    <string name="hand">A mano</string>
+    <string name="title">Por título</string>
+    <string name="date">Por fecha</string>
+    <string name="priority">Por prioridad</string>
+    
+    
+    <string name="Settings">Settings</string>
+    
+</resources>

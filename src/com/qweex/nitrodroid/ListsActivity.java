@@ -15,6 +15,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 import java.io.InputStream;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -37,6 +38,7 @@ public class ListsActivity extends Activity
 {
 	public static int themeID;
 	public static boolean forcePhone;
+	public static String locale;
 	
 	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
 			      STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
@@ -49,9 +51,34 @@ public class ListsActivity extends Activity
 	public static SyncHelper syncHelper;
 	public static float DP;
 	
+	/*	
+		-arabic.js
+		-basque.js
+		-bulgarian.js
+		*chinese.js
+		*dutch.js
+		*finnish.js
+		*french.js
+		*german.js
+		-hungarian.js
+		*italian.js
+		*pirate.js
+		*polish.js
+		*portuguese.js
+		*russian.js
+		*spanish.js
+		*turkish.js
+		*vietnamese.js
+*/
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		
+		System.out.println(java.util.Locale.getDefault());
+		System.out.println(this.getResources().getConfiguration().locale.getDisplayName());
+		
 		SERVICE = "dropbox";
 		OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
 		OATH_TOKEN = "5bnt7mpm6sgoprb";
@@ -187,11 +214,21 @@ public class ListsActivity extends Activity
 	public void onResume()
 	{
 		super.onResume();
+		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
+		System.out.println(new_locale);
+		
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
-		if(new_themeID!=themeID || new_force!=forcePhone)
+		if(new_themeID!=themeID || new_force!=forcePhone || new_locale!=locale)
 		{
+			java.util.Locale derlocale = new java.util.Locale(new_locale);
+			java.util.Locale.setDefault(derlocale);
+			Configuration config = new Configuration();
+			config.locale = derlocale;
+			getBaseContext().getResources().updateConfiguration(config,
+			      getBaseContext().getResources().getDisplayMetrics());
+			locale = new_locale;
 			themeID = new_themeID;
 			forcePhone = new_force;
 			doCreateStuff();

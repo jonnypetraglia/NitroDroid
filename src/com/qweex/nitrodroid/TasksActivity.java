@@ -74,11 +74,11 @@ public class TasksActivity
 		
         sortPopup = new QuickAction(context, QuickAction.VERTICAL);
 		
-        sortPopup.addActionItem(new ActionItem(ID_MAGIC, "Magic", context.getResources().getDrawable(R.drawable.magic)));
-        sortPopup.addActionItem(new ActionItem(ID_HAND, "By hand", context.getResources().getDrawable(R.drawable.hand)));
-        sortPopup.addActionItem(new ActionItem(ID_TITLE, "By title", createTitleDrawable()));
-        sortPopup.addActionItem(new ActionItem(ID_DATE, "By date", context.getResources().getDrawable(R.drawable.date)));
-        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, "By priority", context.getResources().getDrawable(R.drawable.priority)));
+        sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.magic), context.getResources().getDrawable(R.drawable.magic)));
+        sortPopup.addActionItem(new ActionItem(ID_HAND, context.getResources().getString(R.string.hand), context.getResources().getDrawable(R.drawable.hand)));
+        sortPopup.addActionItem(new ActionItem(ID_TITLE, context.getResources().getString(R.string.title), createTitleDrawable()));
+        sortPopup.addActionItem(new ActionItem(ID_DATE, context.getResources().getString(R.string.date), context.getResources().getDrawable(R.drawable.date)));
+        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, context.getResources().getString(R.string.priority), context.getResources().getDrawable(R.drawable.priority)));
         doCreateStuff();
 	}
 	

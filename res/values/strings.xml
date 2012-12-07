@@ -15,8 +15,6 @@ Permission is granted to anyone to use this software for any purpose, including 
  -->
 <resources>
 
-    <string name="app_name">NitroDroid</string>
-
     <string name="Today">Today</string>
     <string name="Next">Next</string>
     <string name="Logbook">Logbook</string>
@@ -28,7 +26,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="None">None</string>
     <string name="NoTasks">No Tasks in This List</string>
     
-    <string name="Settings">Settings</string>
     <string name="General">General</string>
     <string name="WeekStartsOn">Week Starts</string>
     
@@ -45,19 +42,11 @@ Permission is granted to anyone to use this software for any purpose, including 
 	<string name="show_others_in_next">Show others in next</string>
 	<string name="clear_data">Clear data</string>
 	<string name="language">Language</string>
-	<string-array name="languages">
-	    <item>English</item>
-	</string-array>
-	<string name="language1">English</string>
 	
+	
+
 	<string name="theme">Theme</string>
-	<string-array name="themes">
-	    <item>Default</item>
-	    <item>Wunderlist</item>
-	    <item>Right</item>
-	</string-array>
-	<string name="theme1">Default</string>
-    <string name="background">Background</string>
+    <string name="background">Change the Background</string>
     <string name="sync">Sync</string>
     <string name="set_up">Set up</string>
     <string name="logout">Logout</string>
@@ -72,7 +61,16 @@ Permission is granted to anyone to use this software for any purpose, including 
     
     <string name="due_yesterday">Due yesterday</string>
     <string name="due_today">Due today</string>
+    <string name="due_tomorrow">Due tomorrow</string>
     <string name="days_overdue">days overdue</string>
     <string name="days_left">days left</string>
 
+    <string name="magic">Magic</string>
+    <string name="hand">By hand</string>
+    <string name="title">By title</string>
+    <string name="date">By date</string>
+    <string name="priority">By priority</string>
+    
+    <string name="Settings">Settings</string>
+    
 </resources>

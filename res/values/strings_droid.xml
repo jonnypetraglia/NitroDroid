@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">NitroDroid</string>
     <string name="force_phone_mode">Force phone mode</string>
     <string name="advanced">Advanced</string>
+    
+    
+    	<string-array name="languages">
+	    <item>English</item>
+	    <item>Pirate</item>
+	    <item>Spanish</item>
+	    <item>French</item>
+	    <item>German</item>
+	    <item>Dutch</item>
+	    <item>Finnish</item>
+	    <item>Polish</item>
+	    <item>Russian</item>
+	    <item>Portugese</item>
+	    <item>Italian</item>
+	    <item>Turkish</item>
+	    <item>Chinese</item>
+	    <item>Vietnamese</item>
+	</string-array>
+	<string-array name="language_vals">
+	    <item>en_US</item>
+	    <item>ARRGH</item>
+	    <item>es_ES</item>
+	    <item>fr_FR</item>
+	    <item>de_DE</item>
+	    <item>nl_NL</item>
+	    <item>fi_FI</item>
+	    <item>pl_PL</item>
+	    <item>ru_RU</item>
+	    <item>pt_PT</item>
+	    <item>it_IT</item>
+	    <item>tr_TR</item>
+	    <item>zh_CN</item>
+	    <item>vi_VN</item>
+	</string-array>
+	<string name="language1">en_US</string>
+	
+	<string-array name="themes">
+	    <item>Default</item>
+	    <item>Wunderlist</item>
+	    <item>Right</item>
+	</string-array>
+	<string name="theme1">Default</string>
+	
 </resources>
