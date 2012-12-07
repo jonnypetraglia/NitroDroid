@@ -15,7 +15,9 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.view.Display;
@@ -40,6 +42,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 {    
 	public final static String DONATION_APP = "com.qweex.donation";
 	PopupWindow aboutWindow;
+	String[] themes;
 	
 	/** Called when the activity is created. */
     @Override
@@ -49,6 +52,26 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         ((Preference) findPreference("clear")).setOnPreferenceClickListener(ClickReset);
         ((Preference) findPreference("about")).setOnPreferenceClickListener(ClickAbout);
+        
+        if(!ListsActivity.forcePhone && !ListsActivity.isTablet)
+        {
+        	((PreferenceCategory)findPreference("advanced")).removePreference(findPreference("force_phone"));
+        	if(((PreferenceCategory)findPreference("advanced")).getPreferenceCount()==0)
+        		getPreferenceScreen().removePreference(findPreference("advanced"));
+        	ListPreference l = (ListPreference) findPreference("theme");
+        	String[] themes2 = getResources().getStringArray(R.array.themes);
+        	themes = new String[themes2.length-1];
+        	for(int i=0, j=0; i<themes.length; i++)
+        	{
+        		if(themes2[i].equals("Right"))
+        			continue;
+        		themes[j++] = themes2[i];
+        	}
+        	l.setEntries(themes);
+        	l.setEntryValues(themes);
+        	if(ListsActivity.themeID==R.style.Right)
+        		l.setValue(getResources().getString(R.string.theme1));
+        }
         
     	aboutWindow = new PopupWindow(this);
     	aboutWindow.setContentView(getLayoutInflater().inflate(R.layout.about, null, false));

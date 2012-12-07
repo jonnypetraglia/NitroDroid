@@ -108,7 +108,7 @@ public class DatabaseConnector
 		return c;
 	}
 	
-	public Cursor getTasksOfList(String hash)
+	public Cursor getTasksOfList(String hash, String sort)
 	{
 		open();
 		if(hash!=null)
@@ -119,7 +119,7 @@ public class DatabaseConnector
 			   	null,
 			   	null,
 			   	null,
-			   	null);
+			   	sort);
 		c.getCount();		//I have no clue why the fuck this has to be here. If you don't call it, the cursor is empty.
 		close();
 		return c;

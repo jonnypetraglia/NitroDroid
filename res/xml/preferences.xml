@@ -75,4 +75,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        	android:key="about"
 	        />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/advanced" android:key="advanced">
+       	<CheckBoxPreference 
+		        android:key="force_phone"
+		        android:title="@string/force_phone_mode"
+		        />
+    </PreferenceCategory>
 </PreferenceScreen>

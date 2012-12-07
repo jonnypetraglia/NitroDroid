@@ -112,22 +112,6 @@ public class TasksActivity
 	
 	QuickAction sortPopup;
 	
-	//@Override
-	/*
-	public void onResume()
-	{
-		//super.onResume();
-		String new_theme = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("theme", "Default");
-		int new_themeID = context.getResources().getIdentifier(new_theme, "style", context.getApplicationContext().getPackageName());
-		System.out.println(new_themeID + "!=" + ListsActivity.themeID);
-		if(new_themeID!=ListsActivity.themeID)
-		{
-			ListsActivity.themeID = new_themeID;
-			doCreateStuff();
-		}
-	}
-	*/
-	
 	public void doCreateStuff()
 	{
 		System.out.println("HERE");
@@ -151,8 +135,7 @@ public class TasksActivity
 		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);		
 		lv.setOnItemClickListener(selectTask);
         
-		Cursor r = ListsActivity.syncHelper.db.getTasksOfList(listHash);
-		System.out.println("COUNT: " + r.getCount());
+		Cursor r = ListsActivity.syncHelper.db.getTasksOfList(listHash, null);
         lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
 		
 	}

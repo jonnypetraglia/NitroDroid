@@ -16,8 +16,6 @@ Permission is granted to anyone to use this software for any purpose, including 
 <resources>
 
     <string name="app_name">NitroDroid</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
 
     <string name="Today">Today</string>
     <string name="Next">Next</string>
@@ -76,4 +74,5 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="due_today">Due today</string>
     <string name="days_overdue">days overdue</string>
     <string name="days_left">days left</string>
+
 </resources>

@@ -35,7 +35,8 @@ import android.widget.ViewFlipper;
 
 public class ListsActivity extends Activity
 {
-	public int themeID;
+	public static int themeID;
+	public static boolean forcePhone;
 	
 	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
 			      STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
@@ -126,7 +127,8 @@ public class ListsActivity extends Activity
 	{
 		setTheme(themeID);
 		
-		if(isTabletDevice(this))
+		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
+		if(!forcePhone && isTabletDevice(this))
 		{
 		    isTablet = true;
 		    if(themeID==R.style.Wunderlist || themeID==R.style.Right)
@@ -187,9 +189,11 @@ public class ListsActivity extends Activity
 		super.onResume();
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
-		if(new_themeID!=themeID)
+		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
+		if(new_themeID!=themeID || new_force!=forcePhone)
 		{
 			themeID = new_themeID;
+			forcePhone = new_force;
 			doCreateStuff();
 		}
 	}

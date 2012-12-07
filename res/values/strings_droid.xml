@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="force_phone_mode">Force phone mode</string>
+    <string name="advanced">Advanced</string>
+</resources>
