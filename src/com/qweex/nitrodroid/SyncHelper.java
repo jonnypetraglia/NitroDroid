@@ -80,7 +80,7 @@ public class SyncHelper {
 	         }
 	         //Next
 	         try {
-	        	 hash = "f";
+	        	 hash = "s";
 	        	 name = c.getResources().getString(R.string.Next);
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
 	        	 tasksString = parseTasksString(item.getJSONArray("n")); 

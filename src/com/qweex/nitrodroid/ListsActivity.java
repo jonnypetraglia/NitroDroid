@@ -202,8 +202,11 @@ public class ListsActivity extends Activity
      		}
          
          Cursor r = syncHelper.db.getAllLists();
-         System.out.println(r.getCount());
-         mainListView.setAdapter(new ListAdapter(ListsActivity.this, R.layout.list_item, r));
+         ListAdapter la = new ListAdapter(ListsActivity.this, R.layout.list_item, r);
+         la.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+         la.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
+         
+         mainListView.setAdapter(la);
 	}
 	
 	@Override
@@ -211,12 +214,12 @@ public class ListsActivity extends Activity
 	{
 		super.onResume();
 		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
-		System.out.println(new_locale);
+		
 		
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
-		if(new_themeID!=themeID || new_force!=forcePhone || new_locale!=locale)
+		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || new_locale!=locale)
 		{
 			java.util.Locale derlocale = new java.util.Locale(new_locale);
 			java.util.Locale.setDefault(derlocale);
@@ -236,23 +239,18 @@ public class ListsActivity extends Activity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
-    	  flip.showNext();
     	  if(ta==null)
     		  ta = new TasksActivity();
     	  ta.listHash = (String)((TextView)view.findViewById(R.id.listId)).getText();
     	  ta.listName = (String) ((TextView)view.findViewById(R.id.listName)).getText();
-    	  System.out.println("NAME: " + ta.listName);
-    	  System.out.println("Selected: " + ta.listHash);
     	  ta.context = (Activity) view.getContext();
     	  ta.onCreate(null);
-    	  /*
     	  if(!isTablet && flip!=null)
           {
     		  flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
     		  flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
     		  flip.showNext();
           }
-          */
       }
     };
     

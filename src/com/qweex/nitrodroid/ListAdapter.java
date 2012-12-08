@@ -28,6 +28,8 @@ public class ListAdapter extends SimpleCursorAdapter
 {
     private Cursor c;
     private Context context;
+    int todayCount = 0;
+    int totalCount = 0;
 
 	public ListAdapter(Context context, int layout, Cursor c)
 	{
@@ -70,7 +72,12 @@ public class ListAdapter extends SimpleCursorAdapter
 		
         ((TextView)row.findViewById(R.id.listId)).setText(hash);
         ((TextView)row.findViewById(R.id.listName)).setText(name);
-        ((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(tasks_in_order)));
+        if(hash.equals("b"))
+        	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(totalCount));
+        else if(hash.equals("f")) //Today
+        	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(todayCount));
+        else
+        	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(tasks_in_order)));
 		
 		return row;
 	}

@@ -124,10 +124,22 @@ public class DatabaseConnector
 		return c;
 	}
 	
+	public Cursor getTodayTasks(long currentDay)
+	{
+		long msecondsInDay = 60 * 60 * 24 * 1000;
+		String query = "SELECT * FROM " + TASKS_TABLE + " " + "WHERE date " + 
+				"BETWEEN " + (currentDay-1) + " AND "  + (currentDay+msecondsInDay-1);
+		open();
+		Cursor c =database.rawQuery(query, null);
+		c.getCount();
+		close();
+		return c;
+	}
+	
 	public Cursor getTasksOfList(String hash, String sort)
 	{
 		open();
-		if(hash!=null)
+		if(hash!=null && !hash.equals(""))
 			hash = "list = '" + hash + "'";
 		Cursor c = database.query(TASKS_TABLE,
 			    new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},

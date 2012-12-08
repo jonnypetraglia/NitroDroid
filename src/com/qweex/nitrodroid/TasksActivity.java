@@ -18,9 +18,11 @@ import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 import android.annotation.TargetApi;
@@ -115,14 +117,12 @@ public class TasksActivity
 		//context.setTheme(ListsActivity.themeID);
 		//context.setContentView(R.layout.tasks);
 		
-		
 		ImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
         sortButton.setOnClickListener(new OnClickListener()
     	{
     		@Override
     		public void onClick(View v)
     		{
-    			System.out.println("CLICKED SORT");
     			sortPopup.show(v);
     		}
         });
@@ -131,10 +131,35 @@ public class TasksActivity
 		lv.setEmptyView(context.findViewById(R.id.empty2));
 		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);		
 		lv.setOnItemClickListener(selectTask);
+		System.out.println("HURSH: "+ listHash);
 		
-		Cursor r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
+		
+		Cursor r;
+		System.out.println("Eh Listhasho = " + listHash);
+		if(listHash.equals("b"))			//All
+			listHash = null;
+		else if(listHash.equals("f"))		//Today
+		{
+			listHash = null;
+			System.out.println("Time: " + getBeginningOfDayInSeconds());
+			r = ListsActivity.syncHelper.db.getTodayTasks(getBeginningOfDayInSeconds());
+			lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
+			return;
+		}
+		
+		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
         lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
 		
+	}
+	
+	public static long getBeginningOfDayInSeconds()
+	{
+		java.util.Calendar c = java.util.Calendar.getInstance(TimeZone.getDefault());
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		return c.getTimeInMillis();
 	}
 	
     
