@@ -16,7 +16,7 @@
             android:textSize="20dp" />
 
         <ImageButton
-            android:id="@+id/imageView1"
+            android:id="@+id/addbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
@@ -24,7 +24,7 @@
             android:src="?add" />
 
         <ImageButton
-            android:id="@+id/imageView2"
+            android:id="@+id/deletebutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"

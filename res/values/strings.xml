@@ -71,6 +71,9 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="date">By date</string>
     <string name="priority">By priority</string>
     
+    <string name="default_list">New List</string>
+    <string name="default_task">New Task</string>
+    
     <string name="Settings">Settings</string>
     
 </resources>

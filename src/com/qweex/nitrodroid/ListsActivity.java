@@ -15,6 +15,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -130,14 +131,24 @@ public class ListsActivity extends Activity
 	        Activity activity = (Activity) activityContext;
 	        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 	        
-	        System.out.println(metrics.densityDpi + "adsadsa" + android.util.DisplayMetrics.DENSITY_MEDIUM);
+	        //This next block lets us get constants that are not available in lower APIs.
+	        // If they aren't available, it's safe to assume that the device is not a tablet.
+	        // If you have a tablet or TV running Android 1.5, what the fuck is wrong with you.
+	        int xhigh = -1, tv = -1;
+	        try {
+	        	Field f = android.util.DisplayMetrics.class.getDeclaredField("DENSITY_XHIGH");
+	        	xhigh = (Integer) f.get(null);
+	        	f = android.util.DisplayMetrics.class.getDeclaredField("DENSITY_TV");
+	        	xhigh = (Integer) f.get(null);
+	        }catch(Exception e){}
 	        
 	        // MDPI=160, DEFAULT=160, DENSITY_HIGH=240, DENSITY_MEDIUM=160, DENSITY_TV=213, DENSITY_XHIGH=320
 	        if (metrics.densityDpi == android.util.DisplayMetrics.DENSITY_DEFAULT
 	                || metrics.densityDpi == android.util.DisplayMetrics.DENSITY_HIGH
 	                || metrics.densityDpi == android.util.DisplayMetrics.DENSITY_MEDIUM
-	                //|| metrics.densityDpi == android.util.DisplayMetrics.DENSITY_TV
-	                || metrics.densityDpi == android.util.DisplayMetrics.DENSITY_XHIGH) {
+	                || metrics.densityDpi == tv 
+	                || metrics.densityDpi == xhigh
+	                ) {
 
 	            return true;
 	        }

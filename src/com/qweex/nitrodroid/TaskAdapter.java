@@ -80,9 +80,16 @@ public class TaskAdapter extends SimpleCursorAdapter
 		String hash = c.getString(c.getColumnIndex("hash"));
 		//------ID------
 		if(hash.equals(TasksActivity.lastClickedID))
+		{
+			System.out.println("Urg.  id = " + hash);
 			TasksActivity.expand(row);
+			//TasksActivity.lastClicked = row;
+		}
 		else
+		{
+			System.out.println("Urg.  " + hash  + "!=" + TasksActivity.lastClickedID);
 			TasksActivity.collapse(row);
+		}
 		
 		id.setText(hash);
 		//------Name & Done checkmark------

@@ -110,6 +110,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="date">Por fecha</string>
     <string name="priority">Por prioridad</string>
     
+    <string name="default_list">Nuevo grupo</string>
+    <string name="default_task">Nueva tarea</string>
     
     <string name="Settings">Settings</string>
     

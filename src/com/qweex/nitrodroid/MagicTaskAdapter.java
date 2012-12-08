@@ -71,7 +71,10 @@ public class MagicTaskAdapter extends  ArrayAdapter<TasksActivity.taskObject>
 		String hash = T.hash;
 		//------ID------
 		if(hash.equals(TasksActivity.lastClickedID))
+		{
 			TasksActivity.expand(row);
+			//TasksActivity.lastClicked = row;
+		}
 		else
 			TasksActivity.collapse(row);
 		

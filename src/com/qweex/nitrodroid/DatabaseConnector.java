@@ -81,6 +81,7 @@ public class DatabaseConnector
 	   database.insert(TASKS_TABLE, null, newTask);
 	}
 	
+	
 	public void modifyOrder(String hash, int new_order)
 	{
 	 	ContentValues args = new ContentValues();
@@ -141,10 +142,12 @@ public class DatabaseConnector
 		open();
 		if(hash!=null)
 		{
-			if(!hash.equals("logbook"))
-				hash = hash + " AND logged='0'";
-			if(!hash.equals(" AND logged='0'"))
+			if(!hash.equals(""))
+			{
 				hash = "list = '" + hash + "'";
+				if(!hash.equals("list = 'logbook'"))
+					hash = hash + " AND logged='0'";
+			}
 		} else
 			hash = "logged='0'";
 		Cursor c = database.query(TASKS_TABLE,

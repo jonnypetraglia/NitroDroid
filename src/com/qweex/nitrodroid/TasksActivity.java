@@ -17,6 +17,7 @@ package com.qweex.nitrodroid;
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -58,7 +59,8 @@ public class TasksActivity
 	
 	ListView lv;
 	boolean allTasks = false;
-	View lastClicked = null, editingTags = null;
+	static View lastClicked = null;
+	View editingTags = null;
 	public static String lastClickedID;
 	View separator;
 	TextView tag_bubble;
@@ -126,14 +128,18 @@ public class TasksActivity
     			sortPopup.show(v);
     		}
         });
+        ((ImageButton)context.findViewById(R.id.addbutton)).setOnClickListener(clickAdd);
         
 		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
 		lv.setEmptyView(context.findViewById(R.id.empty2));
 		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);		
 		lv.setOnItemClickListener(selectTask);
-		System.out.println("HURSH: "+ listHash);
+		createTheAdapterYouSillyGoose();
 		
-		
+	}
+	
+	void createTheAdapterYouSillyGoose()
+	{
 		Cursor r;
 		System.out.println("Eh Listhasho = " + listHash);
 		if(listHash.equals("b"))			//All
@@ -149,8 +155,38 @@ public class TasksActivity
 		
 		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
         lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
-		
 	}
+	
+	
+	OnClickListener clickAdd = new OnClickListener()
+	{
+		@Override
+		public void onClick(View v)
+		{
+			lastClickedID = getID();
+			
+			ListsActivity.syncHelper.db.open();
+			int order = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num").getCount();
+			ListsActivity.syncHelper.db.open();
+			ListsActivity.syncHelper.db.insertTask(lastClickedID, v.getContext().getResources().getString(R.string.default_task),
+					0, 0, "", listHash, 0, "", order);
+			ListsActivity.syncHelper.db.close();
+			
+			System.out.println("Urg. new id = " + lastClickedID);
+			createTheAdapterYouSillyGoose();
+			System.out.println("Urg. new id ~ " + lastClickedID);
+			
+			try {
+				Method func = ListView.class.getMethod("smoothScrollToPosition", Integer.TYPE);
+			System.out.println("HELLO " + func);
+				func.invoke(lv, lv.getCount() - 1);
+			}catch(Exception e)
+			{
+				System.out.println("HELLO GOODBYE");
+				lv.setSelection(lv.getCount() - 1);
+			}
+		}
+    };
 	
 	public static long getBeginningOfDayInSeconds()
 	{
@@ -314,7 +350,7 @@ public class TasksActivity
 	
 	static void expand(View view)
 	{
-		if(view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
+		if(view!=null && view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
 		{
 		  view.findViewById(R.id.taskName).setVisibility(View.GONE);
 		  view.findViewById(R.id.taskTime).setVisibility(View.GONE);
@@ -322,12 +358,13 @@ public class TasksActivity
 		  ((TextView)view.findViewById(R.id.taskName_edit)).setText(((TextView)view.findViewById(R.id.taskName)).getText());
 		  
 		  view.findViewById(R.id.taskInfo).setVisibility(View.VISIBLE);
+		  lastClicked = view; //Skeptical Jon is skeptical
 		}
 	}
 	
 	static void collapse(View view)
 	{
-		if(view.findViewById(R.id.taskInfo).getVisibility()!=View.GONE)
+		if(view!=null && view.findViewById(R.id.taskInfo).getVisibility()!=View.GONE)
 		{
 		  view.findViewById(R.id.taskName).setVisibility(View.VISIBLE);
 		  view.findViewById(R.id.taskTime).setVisibility(View.VISIBLE);
@@ -400,6 +437,7 @@ public class TasksActivity
 	    	collapse(lastClicked);
 	    	lastClicked = null;
 	    	lastClickedID = "";
+	    	System.out.println("Urg. Butts3");
     	}
     	else
     		return true;
@@ -435,12 +473,6 @@ public class TasksActivity
 		}
 	};
 	
-	
-	void addTask()
-	{
-		String taskID = getID();
-		
-	}
 	
 	
 	String bit()
