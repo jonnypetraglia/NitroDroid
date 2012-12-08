@@ -13,10 +13,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<resources>
-    <color name="popMenuSelection_default">#FF292929</color>
-    <color name="headerBackground_default">#FF333333</color>
-    <color name="tag_scroller_background_default">#FFf6f6f6</color>
-    <color name="tag_scroller_separator_default">#ddd</color>
-    <color name="selected_list_item_default">#FF33a3ef</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+ 		android:shape="rectangle" >
+       <solid android:color="@color/selected_list_item_wunderlist" />
+    
+        <corners
+          android:radius="5dp" />
+</shape>

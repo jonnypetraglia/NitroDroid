@@ -28,6 +28,9 @@ import java.util.TimeZone;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -48,6 +51,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class TasksActivity
 {
@@ -69,6 +73,8 @@ public class TasksActivity
 	ArrayList<String> tasksContents;
 	public Activity context;
 	QuickAction sortPopup;
+	Drawable selectedDrawable, normalDrawable;
+	AlertDialog.Builder deleteDialog;
 	
 	//@Overload
 	public void onCreate(Bundle savedInstanceState)
@@ -83,6 +89,18 @@ public class TasksActivity
         sortPopup.addActionItem(new ActionItem(ID_DATE, context.getResources().getString(R.string.date), context.getResources().getDrawable(R.drawable.date)));
         sortPopup.addActionItem(new ActionItem(ID_PRIORITY, context.getResources().getString(R.string.priority), context.getResources().getDrawable(R.drawable.priority)));
         sortPopup.setOnActionItemClickListener(selectSort);
+        
+        TypedArray a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.tasks_selector});     
+        int attributeResourceId = a.getResourceId(0, 0);
+        normalDrawable = context.getResources().getDrawable(attributeResourceId);
+        selectedDrawable = context.getResources().getDrawable(R.drawable.low_button);
+        
+        deleteDialog = new AlertDialog.Builder(context);
+		deleteDialog.setTitle(R.string.warning);
+		deleteDialog.setMessage(R.string.delete_task);
+		deleteDialog.setPositiveButton(R.string.yes, confirmDelete);
+		deleteDialog.setNegativeButton(R.string.no, confirmDelete);
+		
         doCreateStuff();
 	}
 	
@@ -115,7 +133,6 @@ public class TasksActivity
 	
 	public void doCreateStuff()
 	{
-		System.out.println("HERE");
 		//context.setTheme(ListsActivity.themeID);
 		//context.setContentView(R.layout.tasks);
 		
@@ -129,6 +146,7 @@ public class TasksActivity
     		}
         });
         ((ImageButton)context.findViewById(R.id.addbutton)).setOnClickListener(clickAdd);
+        ((ImageButton)context.findViewById(R.id.deletebutton)).setOnClickListener(clickDelete);
         
 		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
 		lv.setEmptyView(context.findViewById(R.id.empty2));
@@ -142,9 +160,11 @@ public class TasksActivity
 	{
 		Cursor r;
 		System.out.println("Eh Listhasho = " + listHash);
-		if(listHash.equals("b"))			//All
+		if(listHash==null)
+			return;
+		if(listHash.equals("all"))			//All
 			listHash = null;
-		else if(listHash.equals("f"))		//Today
+		else if(listHash.equals("today"))		//Today
 		{
 			listHash = null;
 			System.out.println("Time: " + getBeginningOfDayInSeconds());
@@ -163,6 +183,12 @@ public class TasksActivity
 		@Override
 		public void onClick(View v)
 		{
+			if(listHash.equals("logbook") || listHash.equals("today") || listHash.equals("next"))
+			{
+				Toast.makeText(v.getContext(), R.string.long_winded_reprimand, Toast.LENGTH_LONG).show();
+				return;
+			}
+			
 			lastClickedID = getID();
 			
 			ListsActivity.syncHelper.db.open();
@@ -178,15 +204,51 @@ public class TasksActivity
 			
 			try {
 				Method func = ListView.class.getMethod("smoothScrollToPosition", Integer.TYPE);
-			System.out.println("HELLO " + func);
 				func.invoke(lv, lv.getCount() - 1);
 			}catch(Exception e)
 			{
-				System.out.println("HELLO GOODBYE");
 				lv.setSelection(lv.getCount() - 1);
 			}
+			
+			TextView currentListCount = (TextView)ListsActivity.currentList.findViewById(R.id.listNumber);
+			int i = Integer.parseInt((String) currentListCount.getText()) + 1;
+			currentListCount.setText(Integer.toString(i));
+			
 		}
     };
+    
+    OnClickListener clickDelete = new OnClickListener()
+	{
+    	@Override
+		public void onClick(View v)
+		{
+    		if(lastClicked==null)
+    			return;
+    		TasksActivity.this.deleteDialog.show();
+		}
+	};
+	
+	DialogInterface.OnClickListener confirmDelete = new DialogInterface.OnClickListener() {
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
+	        switch (which){
+	        case DialogInterface.BUTTON_POSITIVE:
+	            ListsActivity.syncHelper.db.deleteTask(lastClickedID);
+	            createTheAdapterYouSillyGoose();
+	            lastClicked = null;
+	            lastClickedID = null;
+	            
+	            TextView currentListCount = (TextView)ListsActivity.currentList.findViewById(R.id.listNumber);
+				int i = Integer.parseInt((String) currentListCount.getText()) - 1;
+				currentListCount.setText(Integer.toString(i));
+	            break;
+
+	        case DialogInterface.BUTTON_NEGATIVE:
+	            //No button clicked
+	            break;
+	        }
+	    }
+	};
 	
 	public static long getBeginningOfDayInSeconds()
 	{
@@ -380,51 +442,32 @@ public class TasksActivity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
-    	  if(//lastClicked==view &&
+    	  System.out.println("LC: " + lastClicked);
+    	  
+    	  if(lastClicked==view &&
     			  view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
+    	  {
+    		  
+    		  lastClicked.setBackgroundDrawable(normalDrawable);
+    		  System.out.println("LCC: " + lastClicked);
     		  expand(view);
+    	  }
     	  else
     	  {
-    		  //lastClicked = view;
-    		  //return;
-    		  collapse(view);
-    	  }
-    	  
-    	  
-    	  if(lastClicked!=view)
-    	  {
+    		  
+    		  collapse(lastClicked);
     		  if(lastClicked!=null)
-    			  lastClicked.findViewById(R.id.taskInfo).setVisibility(View.GONE);
-			  lastClicked = view;
-			  lastClickedID = (String) ((TextView)lastClicked.findViewById(R.id.taskId)).getText();
-    	  }
-    	  else
-    	  {
-    		  lastClickedID = "";
-    		  lastClicked = null;
+    			  lastClicked.setBackgroundDrawable(normalDrawable);
+    		  lastClicked = view;
+    		  lastClicked.setBackgroundDrawable(selectedDrawable);
+    		  //lastClickedID = (String) ((TextView)lastClicked.findViewById(R.id.taskId)).getText();
     	  }
       }
     };
     
-    //@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
-                && keyCode == KeyEvent.KEYCODE_BACK
-                && event.getRepeatCount() == 0) {
-            doBackThings();
-        }
-        return true;
-        //return super.onKeyDown(keyCode, event);
-    }
-    
-    @TargetApi(5)
-	public void onBackPressed()
-    {
-    	doBackThings();
-    }
-    
     boolean doBackThings()
     {
+    	System.out.println(lastClicked);
     	if(editingTags!=null)
     	{
     		System.out.println("Finished Editing Tags");
@@ -432,12 +475,13 @@ public class TasksActivity
     		((LinearLayout)editingTags.getParent()).getChildAt(1).setVisibility(View.VISIBLE);
     		editingTags = null;
     	}
-    	else if(lastClicked!=null)
+    	else if(lastClicked!=null || lastClickedID!=null)
     	{
 	    	collapse(lastClicked);
+	    	if(lastClicked!=null)
+	    		lastClicked.setBackgroundDrawable(normalDrawable);
 	    	lastClicked = null;
-	    	lastClickedID = "";
-	    	System.out.println("Urg. Butts3");
+	    	lastClickedID = null;
     	}
     	else
     		return true;

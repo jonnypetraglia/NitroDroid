@@ -72,9 +72,9 @@ public class ListAdapter extends SimpleCursorAdapter
 		
         ((TextView)row.findViewById(R.id.listId)).setText(hash);
         ((TextView)row.findViewById(R.id.listName)).setText(name);
-        if(hash.equals("b"))
+        if(hash.equals("all"))
         	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(totalCount));
-        else if(hash.equals("f")) //Today
+        else if(hash.equals("today")) //Today
         	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(todayCount));
         else
         	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(tasks_in_order)));

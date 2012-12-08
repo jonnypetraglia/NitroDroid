@@ -46,4 +46,7 @@
 	</string-array>
 	<string name="theme1">Default</string>
 	
+	
+	<string name="long_winded_reprimand">You cannot create a task in this special list. Try creating it in one of the lists you created.</string>
+	
 </resources>

@@ -13,10 +13,22 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<resources>
-    <color name="popMenuSelection_default">#FF292929</color>
-    <color name="headerBackground_default">#FF333333</color>
-    <color name="tag_scroller_background_default">#FFf6f6f6</color>
-    <color name="tag_scroller_separator_default">#ddd</color>
-    <color name="selected_list_item_default">#FF33a3ef</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+ 		android:shape="rectangle" >
+            <gradient
+                android:startColor="#e1f2fa"
+                android:endColor="#f7fbfe"
+                android:angle="90" />
+			<stroke
+                android:width="1px"
+                android:color="#ddd"
+                android:dashWidth="1px"
+                android:dashGap="1px" />
+            <corners
+                android:radius="5dp" />
+            <padding
+                android:left="10dp"
+                android:top="10dp"
+                android:right="10dp"
+                android:bottom="10dp" />
+</shape>

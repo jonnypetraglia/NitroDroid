@@ -26,13 +26,13 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        
 	    <include
         android:layout_width="0dip"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_weight="1"
         layout="@layout/list_header" />
 	    
 	    <include
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         layout="@layout/task_header" />
 	    
     </LinearLayout>
@@ -47,7 +47,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 	    
 	    <include
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_weight="0.7"
         layout="@layout/lists" />
         
@@ -58,8 +58,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        android:layout_weight="0.3">
         <include
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.3"
+        android:layout_height="fill_parent"
         android:background="?background"
         layout="@layout/tasks" />
         </FrameLayout>

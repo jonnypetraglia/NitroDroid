@@ -65,6 +65,7 @@ public class SyncHelper {
 	        	 name = c.getResources().getString(R.string.Today);
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
+	        	 hash = "today";
 	        	 
 	        	 //Tasks
 	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
@@ -83,7 +84,8 @@ public class SyncHelper {
 	        	 hash = "s";
 	        	 name = c.getResources().getString(R.string.Next);
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
-	        	 tasksString = parseTasksString(item.getJSONArray("n")); 
+	        	 tasksString = parseTasksString(item.getJSONArray("n"));
+	        	 hash = "next";
 	        	 
 	        	 //Tasks
 	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
@@ -121,8 +123,9 @@ public class SyncHelper {
 	         try {
 	        	 hash = "b";
 	        	 name = c.getResources().getString(R.string.AllTasks);
-	        	 JSONObject item = jObject.getJSONObject("b");	//NOTE: This is different!
+	        	 JSONObject item = jObject.getJSONObject(hash);	//NOTE: This is different!
 	        	 tasksString = new String[0];					// <-   So is this!
+	        	 hash = "all";
 	        	 
 	        	 db.insertList(hash, name, tasksString);
 	         } catch(Exception e) {

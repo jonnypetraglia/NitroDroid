@@ -97,10 +97,10 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
        		};
 
        		AlertDialog.Builder builder = new AlertDialog.Builder(preference.getContext());
-       		builder.setTitle(getResources().getString(R.string.warning));
-       		builder.setMessage(getResources().getString(R.string.warning_msg));
-       		builder.setPositiveButton(getResources().getString(R.string.yes), dialogClickListener);
-       		builder.setNegativeButton(getResources().getString(R.string.no), dialogClickListener);
+       		builder.setTitle(R.string.warning);
+       		builder.setMessage(R.string.warning_msg);
+       		builder.setPositiveButton(R.string.yes, dialogClickListener);
+       		builder.setNegativeButton(R.string.no, dialogClickListener);
        		builder.show();
        		return true;
         }

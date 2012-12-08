@@ -81,6 +81,14 @@ public class DatabaseConnector
 	   database.insert(TASKS_TABLE, null, newTask);
 	}
 	
+	public boolean deleteTask(String hash) 
+	{
+		open();
+	    boolean b = database.delete(TASKS_TABLE, "hash='" + hash + "'", null) > 0;
+	    close();
+	    return b;
+	}
+	
 	
 	public void modifyOrder(String hash, int new_order)
 	{

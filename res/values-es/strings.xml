@@ -93,6 +93,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     
     <string name="warning">¡Atención!</string>
     <string name="warning_msg">Are you sure you want to reset Nitro? Your data will be gone forever (a long time)</string>
+    <string name="delete_task">¿Confirmas que quieres eliminar esta tarea?</string>
+    <string name="delete_list">¿Confirmas que quieres eliminar este grupo?</string>
     <string name="no">No, cancelar</string>
     <string name="yes">Sí, eliminar</string>
     <string name="about">Acerca de</string>
