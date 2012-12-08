@@ -83,10 +83,7 @@ public class DatabaseConnector
 	
 	public boolean deleteTask(String hash) 
 	{
-		open();
-	    boolean b = database.delete(TASKS_TABLE, "hash='" + hash + "'", null) > 0;
-	    close();
-	    return b;
+	    return database.delete(TASKS_TABLE, "hash='" + hash + "'", null) > 0;
 	}
 	
 	
@@ -125,12 +122,9 @@ public class DatabaseConnector
 	
 	public Cursor getAllLists()
 	{
-		open();
-		Cursor c = database.query(LISTS_TABLE, new String[] {"_id", "hash", "name", "tasks_in_order"},
+		System.out.println("HEY THERE");
+		return database.query(LISTS_TABLE, new String[] {"_id", "hash", "name", "tasks_in_order"},
 				null, null, null, null, null);
-		c.getCount();		//I have no clue why the fuck this has to be here. If you don't call it, the cursor is empty.
-		close();
-		return c;
 	}
 	
 	public Cursor getTodayTasks(long currentDay)
@@ -138,16 +132,11 @@ public class DatabaseConnector
 		long msecondsInDay = 60 * 60 * 24 * 1000;
 		String query = "SELECT * FROM " + TASKS_TABLE + " " + "WHERE date " + 
 				"BETWEEN " + (currentDay-1) + " AND "  + (currentDay+msecondsInDay-1);
-		open();
-		Cursor c =database.rawQuery(query, null);
-		c.getCount();
-		close();
-		return c;
+		return database.rawQuery(query, null);
 	}
 	
 	public Cursor getTasksOfList(String hash, String sort)
 	{
-		open();
 		if(hash!=null)
 		{
 			if(!hash.equals(""))
@@ -158,28 +147,20 @@ public class DatabaseConnector
 			}
 		} else
 			hash = "logged='0'";
-		Cursor c = database.query(TASKS_TABLE,
+		return database.query(TASKS_TABLE,
 			    new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},
-			    hash,
-			   	null,
-			   	null,
-			   	null,
-			   	sort);
-		c.getCount();		//I have no clue why the fuck this has to be here. If you don't call it, the cursor is empty.
-		close();
-		return c;
+			    hash, null, null, null, sort);
 	}
 	
 	
 	public void clearEverything(Context context)
 	{
-		open();
 		database.execSQL("DROP TABLE IF EXISTS " + LISTS_TABLE);
 		database.execSQL("DROP TABLE IF EXISTS " + TASKS_TABLE);
 		database.execSQL("DROP TABLE IF EXISTS " + LISTS_TIME_TABLE);
 		database.execSQL("DROP TABLE IF EXISTS " + TASKS_TIME_TABLE);
 		createThemTables(database);
-		close();
+		open();
 	}
 	
 	

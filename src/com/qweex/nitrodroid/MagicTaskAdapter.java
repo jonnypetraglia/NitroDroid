@@ -36,8 +36,8 @@ public class MagicTaskAdapter extends  ArrayAdapter<TasksActivity.taskObject>
     private Context context;
     
     //God I'm fucking lazy
-    int[] drawsB = {R.drawable.none_button, R.drawable.low_button, R.drawable.med_button, R.drawable.hi_button};
-	int[] drawsC = {R.drawable.none_check, R.drawable.low_check, R.drawable.med_check, R.drawable.hi_check};
+    int[] drawsB = {R.drawable.button_none, R.drawable.button_low, R.drawable.button_med, R.drawable.button_high};
+	int[] drawsC = {R.drawable.check_none, R.drawable.check_low, R.drawable.check_med, R.drawable.check_high};
 	int[] drawsS = {R.string.None, R.string.Low, R.string.Medium, R.string.High};
 
 	public MagicTaskAdapter(Context context, int textViewResourceId, ArrayList<TasksActivity.taskObject> objects)

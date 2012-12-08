@@ -71,7 +71,7 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:id="@+id/taskInfo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border"
+        android:background="@drawable/taskdesc_border"
         android:focusable="false"
         android:orientation="vertical"
         android:padding="10dp" >
@@ -128,7 +128,7 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/hi_button"
+            android:background="@drawable/button_high"
             android:focusable="false"
             android:padding="15dp"
             android:text="Priority"

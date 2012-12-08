@@ -21,6 +21,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -52,6 +53,8 @@ public class ListsActivity extends Activity
 	public static boolean isTablet = false;
 	public static SyncHelper syncHelper;
 	public static float DP;
+	private int task_normalDrawable, task_selectedDrawable;
+	
 	
 	/*	
 		-arabic.js
@@ -87,9 +90,18 @@ public class ListsActivity extends Activity
 		STATS__LANGUAGE = "english";
 		STATS__VERSION = "1.5";
 		
+		syncHelper = new SyncHelper(this);
+		syncHelper.db.open();
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		DP = this.getResources().getDisplayMetrics().density;
+		
+		TypedArray a;
+		a = this.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});     
+        task_normalDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
+        a = this.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
+        task_selectedDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
+        task_selectedDrawable = R.drawable.listitem_selected_default;
 	}
 	
 	public void doCreateStuff()
@@ -128,7 +140,6 @@ public class ListsActivity extends Activity
          mainListView.setEmptyView(findViewById(R.id.empty1));
          
          
-         syncHelper = new SyncHelper(this);
          try {
          	InputStream input = getAssets().open("nitro_data.json");
              
@@ -185,21 +196,41 @@ public class ListsActivity extends Activity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
+    	  if(isTablet)
+    	  {
+    		  View tempy = currentList;
+	    	  if(tempy!=null)
+	    		  tempy.setBackgroundColor(0x00000000);
+	    	  
+	    		  //currentList.setBackgroundDrawable(normalDrawable);
+	    	  //view.setBackgroundDrawable(selectedDrawable);
+    	  }
+    	  
+    	  
     	  TasksActivity.lastClicked = null;
 		  TasksActivity.lastClickedID = null;
-    	  currentList = view;
     	  if(ta==null)
+    	  {
     		  ta = new TasksActivity();
-    	  ta.listHash = (String)((TextView)view.findViewById(R.id.listId)).getText();
-    	  ta.listName = (String) ((TextView)view.findViewById(R.id.listName)).getText();
-    	  ta.context = (Activity) view.getContext();
-    	  ta.onCreate(null);
+    		  ta.context = (Activity) view.getContext();
+    		  ta.listHash = (String)((TextView)view.findViewById(R.id.listId)).getText();
+    		  ta.listName = (String) ((TextView)view.findViewById(R.id.listName)).getText();
+    		  ta.onCreate(null);
+    	  }else
+    	  {
+    		  ta.listHash = (String)((TextView)view.findViewById(R.id.listId)).getText();
+    		  ta.listName = (String) ((TextView)view.findViewById(R.id.listName)).getText();
+    		  ta.createTheAdapterYouSillyGoose();
+    	  }
+    		  
     	  if(!isTablet && flip!=null)
           {
     		  flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
     		  flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
     		  flip.showNext();
           }
+    	  view.setBackgroundResource(task_selectedDrawable);
+    	  currentList = view;
       }
     };
     
@@ -243,7 +274,12 @@ public class ListsActivity extends Activity
     }
     
     
-    
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		//syncHelper.db.close();
+	}
     
 	//http://stackoverflow.com/a/9624844/1526210
 	@TargetApi(4)

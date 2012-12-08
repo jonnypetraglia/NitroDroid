@@ -22,7 +22,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     <attr format="color" name="tasks_selected" />
     <attr format="reference" name="checkbox" />
     <attr format="reference" name="lists_selector" />
-    <attr format="color" name="lists_selected" />
+    <attr format="reference" name="lists_selected" />
     <attr format="reference" name="add" />
     <attr format="reference" name="delete" />
     <attr format="reference" name="sort" />

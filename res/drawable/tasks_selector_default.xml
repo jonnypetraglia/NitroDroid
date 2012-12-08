@@ -18,7 +18,7 @@ Permission is granted to anyone to use this software for any purpose, including 
       	android:state_focused="true"
         android:drawable="@android:color/white" />
   <item android:state_pressed="true"
-        android:drawable="@drawable/low_button" />
+        android:drawable="@drawable/button_high" />
   <item android:state_focused="true"
         android:drawable="@android:color/white" />
 </selector>

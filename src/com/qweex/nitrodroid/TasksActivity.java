@@ -83,17 +83,17 @@ public class TasksActivity
 		//context.requestWindowFeature(Window.FEATURE_NO_TITLE);
         sortPopup = new QuickAction(context, QuickAction.VERTICAL);
 		
-        sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.magic), context.getResources().getDrawable(R.drawable.magic)));
-        sortPopup.addActionItem(new ActionItem(ID_HAND, context.getResources().getString(R.string.hand), context.getResources().getDrawable(R.drawable.hand)));
+        sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.magic), context.getResources().getDrawable(R.drawable.sort_magic)));
+        sortPopup.addActionItem(new ActionItem(ID_HAND, context.getResources().getString(R.string.hand), context.getResources().getDrawable(R.drawable.sort_hand)));
         sortPopup.addActionItem(new ActionItem(ID_TITLE, context.getResources().getString(R.string.title), createTitleDrawable()));
-        sortPopup.addActionItem(new ActionItem(ID_DATE, context.getResources().getString(R.string.date), context.getResources().getDrawable(R.drawable.date)));
-        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, context.getResources().getString(R.string.priority), context.getResources().getDrawable(R.drawable.priority)));
+        sortPopup.addActionItem(new ActionItem(ID_DATE, context.getResources().getString(R.string.date), context.getResources().getDrawable(R.drawable.sort_date)));
+        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, context.getResources().getString(R.string.priority), context.getResources().getDrawable(R.drawable.sort_priority)));
         sortPopup.setOnActionItemClickListener(selectSort);
         
         TypedArray a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.tasks_selector});     
         int attributeResourceId = a.getResourceId(0, 0);
         normalDrawable = context.getResources().getDrawable(attributeResourceId);
-        selectedDrawable = context.getResources().getDrawable(R.drawable.low_button);
+        selectedDrawable = context.getResources().getDrawable(R.drawable.button_low);
         
         deleteDialog = new AlertDialog.Builder(context);
 		deleteDialog.setTitle(R.string.warning);
@@ -158,8 +158,8 @@ public class TasksActivity
 	
 	void createTheAdapterYouSillyGoose()
 	{
+		
 		Cursor r;
-		System.out.println("Eh Listhasho = " + listHash);
 		if(listHash==null)
 			return;
 		if(listHash.equals("all"))			//All
@@ -191,12 +191,9 @@ public class TasksActivity
 			
 			lastClickedID = getID();
 			
-			ListsActivity.syncHelper.db.open();
 			int order = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num").getCount();
-			ListsActivity.syncHelper.db.open();
 			ListsActivity.syncHelper.db.insertTask(lastClickedID, v.getContext().getResources().getString(R.string.default_task),
 					0, 0, "", listHash, 0, "", order);
-			ListsActivity.syncHelper.db.close();
 			
 			System.out.println("Urg. new id = " + lastClickedID);
 			createTheAdapterYouSillyGoose();
@@ -390,7 +387,6 @@ public class TasksActivity
 	
 	void changeSort(Cursor r)
 	{
-		ListsActivity.syncHelper.db.open();
 		String tempHash;
 		String tempHashString = "";
 		if(r.getCount()>1)
@@ -405,8 +401,6 @@ public class TasksActivity
 			r.moveToNext();
 		}
 		ListsActivity.syncHelper.db.modifyListOrder(listHash, tempHashString);
-		System.out.println(tempHashString);
-		ListsActivity.syncHelper.db.close();
 	}
     
 	

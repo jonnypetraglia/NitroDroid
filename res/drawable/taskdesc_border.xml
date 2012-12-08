@@ -13,25 +13,13 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-	  <item android:state_enabled="false"
-	      	android:state_focused="true"
-	        android:drawable="@android:color/transparent" />
-	  
-	  <item android:state_pressed="true"
-	      android:drawable="@drawable/listitem_selected_wunderlist" />
-      
-	  <item android:state_focused="true"
-	        android:drawable="@android:color/transparent" />
-	  
-	  <item>
-		<shape android:shape="rectangle" >
-	        <solid android:color="#77ffffff" />
-		    
-	         <corners
-	           android:radius="5dp" />
-		</shape>
-	  </item>
- 
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle" >
+   <stroke
+        android:width="3dip"
+        android:color="#ccc" />
+   <solid android:color="@android:color/transparent" />
+   <padding android:left="7dp" android:top="7dp"
+            android:right="7dp" android:bottom="7dp" />
+   <corners android:radius="10dp" />
+</shape>

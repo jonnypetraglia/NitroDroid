@@ -56,7 +56,6 @@ public class SyncHelper {
 	         String hash, name;
 	         String[] tasksString;
 	         
-	         db.open();
 	         
 	         //Today
 	         try
@@ -158,7 +157,6 @@ public class SyncHelper {
 	        	 System.err.println("Error in misc");
 	         }
 	         
-	         db.close();
 	         
 	    } catch (Exception e) {
 	        // TODO Auto-generated catch block
