@@ -102,7 +102,8 @@ public class SyncHelper {
 	        	 hash = "v";
 	        	 name = c.getResources().getString(R.string.Logbook);
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
-	        	 tasksString = parseTasksString(item.getJSONArray("n")); 
+	        	 tasksString = parseTasksString(item.getJSONArray("n"));
+	        	 hash = "logbook";	//DANGER WILL ROBINSON
 	        	 
 	        	 //Tasks
 	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)

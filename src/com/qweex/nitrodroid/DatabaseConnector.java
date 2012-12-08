@@ -139,8 +139,14 @@ public class DatabaseConnector
 	public Cursor getTasksOfList(String hash, String sort)
 	{
 		open();
-		if(hash!=null && !hash.equals(""))
-			hash = "list = '" + hash + "'";
+		if(hash!=null)
+		{
+			if(!hash.equals("logbook"))
+				hash = hash + " AND logged='0'";
+			if(!hash.equals(" AND logged='0'"))
+				hash = "list = '" + hash + "'";
+		} else
+			hash = "logged='0'";
 		Cursor c = database.query(TASKS_TABLE,
 			    new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},
 			    hash,
