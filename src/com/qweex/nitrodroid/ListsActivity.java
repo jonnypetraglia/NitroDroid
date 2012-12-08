@@ -76,9 +76,6 @@ public class ListsActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		
-		System.out.println(java.util.Locale.getDefault());
-		System.out.println(this.getResources().getConfiguration().locale.getDisplayName());
-		
 		SERVICE = "dropbox";
 		OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
 		OATH_TOKEN = "5bnt7mpm6sgoprb";
@@ -145,7 +142,6 @@ public class ListsActivity extends Activity
 	            return true;
 	        }
 	    }
-
 	    return false;
 	}
 	
@@ -168,9 +164,9 @@ public class ListsActivity extends Activity
 		{
 			isTablet = false;
 			setContentView(R.layout.phone);
+			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
+			
 		}
-		
-		System.out.println("isTablet: " + isTablet);
 		
 		
 		flip = (ViewFlipper) findViewById(R.id.FLIP);
@@ -240,24 +236,23 @@ public class ListsActivity extends Activity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
-    	  //String name = (String) ((TextView)view.findViewById(R.id.listName)).getText();
-    	  //((TextView)findViewById(R.id.taskTitlebar)).setText(name);
+    	  flip.showNext();
     	  if(ta==null)
     		  ta = new TasksActivity();
     	  ta.listHash = (String)((TextView)view.findViewById(R.id.listId)).getText();
+    	  ta.listName = (String) ((TextView)view.findViewById(R.id.listName)).getText();
+    	  System.out.println("NAME: " + ta.listName);
     	  System.out.println("Selected: " + ta.listHash);
     	  ta.context = (Activity) view.getContext();
     	  ta.onCreate(null);
+    	  /*
     	  if(!isTablet && flip!=null)
           {
     		  flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
     		  flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
     		  flip.showNext();
           }
-    	  /*
-    	  Intent viewList = new Intent(ListsActivity.this, TasksActivity.class);
-    	  startActivity(viewList);
-    	  */
+          */
       }
     };
     

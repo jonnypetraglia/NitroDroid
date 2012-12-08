@@ -64,7 +64,8 @@ public class DatabaseConnector
 							  String notes,
 							  String list,
 							  long logged,
-							  String tags)
+							  String tags,
+							  int order)
 	{
 	   ContentValues newTask = new ContentValues();
 	   newTask.put("hash", hash);
@@ -75,8 +76,23 @@ public class DatabaseConnector
 	   newTask.put("list", list);
 	   newTask.put("logged", logged);
 	   newTask.put("tags", tags);
+	   newTask.put("order_num", order);
 	
 	   database.insert(TASKS_TABLE, null, newTask);
+	}
+	
+	public void modifyOrder(String hash, int new_order)
+	{
+	 	ContentValues args = new ContentValues();
+	    args.put("order_num", new_order);
+	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	}
+	
+	public void modifyListOrder(String hash, String new_order)
+	{
+	 	ContentValues args = new ContentValues();
+	    args.put("tasks_in_order", new_order);
+	    database.update(LISTS_TABLE, args, "hash='" + hash + "'", null);
 	}
 	
 	public void insertList(String hash,
@@ -149,7 +165,8 @@ public class DatabaseConnector
 	 	         	"notes TEXT, " +
 	 	         	"list TEXT, " +
 	 	         	"logged INTEGER, " +
-	 	         	"tags TEXT);";
+	 	         	"tags TEXT, " +
+	 	         	"order_num INTEGER);";
 	 	      db.execSQL(createQuery);
 	 	      String createQuery2 = "CREATE TABLE " + TASKS_TIME_TABLE + " " + 
 	 	 	         "(_id integer primary key autoincrement, " +

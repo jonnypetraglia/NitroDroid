@@ -18,6 +18,9 @@ import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 
 import android.annotation.TargetApi;
@@ -61,17 +64,13 @@ public class TasksActivity
 	public String listHash;
 	ArrayList<String> tasksContents;
 	public Activity context;
+	QuickAction sortPopup;
 	
 	//@Overload
 	public void onCreate(Bundle savedInstanceState)
 	{
 		//super.onCreate(savedInstanceState)
 		//context.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-		
-		
-		
-		
         sortPopup = new QuickAction(context, QuickAction.VERTICAL);
 		
         sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.magic), context.getResources().getDrawable(R.drawable.magic)));
@@ -79,6 +78,7 @@ public class TasksActivity
         sortPopup.addActionItem(new ActionItem(ID_TITLE, context.getResources().getString(R.string.title), createTitleDrawable()));
         sortPopup.addActionItem(new ActionItem(ID_DATE, context.getResources().getString(R.string.date), context.getResources().getDrawable(R.drawable.date)));
         sortPopup.addActionItem(new ActionItem(ID_PRIORITY, context.getResources().getString(R.string.priority), context.getResources().getDrawable(R.drawable.priority)));
+        sortPopup.setOnActionItemClickListener(selectSort);
         doCreateStuff();
 	}
 	
@@ -109,9 +109,6 @@ public class TasksActivity
 	}
 	
 	
-	
-	QuickAction sortPopup;
-	
 	public void doCreateStuff()
 	{
 		System.out.println("HERE");
@@ -134,8 +131,8 @@ public class TasksActivity
 		lv.setEmptyView(context.findViewById(R.id.empty2));
 		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);		
 		lv.setOnItemClickListener(selectTask);
-        
-		Cursor r = ListsActivity.syncHelper.db.getTasksOfList(listHash, null);
+		
+		Cursor r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
         lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
 		
 	}
@@ -144,18 +141,150 @@ public class TasksActivity
 	QuickAction.OnActionItemClickListener selectSort = new QuickAction.OnActionItemClickListener() {			
 		@Override
 		public void onItemClick(QuickAction source, int pos, int actionId) {				
-			ActionItem actionItem = sortPopup.getActionItem(pos);
+			//ActionItem actionItem = sortPopup.getActionItem(pos);
              
+			Cursor r;
 			switch(actionId)
 			{
 			case ID_MAGIC:
+				ArrayList<taskObject> nert = new ArrayList<taskObject>();
+				r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
+				if(r.getCount()>0)
+					r.moveToFirst();
+				for(int i=0; i<r.getCount(); i++)
+				{
+					nert.add(new taskObject(r));
+					r.moveToNext();
+				}
+				Collections.sort(nert, new MagicComparator());
+				MagicTaskAdapter tx = new MagicTaskAdapter(context, R.layout.task_item, nert);
+				lv.setAdapter(tx);
+				tx.notifyDataSetChanged();
+				return;
 			case ID_HAND:
+				return;
 			case ID_TITLE:
+				r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "name");
+				changeSort(r);
+				break;
 			case ID_DATE:
+				r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "logged, date");
+				changeSort(r);
+				break;
 			case ID_PRIORITY:
+				r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "priority");
+				changeSort(r);
+			default:
+				return;
 			}
+			TaskAdapter ta = new TaskAdapter(context, R.layout.task_item, r);
+			lv.setAdapter(ta);
+			ta.notifyDataSetChanged();
+			
 		}
 	};
+	
+	public class MagicComparator implements Comparator<taskObject> {
+		@Override
+		public int compare(taskObject a, taskObject b) {
+			int ratingA = a.dateWorth, ratingB = b.dateWorth;
+			ratingA += a.priority*2;
+			ratingB += b.priority*2;
+			
+			if(a.logged>0 && b.logged==0) return 1;
+			else if(a.logged==0 && b.logged>0) return -1;
+			else if(a.logged>0 && a.logged>0) return 0;
+			return ratingB - ratingA;
+		}
+	}
+	
+	/*
+	case "magic":
+	list.sort(function(a, b) {
+
+		var rating = {					//Get the days between now and the due date
+			a: getDateWorth(a.date),	//If it's >14 days, the value is 1
+			b: getDateWorth(b.date)		//Otherwise, it's 14 - diff + 1.
+		}								// 13 = 2, 12 = 3, 11 = 4, etc
+										// Highest possible is today: 0 = 13
+		var worth = { none: 0, low: 2, medium: 4, high: 6 }
+										// Highest possible: 19
+		rating.a += worth[a.priority]
+		rating.b += worth[b.priority]
+
+		if(a.logged && !b.logged) return 1
+		else if(!a.logged && b.logged) return -1
+		else if(a.logged && b.logged) return 0
+
+		return rating.b - rating.a
+
+	})
+	break
+	 */
+	
+	class taskObject {
+		String hash, name, notes, list, tags;
+		int priority;
+		long logged, date;
+		
+		int dateWorth;
+		
+		public taskObject(Cursor c)
+		{
+			hash = c.getString(c.getColumnIndex("hash"));
+			name = c.getString(c.getColumnIndex("name"));
+			notes = c.getString(c.getColumnIndex("notes"));
+			list = c.getString(c.getColumnIndex("list"));
+			tags = c.getString(c.getColumnIndex("tags"));
+			priority = c.getInt(c.getColumnIndex("priority"));
+			logged = c.getLong(c.getColumnIndex("logged"));
+			date = c.getLong(c.getColumnIndex("date"));
+			dateWorth = getDateWorth();
+		}
+		
+		private int getDateWorth()
+		{
+			if(date == 0)
+				return 0;
+			Date due = new Date(date);
+			Date today = new Date();
+			
+			Date one = new Date(due.getYear(), due.getMonth(), due.getDate());
+			Date two = new Date(today.getYear(), today.getMonth(), today.getDate());
+			
+			int millisecondsPerDay = 1000 * 60 * 60 * 24;
+			long millisBetween = one.getTime() - two.getTime();
+			double days = (double)millisBetween / millisecondsPerDay;
+			int diff = (int) Math.floor(days);
+			if(diff > 14)
+				diff = 14;
+			return 14 - diff + 1;
+			
+		}
+	}
+	
+
+	
+	void changeSort(Cursor r)
+	{
+		ListsActivity.syncHelper.db.open();
+		String tempHash;
+		String tempHashString = "";
+		if(r.getCount()>1)
+			r.moveToFirst();
+		for(int i=0; i<r.getCount(); i++)
+		{
+			tempHash = r.getString(r.getColumnIndex("hash"));
+			if(i>0)
+				tempHashString = tempHashString.concat("|");
+			tempHashString = tempHashString.concat(tempHash);
+			ListsActivity.syncHelper.db.modifyOrder(tempHash, i);
+			r.moveToNext();
+		}
+		ListsActivity.syncHelper.db.modifyListOrder(listHash, tempHashString);
+		System.out.println(tempHashString);
+		ListsActivity.syncHelper.db.close();
+	}
     
 	
 	static void expand(View view)
@@ -280,4 +409,29 @@ public class TasksActivity
 			return true;
 		}
 	};
+	
+	
+	void addTask()
+	{
+		String taskID = getID();
+		
+	}
+	
+	
+	String bit()
+	{
+		
+		return Integer.toString((int)Math.floor(Math.random() *36), 36);
+	}
+	
+	String part()
+	{
+		return bit() + bit() + bit() + bit();
+	}
+	
+	String getID()
+	{
+		return part() + "-" + part() + "-" + part();
+	}
+	
 }

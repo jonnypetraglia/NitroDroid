@@ -66,6 +66,14 @@ public class SyncHelper {
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
 	        	 
+	        	 //Tasks
+	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
+	        		 try {
+	        		 readAndInsertTask(item.getJSONArray("n").getString(i), i);
+			    	 } catch(Exception e) {
+			    		 System.err.println("Error in tasks");
+			    	 }
+	        	 
 	        	 db.insertList(hash, name, tasksString);
 	         } catch(Exception e) {
 	        	 System.err.println("Error in today");
@@ -77,6 +85,13 @@ public class SyncHelper {
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
 	        	 tasksString = parseTasksString(item.getJSONArray("n")); 
 	        	 
+	        	 //Tasks
+	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
+	        		 try {
+	        		 readAndInsertTask(item.getJSONArray("n").getString(i), i);
+			    	 } catch(Exception e) {
+			    		 System.err.println("Error in tasks");
+			    	 }
 	        	 
 	        	 db.insertList(hash, name, tasksString);
 	         } catch(Exception e) {
@@ -89,6 +104,13 @@ public class SyncHelper {
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
 	        	 tasksString = parseTasksString(item.getJSONArray("n")); 
 	        	 
+	        	 //Tasks
+	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
+	        		 try {
+	        		 readAndInsertTask(item.getJSONArray("n").getString(i), i);
+			    	 } catch(Exception e) {
+			    		 System.err.println("Error in tasks");
+			    	 }
 	        	 
 	        	 db.insertList(hash, name, tasksString);
 	         } catch(Exception e) {
@@ -110,26 +132,27 @@ public class SyncHelper {
 	         
 	         //Misc.
 	         try {
-	         for (int i = 0; i < listIDs.length(); i++)
+	         for (int j = 0; j < listIDs.length(); j++)
 	         {
-	        	 JSONObject item = jListDetails.getJSONObject(listIDs.getString(i));
+	        	 JSONObject item = jListDetails.getJSONObject(listIDs.getString(j));
 
-	        	 hash = listIDs.getString(i);
+	        	 hash = listIDs.getString(j);
 	        	 name = item.getString("a");
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
+	        	 
+	        	 //Tasks
+	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
+	        		 try {
+	        		 readAndInsertTask(item.getJSONArray("n").getString(i), i);
+			    	 } catch(Exception e) {
+			    		 System.err.println("Error in tasks");
+			    	 }
 	        	 
 	        	 db.insertList(hash, name, tasksString);
 	         }
 	         } catch(Exception e) {
 	        	 System.err.println("Error in misc");
 	         }
-        	 //Tasks
-        	 for(int i=0; i<jTasks.names().length(); i++)
-        		 try {
-        		 readAndInsertTask(jTasks.names().getString(i));
-		    	 } catch(Exception e) {
-		    		 System.err.println("Error in tasks");
-		    	 }
 	         
 	         db.close();
 	         
@@ -139,7 +162,7 @@ public class SyncHelper {
 	    }
 	}
 	
-	void readAndInsertTask(String hash) throws org.json.JSONException
+	void readAndInsertTask(String hash, int order) throws org.json.JSONException
 	{
 		JSONObject item = jTasks.getJSONObject(hash);
 		String name, notes, list, tags, priority_;
@@ -173,13 +196,12 @@ public class SyncHelper {
 		tags = "";
 		for(int i=0; i<tags_.length(); i++)
 		{
-			System.out.println("TAGS BE: " + tags_.getString(i));
 			if(i>0)
 				tags = tags.concat(",");
 			tags = tags.concat(tags_.getString(i));
 		}
 		
-		db.insertTask(hash, name, priority, date, notes, list, logged, tags);
+		db.insertTask(hash, name, priority, date, notes, list, logged, tags, order);
 		
 	}
 }
