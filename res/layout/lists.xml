@@ -22,6 +22,7 @@ Permission is granted to anyone to use this software for any purpose, including 
    <ListView
 		android:id="@android:id/list"
 		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
 		android:cacheColorHint="@android:color/transparent"
 		android:divider="@android:color/transparent"
 		android:padding="?lists_padding"
