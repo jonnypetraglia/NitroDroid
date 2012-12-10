@@ -75,6 +75,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     
     <string name="default_list">New List</string>
     <string name="default_task">New Task</string>
+    <string name="add_list">Add List</string>
     
     <string name="Settings">Settings</string>
     

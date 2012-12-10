@@ -48,12 +48,12 @@ public class ListsActivity extends Activity
 	public static String listHash;
 	public static View currentList;
 	ListView mainListView;
-	TasksActivity ta;
+	public static TasksActivity ta;
 	public static ViewFlipper flip;
 	public static boolean isTablet = false;
 	public static SyncHelper syncHelper;
 	public static float DP;
-	private int task_normalDrawable, task_selectedDrawable;
+	private int list_normalDrawable, task_selectedDrawable;
 	
 	
 	/*	
@@ -98,10 +98,10 @@ public class ListsActivity extends Activity
 		
 		TypedArray a;
 		a = this.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});     
-        task_normalDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
+        list_normalDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
         a = this.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
         task_selectedDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
-        task_selectedDrawable = R.drawable.listitem_selected_default;
+        //task_selectedDrawable = R.drawable.listitem_selected_default;
 	}
 	
 	public void doCreateStuff()
@@ -200,9 +200,9 @@ public class ListsActivity extends Activity
     	  {
     		  View tempy = currentList;
 	    	  if(tempy!=null)
-	    		  tempy.setBackgroundColor(0x00000000);
+	    		  //tempy.setBackgroundColor(0x00000000);
 	    	  
-	    		  //currentList.setBackgroundDrawable(normalDrawable);
+	    		  tempy.setBackgroundResource(list_normalDrawable);
 	    	  //view.setBackgroundDrawable(selectedDrawable);
     	  }
     	  
@@ -229,7 +229,8 @@ public class ListsActivity extends Activity
     		  flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
     		  flip.showNext();
           }
-    	  view.setBackgroundResource(task_selectedDrawable);
+    	  if(isTablet)
+    		  view.setBackgroundResource(task_selectedDrawable);
     	  currentList = view;
       }
     };

@@ -30,4 +30,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     <attr format="color" name="empty_background" />
     <attr format="dimension" name="tasks_padding" />
     <attr format="dimension" name="lists_padding" />
+    <attr format="reference" name="addList_button" />
+    <attr format="color" name="addList_border" />
+    <attr format="color" name="addList_text" />
 </resources>

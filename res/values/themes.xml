@@ -31,6 +31,9 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="empty_background"> #66ffffff </item>
     	<item name="tasks_padding"> 0dp </item>
     	<item name="lists_padding"> 0dp </item>
+    	<item name="addList_button"> @drawable/addlist_default </item>
+    	<item name="addList_border"> @color/addlist_border_default </item>
+    	<item name="addList_text"> @color/addList_text_default </item>
 	</style>
 	
 	<style name="Right" parent="Default"></style>
@@ -44,5 +47,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<!-- <item name="tasks_selected"> @drawable/low_button</item> -->
     	<item name="tasks_padding"> 5dp </item>
     	<item name="lists_padding"> 10dp </item>
+    	<item name="addList_button"> @drawable/addlist_wunderlist</item>
+    	<item name="addList_text"> @color/addList_text_wunderlist </item>
 	</style>
 </resources>

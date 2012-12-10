@@ -82,7 +82,7 @@ public class TaskAdapter extends SimpleCursorAdapter
 		if(hash.equals(TasksActivity.lastClickedID))
 		{
 			System.out.println("Urg.  id = " + hash);
-			TasksActivity.expand(row);
+			ListsActivity.ta.expand(row);
 			//TasksActivity.lastClicked = row;
 		}
 		else
@@ -97,14 +97,17 @@ public class TaskAdapter extends SimpleCursorAdapter
 		done.setChecked(c.getLong(c.getColumnIndex("logged"))>0);
 		
 		//------Tags------
-		if(!c.getString(c.getColumnIndex("tags")).equals(""))
+		
+		
+		((EditText)row.findViewById(R.id.tags_edit)).setText(c.getString(c.getColumnIndex("tags")));
+		
+		if(!c.getString(c.getColumnIndex("tags")).equals("") && false)
 		{
 			String[] tgs = c.getString(c.getColumnIndex("tags")).split(",");
 			LinearLayout tag_cont = (LinearLayout)row.findViewById(R.id.tag_container);
 			tag_cont.removeAllViews();
 			for(int i=0; i<tgs.length; i++)
 			{
-				System.out.println("BLAAARGGGGG " + tgs[i]);
 				if(i>0)
 					tag_cont.addView(new Separator(tag_cont.getContext()));
 				tag_cont.addView(new TagView(tag_cont.getContext(), tgs[i]));
@@ -163,7 +166,7 @@ public class TaskAdapter extends SimpleCursorAdapter
 	
 	
 	
-	private class TagView extends TextView {
+	static public class TagView extends TextView {
 
 		public TagView(Context context, String s) {
 			super(context);
@@ -178,7 +181,7 @@ public class TaskAdapter extends SimpleCursorAdapter
 		}
 	}
 	
-	private class Separator extends View {
+	static public class Separator extends View {
 
 		public android.widget.LinearLayout.LayoutParams params;
 		public Separator(Context context) {

@@ -86,12 +86,41 @@ public class DatabaseConnector
 	    return database.delete(TASKS_TABLE, "hash='" + hash + "'", null) > 0;
 	}
 	
+	//OVERLOAD _ALL_ THE FUNCTIONS!
+	
+	public void modifyTask(String hash, String[] columns, String[] new_vals)
+	{
+		ContentValues args = new ContentValues();
+		for(int i=0; i<columns.length; i++)
+			args.put(columns[i], new_vals[i]);
+	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	}
+	
+	public void modifyTask(String hash, String column, int new_val)
+	{
+		ContentValues args = new ContentValues();
+	    args.put(column, new_val);
+	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	}
+	
+	public void modifyTask(String hash, String column, long new_val)
+	{
+		ContentValues args = new ContentValues();
+	    args.put(column, new_val);
+	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	}
+	
+	public void modifyTask(String hash, String column, String new_val)
+	{
+		ContentValues args = new ContentValues();
+	    args.put(column, new_val);
+	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	}
+	
 	
 	public void modifyOrder(String hash, int new_order)
 	{
-	 	ContentValues args = new ContentValues();
-	    args.put("order_num", new_order);
-	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+		modifyTask(hash, "order_num", new_order);
 	}
 	
 	public void modifyListOrder(String hash, String new_order)

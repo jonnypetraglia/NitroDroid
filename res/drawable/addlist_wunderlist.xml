@@ -13,8 +13,24 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<resources>
-    <color name="selected_list_item_wunderlist">#FFc2fdff</color>
-    <color name="addlist_pressed_wunderlist">#FF3b3b3b</color>
-    <color name="addList_text_wunderlist">#fff</color>
-</resources>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/addlist_pressed_wunderlist" />
+            <padding
+                android:left="10dp"
+                android:top="15dp"
+                android:bottom="15dp"
+                android:right="10dp" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/header_wunderlist">
+            <padding
+                android:left="10dp"
+                android:top="15dp"
+                android:bottom="15dp"
+                android:right="10dp" />
+    </item>
+    
+</selector>

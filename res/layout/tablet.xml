@@ -45,11 +45,18 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        android:weightSum="1.0" >
 	    
 	    
+	    <FrameLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:background="?addList_border"
+    		android:padding="1dp"
+    		android:layout_weight="0.7" >
+	    
 	    <include
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="0.7"
         layout="@layout/lists" />
+	    </FrameLayout>
         
 	    <FrameLayout
 	        android:layout_width="fill_parent"

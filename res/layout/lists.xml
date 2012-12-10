@@ -13,18 +13,22 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+     >
     
    <ListView
 		android:id="@android:id/list"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_height="20px"
 		android:cacheColorHint="@android:color/transparent"
 		android:divider="@android:color/transparent"
 		android:padding="?lists_padding"
+		android:background="@android:color/transparent"
+		android:layout_above="@+id/frame"
+		android:layout_alignParentTop="true"
 		android:dividerHeight="?lists_padding"/>
         
         <TextView android:id="@+id/empty1"
@@ -39,4 +43,19 @@ Permission is granted to anyone to use this software for any purpose, including 
                android:padding="30dp"
                />
 
-</LinearLayout>
+        <FrameLayout 
+            android:id="@+id/frame"
+            android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:background="?addList_border"
+         android:padding="1dp" >
+     <Button
+         android:id="@+id/add_list"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/add_list"
+         android:textColor="?addList_text"
+         android:background="?addList_button"/>
+	</FrameLayout>
+</RelativeLayout>

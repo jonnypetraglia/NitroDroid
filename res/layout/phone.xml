@@ -17,13 +17,13 @@ Permission is granted to anyone to use this software for any purpose, including 
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/FLIP"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="?background" >
     
 	<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:background="?background" >
+        android:orientation="vertical" >
 
     	<include
         android:layout_width="fill_parent"
@@ -57,7 +57,6 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="0.3"
-        android:background="?background"
         layout="@layout/tasks" />
 
 </LinearLayout>

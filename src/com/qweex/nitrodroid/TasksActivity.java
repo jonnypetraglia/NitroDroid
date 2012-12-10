@@ -19,14 +19,17 @@ import net.londatiga.android.QuickAction;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 
+import com.qweex.nitrodroid.TaskAdapter.Separator;
+import com.qweex.nitrodroid.TaskAdapter.TagView;
 
-import android.annotation.TargetApi;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -41,11 +44,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -64,7 +70,7 @@ public class TasksActivity
 	ListView lv;
 	boolean allTasks = false;
 	static View lastClicked = null;
-	View editingTags = null;
+	static EditText editingTags = null;
 	public static String lastClickedID;
 	View separator;
 	TextView tag_bubble;
@@ -195,9 +201,7 @@ public class TasksActivity
 			ListsActivity.syncHelper.db.insertTask(lastClickedID, v.getContext().getResources().getString(R.string.default_task),
 					0, 0, "", listHash, 0, "", order);
 			
-			System.out.println("Urg. new id = " + lastClickedID);
 			createTheAdapterYouSillyGoose();
-			System.out.println("Urg. new id ~ " + lastClickedID);
 			
 			try {
 				Method func = ListView.class.getMethod("smoothScrollToPosition", Integer.TYPE);
@@ -230,7 +234,9 @@ public class TasksActivity
 	    public void onClick(DialogInterface dialog, int which) {
 	        switch (which){
 	        case DialogInterface.BUTTON_POSITIVE:
-	            ListsActivity.syncHelper.db.deleteTask(lastClickedID);
+	            if(!ListsActivity.syncHelper.db.deleteTask(lastClickedID))
+	            	return;
+	            
 	            createTheAdapterYouSillyGoose();
 	            lastClicked = null;
 	            lastClickedID = null;
@@ -238,10 +244,6 @@ public class TasksActivity
 	            TextView currentListCount = (TextView)ListsActivity.currentList.findViewById(R.id.listNumber);
 				int i = Integer.parseInt((String) currentListCount.getText()) - 1;
 				currentListCount.setText(Integer.toString(i));
-	            break;
-
-	        case DialogInterface.BUTTON_NEGATIVE:
-	            //No button clicked
 	            break;
 	        }
 	    }
@@ -404,7 +406,7 @@ public class TasksActivity
 	}
     
 	
-	static void expand(View view)
+	void expand(View view)
 	{
 		if(view!=null && view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
 		{
@@ -415,6 +417,8 @@ public class TasksActivity
 		  
 		  view.findViewById(R.id.taskInfo).setVisibility(View.VISIBLE);
 		  lastClicked = view; //Skeptical Jon is skeptical
+		  getThemTagsSon((LinearLayout)view.findViewById(R.id.tag_container), 
+				  ((EditText)view.findViewById(R.id.tags_edit)).getText().toString());
 		}
 	}
 	
@@ -436,14 +440,11 @@ public class TasksActivity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
-    	  System.out.println("LC: " + lastClicked);
-    	  
     	  if(lastClicked==view &&
     			  view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
     	  {
     		  
     		  lastClicked.setBackgroundDrawable(normalDrawable);
-    		  System.out.println("LCC: " + lastClicked);
     		  expand(view);
     	  }
     	  else
@@ -454,7 +455,7 @@ public class TasksActivity
     			  lastClicked.setBackgroundDrawable(normalDrawable);
     		  lastClicked = view;
     		  lastClicked.setBackgroundDrawable(selectedDrawable);
-    		  //lastClickedID = (String) ((TextView)lastClicked.findViewById(R.id.taskId)).getText();
+    		  lastClickedID = (String) ((TextView)lastClicked.findViewById(R.id.taskId)).getText();
     	  }
       }
     };
@@ -464,9 +465,12 @@ public class TasksActivity
     	System.out.println(lastClicked);
     	if(editingTags!=null)
     	{
-    		System.out.println("Finished Editing Tags");
     		editingTags.setVisibility(View.GONE);
-    		((LinearLayout)editingTags.getParent()).getChildAt(1).setVisibility(View.VISIBLE);
+    		HorizontalScrollView hsv = (HorizontalScrollView) ((LinearLayout)editingTags.getParent()).getChildAt(1);
+    		
+    		getThemTagsSon((LinearLayout)hsv.getChildAt(0), editingTags.getText().toString());
+    		
+    		hsv.setVisibility(View.VISIBLE);
     		editingTags = null;
     	}
     	else if(lastClicked!=null || lastClickedID!=null)
@@ -483,32 +487,106 @@ public class TasksActivity
     	return false;
     }
     
+    
+    /** List order maintained **/
+    public static void removeDuplicateWithOrder(ArrayList arlList)
+    {
+       java.util.Set set = new java.util.TreeSet(String.CASE_INSENSITIVE_ORDER);//java.util.HashSet();
+       java.util.List newList = new ArrayList();
+       for (java.util.Iterator iter = arlList.iterator(); iter.hasNext();)
+       {
+          Object element = iter.next();
+          if (set.add(element))
+             newList.add(element);
+       }
+       arlList.clear();
+       arlList.addAll(newList);
+    }
+    
+    static void getThemTagsSon(LinearLayout tag_cont, String tags)
+    {
+    	String[] tgs = tags.split(",");
+    	for(int i=0; i<tgs.length; i++)
+    		tgs[i] = tgs[i].trim();
+    	ArrayList<String> arList = new ArrayList<String>(Arrays.asList(tgs));
+    	removeDuplicateWithOrder(arList);
+	    tag_cont.removeAllViews();
+	    
+		for(int i=0; i<arList.size(); i++)
+		{
+			if(i>0)
+				tag_cont.addView(new Separator(tag_cont.getContext()));
+			tag_cont.addView(new TagView(tag_cont.getContext(), arList.get(i).trim()));
+		}
+    }
 	
-	
+    static int n, m;
+    static android.widget.HorizontalScrollView s;
 	
 	static OnLongClickListener pressTag = new OnLongClickListener()
 	{
+		
 		@Override
 		public boolean onLongClick(View v)
 		{
 			LinearLayout tagparent = (LinearLayout) ((View)v.getParent());
-			android.widget.HorizontalScrollView s = (android.widget.HorizontalScrollView) tagparent.getParent();
+			s = (android.widget.HorizontalScrollView) tagparent.getParent();
 			LinearLayout sParent = (LinearLayout) s.getParent();
-			EditText e = (EditText) sParent.findViewById(R.id.tags_edit);
+			editingTags = (EditText) sParent.findViewById(R.id.tags_edit);
+			editingTags.setText("");
+			
+			editingTags.setOnEditorActionListener(new EditText.OnEditorActionListener()
+			{
+				@Override
+				public boolean onEditorAction(TextView tv, int actionId, KeyEvent event)
+				{
+					if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE)
+					{
+						System.out.println("Pressed Done you stupid son of a whore");
+						LinearLayout ll = (LinearLayout) editingTags.getParent();
+					    //getThemTagsSon((LinearLayout)ll.findViewById(R.id.tag_container), 
+						  //((EditText)ll.findViewById(R.id.tags_edit)).getText().toString());
+					    ll.findViewById(R.id.tag_scroller).setVisibility(View.VISIBLE);
+						editingTags.setVisibility(View.GONE);
+						tv.setVisibility(View.GONE);
+					    return true;
+				    }
+				    return false;
+				}
+			});
+			
 			for(int i=0; i<(tagparent.getChildCount()); i=i+2)
 			{
 				if(i>0)
-					e.append(", ");
-				e.append(((TextView) (tagparent.getChildAt(i))).getText());
+					editingTags.append(", ");
+				editingTags.append(((TextView) (tagparent.getChildAt(i))).getText());
 			}
-			e.setVisibility(View.VISIBLE);
-			int n = e.getText().toString().indexOf((String) ((TextView)v).getText());
-			e.setSelection(n, n + ((TextView)v).getText().length());
-			e.requestFocus();
-			s.setVisibility(View.GONE);
-			//editingTags = e;
+			try {
+				n = editingTags.getText().toString().indexOf((String) ((TextView)v).getText());
+				m = ((TextView)v).getText().length();
+			} catch(Exception e) {
+				n = editingTags.getText().length();
+				m = 0;
+			}
+			v.setOnTouchListener(new OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					if(event.getAction()==MotionEvent.ACTION_UP)
+					{
+						s.setVisibility(View.GONE);
+						editingTags.setVisibility(View.VISIBLE);
+						
+						editingTags.setSelection(n+m); //, n + m);
+						editingTags.requestFocus();
+					}
+					return false;
+				}
+				
+			});
 			return true;
 		}
+		
 	};
 	
 	

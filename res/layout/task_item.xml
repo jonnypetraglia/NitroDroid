@@ -88,6 +88,7 @@ Permission is granted to anyone to use this software for any purpose, including 
              />
         
 		<HorizontalScrollView
+		    android:id="@+id/tag_scroller"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="10dp"
