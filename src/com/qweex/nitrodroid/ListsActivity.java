@@ -29,7 +29,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,51 +47,57 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ViewFlipper;
 
+/*	
+-arabic.js
+-basque.js
+-bulgarian.js
+*chinese.js
+*dutch.js
+*finnish.js
+*french.js
+*german.js
+-hungarian.js
+*italian.js
+*pirate.js
+*polish.js
+*portuguese.js
+*russian.js
+*spanish.js
+*turkish.js
+*vietnamese.js
+*/
+
 public class ListsActivity extends Activity
 {
+	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
+    STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
+	
+	/** Static variables concerning the preferences of the program **/
 	public static int themeID;
 	public static boolean forcePhone;
 	public static String locale = null;
-	
-	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
-			      STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
-	
-	public static String listHash;
-	public static View currentList;
-	ListView mainListView;
-	public static TasksActivity ta;
-	public static ViewFlipper flip;
 	public static boolean isTablet = false;
-	public static SyncHelper syncHelper;
-	public static float DP;
-	private int list_normalDrawable, task_selectedDrawable;
-	EditText newList;
-	Builder newListDialog;
-	Context context;
 	boolean splashEnabled = false;
 	
-	/*	
-		-arabic.js
-		-basque.js
-		-bulgarian.js
-		*chinese.js
-		*dutch.js
-		*finnish.js
-		*french.js
-		*german.js
-		-hungarian.js
-		*italian.js
-		*pirate.js
-		*polish.js
-		*portuguese.js
-		*russian.js
-		*spanish.js
-		*turkish.js
-		*vietnamese.js
-*/
+	/** Static variables that are used across files **/
+	public static String listHash;
+	public static View currentList;
+	public static TasksActivity ta;
+	public static ViewFlipper flip;
+	public static SyncHelper syncHelper;
+	public static float DP;
 	
-	boolean loadingApp  = true, loadingOnCreate = true;
-	View splash;
+	/** Local variables **/
+	private int list_normalDrawable, task_selectedDrawable;
+	private EditText newList;
+	private Builder newListDialog;
+	private Context context;
+	private boolean loadingApp  = true, loadingOnCreate = true;
+	private View splash;
+	private ListView mainListView;
+	private ListAdapter listAdapter;
+	
+	/************************** Activity Lifecycle methods **************************/ 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -107,119 +113,30 @@ public class ListsActivity extends Activity
 		
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setMainView();
+		doViewStuff();
 		
 		context = this;
-        showSplash();
-	}
-	
-	
-	AsyncTask<Void, Void, Void> loadOnCreate = new AsyncTask<Void, Void, Void>() {
-
-	    @Override
-	    protected Void doInBackground(Void... params) {
-			syncHelper = new SyncHelper(context);
-			syncHelper.db.open();
-			DP = context.getResources().getDisplayMetrics().density;
-			
-			TypedArray a;
-			a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});     
-	        list_normalDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
-	        a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
-	        task_selectedDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
-	        //task_selectedDrawable = R.drawable.listitem_selected_default;
-	        
-	        
-	        newList = new EditText(context);
-	        newList.setId(42);
-	        
-	        newListDialog = new AlertDialog.Builder(context)
-	        .setTitle(R.string.add_list)
-	        .setView(newList)
-	        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int whichButton) {
-	                String newListName = newList.getText().toString(); 
-	            }
-	        }).setNegativeButton(android.R.string.cancel, null);
-	        System.out.println("Fuck yeah motherfucker");
-	        loadingOnCreate = false;
-        	doCreateStuff(true);
-            return null;
-	        } 
-	   };
-	
-	public static class procUtils
-	{
-		private static double CPUFreq = -2;
-		public static double getCPUFreq()
-		{
-			if(CPUFreq!=-2)
-				return CPUFreq;
-			try {
-			byte buff[] = new byte[80];
-			Runtime.getRuntime().exec("cat /proc/cpuinfo").getInputStream().read(buff);
-			for(int i=0; i<buff.length; i++)
-				if(buff[i]=='B')
-				{
-					while(buff[i++]!=':' && i<80);
-					int j=i+1;
-					while(buff[i++]!='\n');
-					return CPUFreq=Double.parseDouble(new String(buff, j, i-j));
-				}
-		} catch(Exception e) {}
-			return -1;
-		}
-	}
-
-	
-
-	void showSplash()
-	{
+		
+		//Show Splash
 		splash = findViewById(R.id.splash);
 		Animation splashAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-		System.out.println("Loadded anim1");
-		splashAnim.setAnimationListener(new AnimationListener(){
-			
+		splashAnim.setAnimationListener(new AnimationListener()
+		{
 			@Override
 			public void onAnimationEnd(Animation animation)
 			{
-				System.out.println("launching real oncreate");
-				loadOnCreate.execute();
-				if(splashEnabled && false)
-				{
-					for(long i=0; i<(procUtils.getCPUFreq()>0 ? procUtils.getCPUFreq()*10 : 10000l); i++) if(true==false);
-				}
-				System.out.println("Fake waiting done, now time for real waiting");
-				while(loadingApp) ;
-				System.out.println("Loaded anim2");
-				animation = AnimationUtils.loadAnimation(ListsActivity.this, android.R.anim.fade_out);
-				animation.setAnimationListener(new AnimationListener(){
-					@Override
-					public void onAnimationEnd(Animation animation)
-					{
-						flip.setInAnimation(context, R.anim.slide_in_right);
-			            //flip.setOutAnimation(context, android.R.anim.slide_out_right);
-						flip.showNext();
-					}
-					@Override
-					public void onAnimationRepeat(Animation animation) {}
-					@Override
-					public void onAnimationStart(Animation animation) { System.out.println("nerts2"); }
-				});
-				System.out.println("Starting anim2");
-				splash.startAnimation(animation);
-			}
+				doCreateThings.execute();
+				for(long i=0; splashEnabled && i<(procUtils.getCPUFreq()>0 ? procUtils.getCPUFreq()*10 : 10000l); i++);
 
+			}
 			@Override
 			public void onAnimationRepeat(Animation animation) {}
 			@Override
 			public void onAnimationStart(Animation animation) { System.out.println("nerts1"); }
 		});
-		System.out.println("starting anim1");
 		splash.startAnimation(splashAnim);
-		System.out.println("started anim1");
 	}
-	
+		
 	@Override
     public boolean onCreateOptionsMenu(Menu menu)
     { 
@@ -230,7 +147,7 @@ public class ListsActivity extends Activity
 				@Override
 				public void onClick(View v)
 				{
-					createList();
+					pressCreateList();
 				}
 			});
 			return false;
@@ -243,16 +160,55 @@ public class ListsActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item)
     {
 		
-		createList();
+		pressCreateList();
 		return true;
     }
-	
-	void createList()
+
+	@Override
+	public void onResume()
 	{
-		newListDialog.show();
+		super.onResume();
+		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
+		
+		
+		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
+		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
+		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
+		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || new_locale!=locale)
+		{
+			java.util.Locale derlocale = new java.util.Locale(new_locale);
+			java.util.Locale.setDefault(derlocale);
+			Configuration config = new Configuration();
+			config.locale = derlocale;
+			getBaseContext().getResources().updateConfiguration(config,
+			      getBaseContext().getResources().getDisplayMetrics());
+			locale = new_locale;
+			themeID = new_themeID;
+			forcePhone = new_force;
+			doCreateStuff();
+		}
 	}
 	
-	public void setMainView()
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		syncHelper.db.close();
+	}
+	
+    @TargetApi(5)
+	public void onBackPressed()
+    {
+    	doBackThings();
+    }
+	
+	
+   /************************** Yoda methods **************************/
+   //"Do or do not, there is no try"
+   // These methods are essentially the Activity Lifecycle methods, but
+   // they have been split off so that they can be called in other methods
+	
+	public void doViewStuff()
 	{
 		setTheme(themeID);
 		
@@ -279,13 +235,18 @@ public class ListsActivity extends Activity
 	{
 		if(loadingOnCreate)
 			return;
-		System.out.println("Doing Create Stuff");
 		if(!noSetMainView)
-			setMainView();
-		
-		System.out.println("still Doing Create Stuff");
+			doViewStuff();
 		
 		flip = (ViewFlipper) findViewById(R.id.FLIP);
+		((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				newListDialog.show();
+			}
+		});
 		mainListView = (ListView) findViewById(android.R.id.list);
 		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
 			@Override
@@ -296,64 +257,120 @@ public class ListsActivity extends Activity
          });
          mainListView.setOnItemClickListener(selectList);
          mainListView.setEmptyView(findViewById(R.id.empty1));
-         //testRead();
+         testRead();
          
          Cursor r = syncHelper.db.getAllLists();
-         Looper.prepare();
-         ListAdapter la = new ListAdapter(context, R.layout.list_item, r);
-         la.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
-         la.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
+         listAdapter = new ListAdapter(context, R.layout.list_item, r);
+         listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+         listAdapter.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
          
-         mainListView.setAdapter(la);
+         mainListView.setAdapter(listAdapter);
+         
+         if(loadingApp)
+         {
+				System.out.println("Loaded anim2");
+				Animation animation = AnimationUtils.loadAnimation(ListsActivity.this, android.R.anim.fade_out);
+				animation.setAnimationListener(new AnimationListener(){
+					@Override
+					public void onAnimationEnd(Animation animation)
+					{
+						flip.setInAnimation(context, R.anim.slide_in_right);
+						flip.showNext();
+						//flip.removeView(splash);
+					}
+					@Override
+					public void onAnimationRepeat(Animation animation) {}
+					@Override
+					public void onAnimationStart(Animation animation) { System.out.println("nerts2"); }
+				});
+				System.out.println("Starting anim2");
+				splash.startAnimation(animation);
+         }
+         
          loadingApp = false;
-         System.out.println("DURN");
 	}
 	
-	public void testRead()
+    void doBackThings()
+    {
+    	if(ta==null)
+    		finish();
+    	else
+    	{
+    		boolean b = ta.doBackThings();
+    		System.out.println(b);;;
+    		if(!b)
+    			return;
+    		
+    		if(isTablet)
+    			finish();
+    		else
+    		{
+	            flip.setInAnimation(this, android.R.anim.slide_in_left);
+	            flip.setOutAnimation(this, android.R.anim.slide_out_right);
+	            ta = null;
+	    		flip.showPrevious();
+    		}
+    	}
+    }
+	
+    AsyncTask<Void, Void, Void> doCreateThings = new AsyncTask<Void, Void, Void>()
 	{
-        try {
-         	InputStream input = getAssets().open("nitro_data.json");
-             
-         	 syncHelper.db.clearEverything(this);
-         	
-             int size = input.available();
-             byte[] buffer = new byte[size];
-             input.read(buffer);
-             input.close();
-             
 
-             // byte buffer into a string
-             String text = new String(buffer);
-             syncHelper.readJSONtoSQL(text, this);
-     		} catch(Exception e) {
-     			e.printStackTrace();
-     		}
+		@Override
+	    protected Void doInBackground(Void... params) {
+			syncHelper = new SyncHelper(context);
+			syncHelper.db.open();
+			DP = context.getResources().getDisplayMetrics().density;
+			
+			TypedArray a;
+			a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});     
+	        list_normalDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
+	        a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
+	        task_selectedDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
+	        //task_selectedDrawable = R.drawable.listitem_selected_default;
+	        
+	        newList = new EditText(context);
+	        newList.setId(42);
+	        
+	        newListDialog = new AlertDialog.Builder(context)
+	        .setTitle(R.string.add_list)
+	        .setView(newList)
+	        .setPositiveButton(android.R.string.ok, createList).setNegativeButton(android.R.string.cancel, null);
+	        loadingOnCreate = false;
+	        doCreateThingsHandler.sendEmptyMessage(0);
+	        return null;
+        } 
+   };
+   
+   Handler doCreateThingsHandler = new Handler()
+   {
+ 	   @Override
+ 		public void handleMessage(android.os.Message msg) 
+ 		{
+ 		   doCreateStuff(true);
+ 		}
+    };;
+    
+    
+    /************************** Misc methods **************************/
+   
+	void pressCreateList()
+	{
+		newListDialog.show();
 	}
 	
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
-		
-		
-		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
-		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
-		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
-		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || new_locale!=locale)
-		{
-			java.util.Locale derlocale = new java.util.Locale(new_locale);
-			java.util.Locale.setDefault(derlocale);
-			Configuration config = new Configuration();
-			config.locale = derlocale;
-			getBaseContext().getResources().updateConfiguration(config,
-			      getBaseContext().getResources().getDisplayMetrics());
-			locale = new_locale;
-			themeID = new_themeID;
-			forcePhone = new_force;
-			doCreateStuff();
-		}
-	}
+	DialogInterface.OnClickListener createList = new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int whichButton) {
+            String newListName = newList.getText().toString();
+            if("".equals(newListName))
+            	return;
+            syncHelper.db.insertList(NitroUtils.getID(), newListName, null);
+            System.out.println(newListName);
+            listAdapter.changeCursor(syncHelper.db.getAllLists());
+            //listAdapter.notifyDataSetChanged();
+        }
+    };
+
 	
 	OnItemClickListener selectList = new OnItemClickListener() 
     {
@@ -396,56 +413,30 @@ public class ListsActivity extends Activity
       }
     };
     
-    @TargetApi(5)
-	public void onBackPressed()
-    {
-    	doBackThings();
-    }
+   
     
     
+    /************************** Utility methods **************************/
     
-    AnimationListener toggleAdd = new AnimationListener() {
-	    public void onAnimationEnd(Animation animation)
-	    {
-	    	View f = findViewById(R.id.frame);
-	    	f.setVisibility(f.getVisibility() ^ View.GONE);
-	    }
-	
-	    public void onAnimationRepeat(Animation animation) {}
-	    public void onAnimationStart(Animation animation) {}
-    };
-    
-    
-    
-    void doBackThings()
-    {
-    	if(ta==null)
-    		finish();
-    	else
-    	{
-    		boolean b = ta.doBackThings();
-    		System.out.println(b);;;
-    		if(!b)
-    			return;
-    		
-    		if(isTablet)
-    			finish();
-    		else
-    		{
-	            flip.setInAnimation(this, android.R.anim.slide_in_left);
-	            flip.setOutAnimation(this, android.R.anim.slide_out_right);
-	            ta = null;
-	    		flip.showPrevious();
-    		}
-    	}
-    }
-    
-    
-	@Override
-	public void onDestroy()
+	public void testRead()
 	{
-		super.onDestroy();
-		//syncHelper.db.close();
+        try {
+         	InputStream input = getAssets().open("nitro_data.json");
+             
+         	 syncHelper.db.clearEverything(this);
+         	
+             int size = input.available();
+             byte[] buffer = new byte[size];
+             input.read(buffer);
+             input.close();
+             
+
+             // byte buffer into a string
+             String text = new String(buffer);
+             syncHelper.readJSONtoSQL(text, this);
+     		} catch(Exception e) {
+     			e.printStackTrace();
+     		}
 	}
     
 	//http://stackoverflow.com/a/9624844/1526210

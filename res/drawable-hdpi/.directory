@@ -1,4 +1,7 @@
 [Dolphin]
 PreviewsShown=true
-Timestamp=2012,12,3,2,2,31
+SortOrder=1
+SortRole=size
+Timestamp=2012,12,11,13,20,58
 Version=3
+ViewMode=1

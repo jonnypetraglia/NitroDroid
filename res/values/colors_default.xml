@@ -19,8 +19,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     <color name="tag_scroller_background_default">#FFf6f6f6</color>
     <color name="tag_scroller_separator_default">#ddd</color>
     <color name="selected_list_item_default">#FF33a3ef</color>
-    <color name="addlist_border_default">#Faaa</color>
+    <color name="addlist_border_default">#5aaa</color>
     <color name="addlist_pressed_default">#ffdddddd</color>
-    <color name="addlist_default">#ffeeeeee</color>
+    <color name="addlist_default">#fff5f5f5</color>
     <color name="addList_text_default">#FF000000</color>
 </resources>

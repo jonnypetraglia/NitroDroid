@@ -49,8 +49,8 @@ Permission is granted to anyone to use this software for any purpose, including 
          android:layout_height="wrap_content"
          android:layout_alignParentBottom="true"
          android:background="?addList_border"
-         android:padding="1dp"
-         android:visibility="gone" >
+         android:paddingTop="1dp"
+         android:visibility="visible" >
      <Button
          android:id="@+id/add_list"
          android:layout_width="fill_parent"
