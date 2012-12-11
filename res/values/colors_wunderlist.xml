@@ -17,4 +17,5 @@ Permission is granted to anyone to use this software for any purpose, including 
     <color name="selected_list_item_wunderlist">#FFc2fdff</color>
     <color name="addlist_pressed_wunderlist">#FF3b3b3b</color>
     <color name="addList_text_wunderlist">#fff</color>
+    <color name="addlist_border_wunderlist">#F555</color>
 </resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/splash"
+    android:background="@drawable/splash_bg" >
+
+    
+    
+    <TextView
+        android:id="@+id/sweetFlatteryWillGetYouEverywhere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/screeny"
+        android:layout_margin="40dp"
+        android:textSize="20sp"
+        android:text="Made by the good looking folks at Qweex" />
+   
+    <!-- android:scaleType="fitStart"
+    	android:cropToPadding="true"
+        android:adjustViewBounds="true" -->
+  
+        <ImageView
+        android:id="@+id/screeny"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/splash"
+    	android:cropToPadding="true"
+        android:adjustViewBounds="true"
+         />
+        
+    <ImageView
+        android:id="@+id/lurgur"
+        android:layout_width="fill_parent"
+        android:layout_height="10000dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:scaleType="fitEnd"
+        android:src="@drawable/splash_logo"
+        android:cropToPadding="true"
+        android:adjustViewBounds="true" />
+
+   
+</RelativeLayout>

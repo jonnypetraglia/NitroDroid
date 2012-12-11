@@ -19,17 +19,28 @@ import java.lang.reflect.Field;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,7 +51,7 @@ public class ListsActivity extends Activity
 {
 	public static int themeID;
 	public static boolean forcePhone;
-	public static String locale;
+	public static String locale = null;
 	
 	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
 			      STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
@@ -54,7 +65,10 @@ public class ListsActivity extends Activity
 	public static SyncHelper syncHelper;
 	public static float DP;
 	private int list_normalDrawable, task_selectedDrawable;
-	
+	EditText newList;
+	Builder newListDialog;
+	Context context;
+	boolean splashEnabled = false;
 	
 	/*	
 		-arabic.js
@@ -76,11 +90,12 @@ public class ListsActivity extends Activity
 		*vietnamese.js
 */
 	
+	boolean loadingApp  = true, loadingOnCreate = true;
+	View splash;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		
 		SERVICE = "dropbox";
 		OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
 		OATH_TOKEN = "5bnt7mpm6sgoprb";
@@ -90,21 +105,154 @@ public class ListsActivity extends Activity
 		STATS__LANGUAGE = "english";
 		STATS__VERSION = "1.5";
 		
-		syncHelper = new SyncHelper(this);
-		syncHelper.db.open();
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		DP = this.getResources().getDisplayMetrics().density;
+		setMainView();
 		
-		TypedArray a;
-		a = this.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});     
-        list_normalDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
-        a = this.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
-        task_selectedDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
-        //task_selectedDrawable = R.drawable.listitem_selected_default;
+		context = this;
+        showSplash();
 	}
 	
-	public void doCreateStuff()
+	
+	AsyncTask<Void, Void, Void> loadOnCreate = new AsyncTask<Void, Void, Void>() {
+
+	    @Override
+	    protected Void doInBackground(Void... params) {
+			syncHelper = new SyncHelper(context);
+			syncHelper.db.open();
+			DP = context.getResources().getDisplayMetrics().density;
+			
+			TypedArray a;
+			a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});     
+	        list_normalDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
+	        a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
+	        task_selectedDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
+	        //task_selectedDrawable = R.drawable.listitem_selected_default;
+	        
+	        
+	        newList = new EditText(context);
+	        newList.setId(42);
+	        
+	        newListDialog = new AlertDialog.Builder(context)
+	        .setTitle(R.string.add_list)
+	        .setView(newList)
+	        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int whichButton) {
+	                String newListName = newList.getText().toString(); 
+	            }
+	        }).setNegativeButton(android.R.string.cancel, null);
+	        System.out.println("Fuck yeah motherfucker");
+	        loadingOnCreate = false;
+        	doCreateStuff(true);
+            return null;
+	        } 
+	   };
+	
+	public static class procUtils
+	{
+		private static double CPUFreq = -2;
+		public static double getCPUFreq()
+		{
+			if(CPUFreq!=-2)
+				return CPUFreq;
+			try {
+			byte buff[] = new byte[80];
+			Runtime.getRuntime().exec("cat /proc/cpuinfo").getInputStream().read(buff);
+			for(int i=0; i<buff.length; i++)
+				if(buff[i]=='B')
+				{
+					while(buff[i++]!=':' && i<80);
+					int j=i+1;
+					while(buff[i++]!='\n');
+					return CPUFreq=Double.parseDouble(new String(buff, j, i-j));
+				}
+		} catch(Exception e) {}
+			return -1;
+		}
+	}
+
+	
+
+	void showSplash()
+	{
+		splash = findViewById(R.id.splash);
+		Animation splashAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+		System.out.println("Loadded anim1");
+		splashAnim.setAnimationListener(new AnimationListener(){
+			
+			@Override
+			public void onAnimationEnd(Animation animation)
+			{
+				System.out.println("launching real oncreate");
+				loadOnCreate.execute();
+				if(splashEnabled && false)
+				{
+					for(long i=0; i<(procUtils.getCPUFreq()>0 ? procUtils.getCPUFreq()*10 : 10000l); i++) if(true==false);
+				}
+				System.out.println("Fake waiting done, now time for real waiting");
+				while(loadingApp) ;
+				System.out.println("Loaded anim2");
+				animation = AnimationUtils.loadAnimation(ListsActivity.this, android.R.anim.fade_out);
+				animation.setAnimationListener(new AnimationListener(){
+					@Override
+					public void onAnimationEnd(Animation animation)
+					{
+						flip.setInAnimation(context, R.anim.slide_in_right);
+			            //flip.setOutAnimation(context, android.R.anim.slide_out_right);
+						flip.showNext();
+					}
+					@Override
+					public void onAnimationRepeat(Animation animation) {}
+					@Override
+					public void onAnimationStart(Animation animation) { System.out.println("nerts2"); }
+				});
+				System.out.println("Starting anim2");
+				splash.startAnimation(animation);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {}
+			@Override
+			public void onAnimationStart(Animation animation) { System.out.println("nerts1"); }
+		});
+		System.out.println("starting anim1");
+		splash.startAnimation(splashAnim);
+		System.out.println("started anim1");
+	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    { 
+		if(isTablet)
+		{
+			findViewById(R.id.frame).setVisibility(View.VISIBLE);
+			((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v)
+				{
+					createList();
+				}
+			});
+			return false;
+		}
+		menu.add(0, 42, 0, getResources().getString(R.string.add_list));
+		return true;
+    }
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+		
+		createList();
+		return true;
+    }
+	
+	void createList()
+	{
+		newListDialog.show();
+	}
+	
+	public void setMainView()
 	{
 		setTheme(themeID);
 		
@@ -123,9 +271,19 @@ public class ListsActivity extends Activity
 			isTablet = false;
 			setContentView(R.layout.phone);
 			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
-			
 		}
+	}
+	
+	public void doCreateStuff() { doCreateStuff(false); }
+	public void doCreateStuff(boolean noSetMainView)
+	{
+		if(loadingOnCreate)
+			return;
+		System.out.println("Doing Create Stuff");
+		if(!noSetMainView)
+			setMainView();
 		
+		System.out.println("still Doing Create Stuff");
 		
 		flip = (ViewFlipper) findViewById(R.id.FLIP);
 		mainListView = (ListView) findViewById(android.R.id.list);
@@ -138,9 +296,22 @@ public class ListsActivity extends Activity
          });
          mainListView.setOnItemClickListener(selectList);
          mainListView.setEmptyView(findViewById(R.id.empty1));
+         //testRead();
          
+         Cursor r = syncHelper.db.getAllLists();
+         Looper.prepare();
+         ListAdapter la = new ListAdapter(context, R.layout.list_item, r);
+         la.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+         la.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
          
-         try {
+         mainListView.setAdapter(la);
+         loadingApp = false;
+         System.out.println("DURN");
+	}
+	
+	public void testRead()
+	{
+        try {
          	InputStream input = getAssets().open("nitro_data.json");
              
          	 syncHelper.db.clearEverything(this);
@@ -157,13 +328,6 @@ public class ListsActivity extends Activity
      		} catch(Exception e) {
      			e.printStackTrace();
      		}
-         
-         Cursor r = syncHelper.db.getAllLists();
-         ListAdapter la = new ListAdapter(ListsActivity.this, R.layout.list_item, r);
-         la.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
-         la.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
-         
-         mainListView.setAdapter(la);
 	}
 	
 	@Override
@@ -200,10 +364,7 @@ public class ListsActivity extends Activity
     	  {
     		  View tempy = currentList;
 	    	  if(tempy!=null)
-	    		  //tempy.setBackgroundColor(0x00000000);
-	    	  
 	    		  tempy.setBackgroundResource(list_normalDrawable);
-	    	  //view.setBackgroundDrawable(selectedDrawable);
     	  }
     	  
     	  
@@ -241,15 +402,20 @@ public class ListsActivity extends Activity
     	doBackThings();
     }
     
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
-                && keyCode == KeyEvent.KEYCODE_BACK
-                && event.getRepeatCount() == 0) {
-            doBackThings();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+    
+    
+    AnimationListener toggleAdd = new AnimationListener() {
+	    public void onAnimationEnd(Animation animation)
+	    {
+	    	View f = findViewById(R.id.frame);
+	    	f.setVisibility(f.getVisibility() ^ View.GONE);
+	    }
+	
+	    public void onAnimationRepeat(Animation animation) {}
+	    public void onAnimationStart(Animation animation) {}
+    };
+    
+    
     
     void doBackThings()
     {

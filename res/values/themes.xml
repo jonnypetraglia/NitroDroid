@@ -14,6 +14,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     3. This notice may not be removed or altered from any source distribution.
  -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
 	<style name="Default" parent="android:Theme.Light">
     	<item name="header"> @drawable/header_default </item>
     	<item name="action_item_btn"> @drawable/action_item_btn </item>
@@ -48,6 +49,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="tasks_padding"> 5dp </item>
     	<item name="lists_padding"> 10dp </item>
     	<item name="addList_button"> @drawable/addlist_wunderlist</item>
+    	<item name="addList_border"> @color/addlist_border_wunderlist </item>
     	<item name="addList_text"> @color/addList_text_wunderlist </item>
 	</style>
 </resources>
