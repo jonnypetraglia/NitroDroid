@@ -184,12 +184,13 @@ public class DatabaseConnector
 	
 	public void clearEverything(Context context)
 	{
-		database.execSQL("DROP TABLE IF EXISTS " + LISTS_TABLE);
-		database.execSQL("DROP TABLE IF EXISTS " + TASKS_TABLE);
-		database.execSQL("DROP TABLE IF EXISTS " + LISTS_TIME_TABLE);
-		database.execSQL("DROP TABLE IF EXISTS " + TASKS_TIME_TABLE);
+		database.execSQL("DROP TABLE " + LISTS_TABLE);
+		database.execSQL("DROP TABLE " + TASKS_TABLE);
+		database.execSQL("DROP TABLE " + LISTS_TIME_TABLE);
+		database.execSQL("DROP TABLE " + TASKS_TIME_TABLE);
 		createThemTables(database);
 		open();
+		System.out.println("CELARD: " + getAllLists().getCount());
 	}
 	
 	

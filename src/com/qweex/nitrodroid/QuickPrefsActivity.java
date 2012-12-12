@@ -87,6 +87,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
        		        switch (which){
        		        case DialogInterface.BUTTON_POSITIVE:
        		            //Yes button clicked
+       		        	ListsActivity.syncHelper.db.clearEverything(QuickPrefsActivity.this);
+       		        	ListsActivity.listAdapter.changeCursor(ListsActivity.syncHelper.db.getAllLists());
        		            break;
 
        		        case DialogInterface.BUTTON_NEGATIVE:

@@ -95,7 +95,7 @@ public class ListsActivity extends Activity
 	private boolean loadingApp  = true, loadingOnCreate = true;
 	private View splash;
 	private ListView mainListView;
-	private ListAdapter listAdapter;
+	public static ListAdapter listAdapter;
 	
 	/************************** Activity Lifecycle methods **************************/ 
 	
@@ -113,6 +113,10 @@ public class ListsActivity extends Activity
 		
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
+		themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
+		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
+		locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
 		doViewStuff();
 		
 		context = this;
@@ -125,9 +129,8 @@ public class ListsActivity extends Activity
 			@Override
 			public void onAnimationEnd(Animation animation)
 			{
-				doCreateThings.execute();
 				for(long i=0; splashEnabled && i<(procUtils.getCPUFreq()>0 ? procUtils.getCPUFreq()*10 : 10000l); i++);
-
+				doCreateThings.execute();
 			}
 			@Override
 			public void onAnimationRepeat(Animation animation) {}
@@ -168,12 +171,10 @@ public class ListsActivity extends Activity
 	public void onResume()
 	{
 		super.onResume();
-		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
-		
-		
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
+		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
 		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || new_locale!=locale)
 		{
 			java.util.Locale derlocale = new java.util.Locale(new_locale);
@@ -228,6 +229,10 @@ public class ListsActivity extends Activity
 			setContentView(R.layout.phone);
 			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
 		}
+		if(!loadingApp)
+		{
+			((ViewFlipper)findViewById(R.id.FLIP)).removeViewAt(0);
+		}
 	}
 	
 	public void doCreateStuff() { doCreateStuff(false); }
@@ -257,7 +262,6 @@ public class ListsActivity extends Activity
          });
          mainListView.setOnItemClickListener(selectList);
          mainListView.setEmptyView(findViewById(R.id.empty1));
-         testRead();
          
          Cursor r = syncHelper.db.getAllLists();
          listAdapter = new ListAdapter(context, R.layout.list_item, r);
@@ -276,14 +280,13 @@ public class ListsActivity extends Activity
 					{
 						flip.setInAnimation(context, R.anim.slide_in_right);
 						flip.showNext();
-						//flip.removeView(splash);
+						doCreateThingsHandler.sendEmptyMessage(1);
 					}
 					@Override
 					public void onAnimationRepeat(Animation animation) {}
 					@Override
 					public void onAnimationStart(Animation animation) { System.out.println("nerts2"); }
 				});
-				System.out.println("Starting anim2");
 				splash.startAnimation(animation);
          }
          
@@ -337,6 +340,7 @@ public class ListsActivity extends Activity
 	        .setView(newList)
 	        .setPositiveButton(android.R.string.ok, createList).setNegativeButton(android.R.string.cancel, null);
 	        loadingOnCreate = false;
+	        testRead();
 	        doCreateThingsHandler.sendEmptyMessage(0);
 	        return null;
         } 
@@ -347,7 +351,12 @@ public class ListsActivity extends Activity
  	   @Override
  		public void handleMessage(android.os.Message msg) 
  		{
- 		   doCreateStuff(true);
+ 		   if(msg.what==0)
+ 			   doCreateStuff(true);
+ 		   else
+ 		   {
+ 			  flip.removeView(splash);
+ 		   }
  		}
     };;
     

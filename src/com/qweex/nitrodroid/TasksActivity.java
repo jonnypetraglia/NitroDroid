@@ -512,7 +512,7 @@ public class TasksActivity
     	removeDuplicateWithOrder(arList);
 	    tag_cont.removeAllViews();
 	    
-		for(int i=0; i<arList.size(); i++)
+		for(int i=0; i<arList.size()-1; i++)
 		{
 			if(i>0)
 				tag_cont.addView(new Separator(tag_cont.getContext()));

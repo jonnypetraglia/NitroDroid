@@ -198,9 +198,7 @@ public class SyncHelper {
 		tags = "";
 		for(int i=0; i<tags_.length(); i++)
 		{
-			if(i>0)
-				tags = tags.concat(",");
-			tags = tags.concat(tags_.getString(i));
+			tags = tags.concat(tags_.getString(i)).concat(",");
 		}
 		
 		db.insertTask(hash, name, priority, date, notes, list, logged, tags, order);
