@@ -38,6 +38,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 	    <item>Friday</item>
 	    <item>Saturday</item>
 	</string-array>
+	<string-array name="weekdays_val">
+	    <item>0</item> <item>1</item> <item>2</item> <item>3</item> <item>4</item> <item>5</item> <item>6</item>
+    </string-array>
+	    
 	<string name="weekday1">Sunday</string>
 	<string name="show_others_in_next">Show others in next</string>
 	<string name="clear_data">Clear data</string>

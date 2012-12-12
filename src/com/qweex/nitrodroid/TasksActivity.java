@@ -30,6 +30,7 @@ import com.qweex.nitrodroid.TaskAdapter.Separator;
 import com.qweex.nitrodroid.TaskAdapter.TagView;
 
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -43,18 +44,24 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
@@ -81,6 +88,9 @@ public class TasksActivity
 	QuickAction sortPopup;
 	Drawable selectedDrawable, normalDrawable;
 	AlertDialog.Builder deleteDialog;
+	PopupWindow datePickerDialog; 
+	LinearLayout popupLayout;
+	View datePicker;
 	
 	//@Overload
 	public void onCreate(Bundle savedInstanceState)
@@ -107,6 +117,21 @@ public class TasksActivity
 		deleteDialog.setPositiveButton(R.string.yes, confirmDelete);
 		deleteDialog.setNegativeButton(R.string.no, confirmDelete);
 		
+		
+		
+		popupLayout = new LinearLayout(context);
+		popupLayout.setOrientation(LinearLayout.VERTICAL);
+		popupLayout.setBackgroundColor(0xFFAAAAAA);
+		popupLayout.setPadding((int)ListsActivity.DP, (int)ListsActivity.DP, (int)ListsActivity.DP, (int)ListsActivity.DP);
+		
+		
+		datePickerDialog = new PopupWindow(context);
+		datePickerDialog.setContentView(popupLayout);
+		datePickerDialog.setBackgroundDrawable(new BitmapDrawable());
+		datePickerDialog.setAnimationStyle(R.style.CalendarShow);
+		createCalendar();
+
+	
         doCreateStuff();
 	}
 	
@@ -164,7 +189,6 @@ public class TasksActivity
 	
 	void createTheAdapterYouSillyGoose()
 	{
-		
 		Cursor r;
 		if(listHash==null)
 			return;
@@ -181,6 +205,7 @@ public class TasksActivity
 		
 		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
         lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
+        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
 	}
 	
 	
@@ -195,7 +220,7 @@ public class TasksActivity
 				return;
 			}
 			
-			lastClickedID = NitroUtils.getID();
+			lastClickedID = SyncHelper.getID();
 			
 			int order = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num").getCount();
 			ListsActivity.syncHelper.db.insertTask(lastClickedID, v.getContext().getResources().getString(R.string.default_task),
@@ -410,6 +435,7 @@ public class TasksActivity
 	{
 		if(view!=null && view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
 		{
+			System.out.println("Expanding");
 		  view.findViewById(R.id.taskName).setVisibility(View.GONE);
 		  view.findViewById(R.id.taskTime).setVisibility(View.GONE);
 		  view.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
@@ -419,10 +445,15 @@ public class TasksActivity
 		  lastClicked = view; //Skeptical Jon is skeptical
 		  getThemTagsSon((LinearLayout)view.findViewById(R.id.tag_container), 
 				  ((EditText)view.findViewById(R.id.tags_edit)).getText().toString());
+		  
+		  ((EditText)view.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
+		  ((EditText)view.findViewById(R.id.notes)).addTextChangedListener(TasksActivity.writeNotes);
+		  ((android.widget.Button)view.findViewById(R.id.priority)).setOnClickListener(pressPriority);
+		  ((android.widget.Button)view.findViewById(R.id.timeButton)).setOnClickListener(pressDate);
 		}
 	}
 	
-	static void collapse(View view)
+	void collapse(View view)
 	{
 		if(view!=null && view.findViewById(R.id.taskInfo).getVisibility()!=View.GONE)
 		{
@@ -432,8 +463,174 @@ public class TasksActivity
 		  ((TextView)view.findViewById(R.id.taskName)).setText(((TextView)view.findViewById(R.id.taskName_edit)).getText());
 		  
 		  view.findViewById(R.id.taskInfo).setVisibility(View.GONE);
+		  
+		  ((EditText)view.findViewById(R.id.taskName_edit)).removeTextChangedListener(TasksActivity.writeName);
+		  ((EditText)view.findViewById(R.id.notes)).removeTextChangedListener(TasksActivity.writeNotes);
+		  ((android.widget.Button)view.findViewById(R.id.priority)).setOnClickListener(null);
+		  ((android.widget.Button)view.findViewById(R.id.timeButton)).setOnClickListener(null);
 		}
 	}
+	
+	OnClickListener pressPriority = new OnClickListener()
+	{
+    	@Override
+		public void onClick(View v)
+		{
+    		TextView priority = (TextView) v;
+    		int pri = (Integer) priority.getTag();
+    		pri = (pri+1) % 4;
+    		android.widget.CheckBox done = (android.widget.CheckBox)
+    				((View)((View)v.getParent()).getParent())
+    				.findViewById(R.id.taskDone); 
+    		done.setButtonDrawable(TaskAdapter.drawsC[pri]);
+    		priority.setBackgroundResource(TaskAdapter.drawsB[pri]);
+    		priority.setTag(pri);
+    		priority.setText(TaskAdapter.drawsS[pri]);
+    		
+    		ListsActivity.syncHelper.db.modifyTask(lastClickedID, "priority", pri);
+		}
+	};
+	
+	OnClickListener pressDate = new OnClickListener()
+	{
+		@TargetApi(11)
+		@Override
+		public void onClick(View v)
+		{
+			long dateL = (Long)v.getTag();
+			Calendar date = Calendar.getInstance();
+			date.setTimeInMillis(dateL);
+			
+			if(android.os.Build.VERSION.SDK_INT<11)
+			{
+				System.out.println(v.getTag() + "->" + date.get(Calendar.YEAR) + " " + date.get(Calendar.MONTH) + " " + date.get(Calendar.DATE));
+				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
+																   date.get(Calendar.MONTH),
+																   date.get(Calendar.DATE));
+			}else
+			{
+				((android.widget.CalendarView)datePicker).setDate(dateL);
+				((android.widget.CalendarView)datePicker).setFirstDayOfWeek(Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("week_starts_on", "3")));
+			}
+
+			
+			datePickerDialog.showAtLocation(context.findViewById(R.id.FLIP), android.view.Gravity.CENTER, 0, 0);
+			//datePickerDialog.update(0, 0, 500, 500);
+		}
+	};
+	
+
+	@TargetApi(11)
+	void createCalendar()
+	{
+		if(android.os.Build.VERSION.SDK_INT<11)
+		{
+			android.widget.DatePicker datePicker_ = new android.widget.DatePicker(context);
+			datePicker = datePicker_;
+			datePicker.setPadding((int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP));
+			Button confirm = new Button(context);
+			confirm.setPadding((int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP));
+			confirm.setText("Confirm"); //R.string.confirm);
+			confirm.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v)
+				{
+					updateDate(((android.widget.DatePicker)datePicker).getYear(),
+							   ((android.widget.DatePicker)datePicker).getMonth(),
+							   ((android.widget.DatePicker)datePicker).getDayOfMonth());
+					datePickerDialog.dismiss();
+				}
+			});
+			popupLayout.addView(datePicker_);
+			popupLayout.addView(confirm);
+			
+			datePicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+			confirm.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+			datePickerDialog.setWidth(datePicker.getMeasuredWidth());
+			datePickerDialog.setHeight((int) (datePicker.getMeasuredHeight() + 20*ListsActivity.DP + confirm.getMeasuredHeight()));
+			datePickerDialog.setOutsideTouchable(true);
+			return;
+		}
+		android.widget.CalendarView datePicker_ = new android.widget.CalendarView(context); // = (CalendarView) datePicker;
+		datePicker = datePicker_;
+		popupLayout.addView(datePicker_, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
+		
+		datePicker_.setBackgroundColor(0xFFFFFFFF);
+		datePicker_.setShowWeekNumber(false);
+		datePicker_.setOnDateChangeListener(new android.widget.CalendarView.OnDateChangeListener() {
+
+	        @Override
+	        public void onSelectedDayChange(android.widget.CalendarView view, int year, int month, int dayOfMonth)
+	        {
+	        	updateDate(year, month, dayOfMonth);
+	        }
+	    });
+		
+		datePicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+		datePickerDialog.setWidth(datePicker.getMeasuredWidth());
+		datePickerDialog.setHeight((datePicker.getMeasuredHeight()));
+		datePickerDialog.setOutsideTouchable(true);
+	}
+	
+	void updateDate(int year, int month, int dayOfMonth)
+	{
+    	Calendar c = Calendar.getInstance();
+    	c.set(year, month, dayOfMonth, 0, 0, 0);
+    	c.set(Calendar.MILLISECOND, 0);
+    	
+    	((Button)lastClicked.findViewById(R.id.timeButton)).setText(
+    			TaskAdapter.sdf.format(c.getTime())
+    			);
+    	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "date", c.getTimeInMillis());
+    	
+    	((android.widget.TextView)lastClicked.findViewById(R.id.taskTime)).setText(TaskAdapter.getTimeString(c.getTimeInMillis(), context));
+    	
+        datePickerDialog.dismiss();
+	}
+	
+    static String oldname, oldnotes;
+    static TextWatcher writeName = new TextWatcher() {
+
+		@Override
+		public void afterTextChanged(Editable arg0)
+		{
+			String s = oldname;
+			String new_val = arg0.toString(); //((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
+			System.out.println(s + "==" + new_val);
+			if(s.toString().equals(new_val))
+				return;
+	    	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "name", s.toString());
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after)
+		{oldname = s.toString();}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count){}
+    };
+    
+    static TextWatcher writeNotes = new TextWatcher() {
+
+		@Override
+		public void afterTextChanged(Editable arg0)
+		{
+			if(lastClicked==null || arg0==null)
+				return;
+			String new_val = arg0.toString();
+			String s = oldnotes;
+			if(s.toString().equals(new_val))
+				return;
+	    	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "notes", s.toString());
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after)
+		{oldnotes = s.toString();}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count){}
+    };
 	
 	OnItemClickListener selectTask = new OnItemClickListener() 
     {
@@ -445,6 +642,7 @@ public class TasksActivity
     	  {
     		  
     		  lastClicked.setBackgroundDrawable(normalDrawable);
+    		  System.out.println("Preparing to expand");
     		  expand(view);
     	  }
     	  else
@@ -460,10 +658,15 @@ public class TasksActivity
       }
     };
     
+    
     boolean doBackThings()
     {
-    	System.out.println(lastClicked);
-    	if(editingTags!=null)
+    	if(datePickerDialog.isShowing())
+    	{
+    		datePickerDialog.dismiss();
+    	}
+    	//Finish editing tasks
+    	else if(editingTags!=null)
     	{
     		editingTags.setVisibility(View.GONE);
     		HorizontalScrollView hsv = (HorizontalScrollView) ((LinearLayout)editingTags.getParent()).getChildAt(1);
@@ -471,11 +674,29 @@ public class TasksActivity
     		getThemTagsSon((LinearLayout)hsv.getChildAt(0), editingTags.getText().toString());
     		
     		hsv.setVisibility(View.VISIBLE);
+    		String newtags = editingTags.getText().toString();
+    		
+    		ArrayList<String> newtagsList = new ArrayList<String>(Arrays.asList(newtags.split(",")));
+    		
+    		removeDuplicateWithOrder(newtagsList);
+    		for(String S : newtagsList)
+    		{
+    			newtags = newtags.concat(S).concat(",");
+    		}
+    		
+    		ListsActivity.syncHelper.db.modifyTask(lastClickedID, "tags", newtags);
+    		
     		editingTags = null;
     	}
+    	//Deselect an item
     	else if(lastClicked!=null || lastClickedID!=null)
     	{
 	    	collapse(lastClicked);
+	    	
+	    	//Perform update
+	    	//Name
+	    	//Notes
+	    	
 	    	if(lastClicked!=null)
 	    		lastClicked.setBackgroundDrawable(normalDrawable);
 	    	lastClicked = null;

@@ -36,9 +36,10 @@ public class TaskAdapter extends SimpleCursorAdapter
     private Context context;
     
     //God I'm fucking lazy
-    int[] drawsB = {R.drawable.button_none, R.drawable.button_low, R.drawable.button_med, R.drawable.button_high};
-	int[] drawsC = {R.drawable.check_none, R.drawable.check_low, R.drawable.check_med, R.drawable.check_high};
-	int[] drawsS = {R.string.None, R.string.Low, R.string.Medium, R.string.High};
+    public static int[] drawsB = {R.drawable.button_none, R.drawable.button_low, R.drawable.button_med, R.drawable.button_high};
+	public static int[] drawsC = {R.drawable.check_none, R.drawable.check_low, R.drawable.check_med, R.drawable.check_high};
+	public static int[] drawsS = {R.string.None, R.string.Low, R.string.Medium, R.string.High};
+	public static java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEE, MMMM d, yyyy");
 
 	public TaskAdapter(Context context, int layout, Cursor c)
 	{
@@ -81,14 +82,13 @@ public class TaskAdapter extends SimpleCursorAdapter
 		//------ID------
 		if(hash.equals(TasksActivity.lastClickedID))
 		{
-			System.out.println("Urg.  id = " + hash);
+			System.out.println("Derp expand" + c.getString(c.getColumnIndex("name")));
 			ListsActivity.ta.expand(row);
 			//TasksActivity.lastClicked = row;
 		}
 		else
 		{
-			System.out.println("Urg.  " + hash  + "!=" + TasksActivity.lastClickedID);
-			TasksActivity.collapse(row);
+			ListsActivity.ta.collapse(row);
 		}
 		
 		id.setText(hash);
@@ -119,6 +119,7 @@ public class TaskAdapter extends SimpleCursorAdapter
 		
 		done.setButtonDrawable(drawsC[pri]);
 		priority.setBackgroundResource(drawsB[pri]);
+		priority.setTag(pri);
 		priority.setText(drawsS[pri]); //context.getResources().getString(R.string.Low));
 		
 		//------Date button
@@ -126,17 +127,25 @@ public class TaskAdapter extends SimpleCursorAdapter
 		if(dat>0)
 		{
 			Date d = new Date(dat);
-			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("E, MMM dd y");
+			System.out.println(sdf.format(d));
 			timeButton.setText(sdf.format(d));
 		}
 		else
 			timeButton.setText(R.string.None);
+		timeButton.setTag(dat);
 		
 		//------Notes
 		notes.setText(c.getString(c.getColumnIndex("notes")));
 		
 		//------Time for collapsed
 		
+		String timeString = getTimeString(dat, name.getContext());		
+		time.setText(timeString);
+		return row;
+	}
+	
+	static public String getTimeString(long dat, Context context)
+	{
 		long d = (new Date()).getTime();
 		String timeString;
 		if(dat==0)
@@ -160,8 +169,7 @@ public class TaskAdapter extends SimpleCursorAdapter
 			else
 				timeString = Long.toString(days) + " " + context.getResources().getString(R.string.days_left);
 		}
-		time.setText(timeString);
-		return row;
+		return timeString;
 	}
 	
 	

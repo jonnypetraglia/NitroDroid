@@ -88,33 +88,34 @@ public class DatabaseConnector
 	
 	//OVERLOAD _ALL_ THE FUNCTIONS!
 	
-	public void modifyTask(String hash, String[] columns, String[] new_vals)
+	public boolean modifyTask(String hash, String[] columns, String[] new_vals)
 	{
 		ContentValues args = new ContentValues();
 		for(int i=0; i<columns.length; i++)
 			args.put(columns[i], new_vals[i]);
-	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	    return database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
 	}
 	
-	public void modifyTask(String hash, String column, int new_val)
+	public boolean modifyTask(String hash, String column, int new_val)
 	{
 		ContentValues args = new ContentValues();
 	    args.put(column, new_val);
-	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	    return database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
 	}
 	
-	public void modifyTask(String hash, String column, long new_val)
+	public boolean modifyTask(String hash, String column, long new_val)
 	{
 		ContentValues args = new ContentValues();
 	    args.put(column, new_val);
-	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	    return database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
 	}
 	
-	public void modifyTask(String hash, String column, String new_val)
+	public boolean modifyTask(String hash, String column, String new_val)
 	{
 		ContentValues args = new ContentValues();
+		System.out.println("MODIFYTASK : " + column);
 	    args.put(column, new_val);
-	    database.update(TASKS_TABLE, args, "hash='" + hash + "'", null);
+	    return database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
 	}
 	
 	

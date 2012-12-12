@@ -48,6 +48,8 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:textSize="25dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:visibility="gone" />
 
         <TextView
@@ -140,7 +142,7 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:focusable="false"
+            android:focusable="true"
             android:gravity="center_vertical|top"
             android:hint="Notes"
             android:inputType="textMultiLine"

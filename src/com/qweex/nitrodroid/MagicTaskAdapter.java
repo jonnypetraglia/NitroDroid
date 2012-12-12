@@ -76,7 +76,7 @@ public class MagicTaskAdapter extends  ArrayAdapter<TasksActivity.taskObject>
 			//TasksActivity.lastClicked = row;
 		}
 		else
-			TasksActivity.collapse(row);
+			ListsActivity.ta.collapse(row);
 		
 		id.setText(hash);
 		//------Name & Done checkmark------

@@ -31,6 +31,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -202,7 +203,23 @@ public class ListsActivity extends Activity
     {
     	doBackThings();
     }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            doBackThings();
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 	
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        System.out.println("Herp");
+    }
 	
    /************************** Yoda methods **************************/
    //"Do or do not, there is no try"
@@ -272,14 +289,12 @@ public class ListsActivity extends Activity
          
          if(loadingApp)
          {
-				System.out.println("Loaded anim2");
 				Animation animation = AnimationUtils.loadAnimation(ListsActivity.this, android.R.anim.fade_out);
 				animation.setAnimationListener(new AnimationListener(){
 					@Override
 					public void onAnimationEnd(Animation animation)
 					{
 						flip.setInAnimation(context, R.anim.slide_in_right);
-						flip.showNext();
 						doCreateThingsHandler.sendEmptyMessage(1);
 					}
 					@Override
@@ -299,9 +314,7 @@ public class ListsActivity extends Activity
     		finish();
     	else
     	{
-    		boolean b = ta.doBackThings();
-    		System.out.println(b);;;
-    		if(!b)
+    		if(!ta.doBackThings())
     			return;
     		
     		if(isTablet)
@@ -373,7 +386,7 @@ public class ListsActivity extends Activity
             String newListName = newList.getText().toString();
             if("".equals(newListName))
             	return;
-            syncHelper.db.insertList(NitroUtils.getID(), newListName, null);
+            syncHelper.db.insertList(SyncHelper.getID(), newListName, null);
             System.out.println(newListName);
             listAdapter.changeCursor(syncHelper.db.getAllLists());
             //listAdapter.notifyDataSetChanged();
@@ -410,7 +423,7 @@ public class ListsActivity extends Activity
     		  ta.createTheAdapterYouSillyGoose();
     	  }
     		  
-    	  if(!isTablet && flip!=null)
+    	  if(!isTablet)
           {
     		  flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
     		  flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);

@@ -15,7 +15,16 @@ Permission is granted to anyone to use this software for any purpose, including 
  -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
+      
+<style name="Widget.CalendarView.Custom" parent="android:Widget.CalendarView">
+    <item name="android:focusedMonthDateColor">@android:color/black</item>
+    <item name="android:weekNumberColor">@android:color/darker_gray</item>
+    <item name="android:weekDayTextAppearance">@android:style/TextAppearance.Medium</item>
+    <item name="android:dateTextAppearance">@android:style/TextAppearance.Medium</item>
+</style>
+    
 	<style name="Default" parent="android:Theme.Light">
+	    <item name="android:calendarViewStyle">@style/Widget.CalendarView.Custom</item>
     	<item name="header"> @drawable/header_default </item>
     	<item name="action_item_btn"> @drawable/action_item_btn </item>
     	<item name="popup"> @drawable/popup_default </item>
