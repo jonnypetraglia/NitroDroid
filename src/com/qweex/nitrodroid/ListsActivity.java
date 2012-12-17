@@ -14,9 +14,7 @@ Permission is granted to anyone to use this software for any purpose, including 
  */
 package com.qweex.nitrodroid;
 
-import java.io.InputStream;
 import java.lang.reflect.Field;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -95,6 +93,7 @@ public class ListsActivity extends Activity
 	private View splash;
 	private ListView mainListView;
 	public static ListAdapter listAdapter;
+	public static ImageButton syncLoading;
 	
 	/************************** Activity Lifecycle methods **************************/ 
 	
@@ -276,11 +275,14 @@ public class ListsActivity extends Activity
 				startActivity(x);
 			}
          });
-		((ImageButton) findViewById(R.id.sync)).setOnClickListener(new OnClickListener() {
+		syncLoading = ((ImageButton) findViewById(R.id.sync));
+		syncLoading.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				ListsActivity.syncHelper.performSync();
+				if(SyncHelper.isSyncing)
+					return;
+				((android.graphics.drawable.AnimationDrawable) ListsActivity.syncLoading.getDrawable()).start();
+				syncHelper.new performSync().execute();
 			}
 		});
 		

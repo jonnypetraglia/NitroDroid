@@ -35,6 +35,8 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
+import android.widget.Toast;
 
 public class SyncHelper {
 	
@@ -44,6 +46,7 @@ public class SyncHelper {
 	public DatabaseConnector db;
 	Context context;
 	final String POST_URL = "http://app.nitrotasks.com/sync/";
+	public static boolean isSyncing = false;
 	
 	public SyncHelper(Context c)
 	{
@@ -51,30 +54,58 @@ public class SyncHelper {
 		this.context = c;
 	}
 	
-	public boolean performSync()
+	
+	public class performSync extends AsyncTask<Void, Void, Boolean>
 	{
-//		testRead();
-		JSONObject local = writeSQLtoJSON();
-		try {
-			String result = postData(local,
-					SERVICE,
-					OATH_TOKEN_SECRET,
-					OATH_TOKEN,
-					UID,
-					STATS__UID,
-					STATS__OS,
-					STATS__LANGUAGE,
-					STATS__VERSION);
-			debugPrint(result);
-			db.clearEverything(context);
-			readJSONtoSQL(result, context);
-		} catch(Exception e)
+
+		@Override
+	    protected Boolean doInBackground(Void... params) {
+			isSyncing = true;
+//			testRead();
+			try {
+				JSONObject local = writeSQLtoJSON();
+				String result = postData(local,
+						SERVICE,
+						OATH_TOKEN_SECRET,
+						OATH_TOKEN,
+						UID,
+						STATS__UID,
+						STATS__OS,
+						STATS__LANGUAGE,
+						STATS__VERSION);
+				debugPrint(result);
+				db.clearEverything(context);
+				readJSONtoSQL(result, context);
+			} catch(Exception e)
+			{
+				e.printStackTrace();
+				return false;
+			}
+	        return true;
+        }
+		
+		@Override
+		protected void onPostExecute(Boolean success)
 		{
-			e.printStackTrace();
+			((android.graphics.drawable.AnimationDrawable) ListsActivity.syncLoading.getDrawable()).stop();
+			ListsActivity.syncLoading.setImageResource(R.drawable.loading_animation);
+			if(success) {
+				ListsActivity.listAdapter.changeCursor(db.getAllLists());
+				if(ListsActivity.flip.getCurrentView() != ListsActivity.flip.getChildAt(0))
+				{
+					ListsActivity.flip.setInAnimation(context, android.R.anim.slide_in_left);
+					ListsActivity.flip.setOutAnimation(context, android.R.anim.slide_out_right);
+					ListsActivity.ta = null;
+					ListsActivity.flip.showPrevious();
+				}
+			}
+			else {
+				Toast.makeText(context, R.string.sync_error, Toast.LENGTH_LONG).show();
+			}
+			isSyncing = false;
 		}
 		
-		return false;
-	}
+   };
 	
 	public void testRead()
 	{

@@ -640,6 +640,9 @@ public class TasksActivity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
+    	  if(SyncHelper.isSyncing)
+    		  return;
+    	  
     	  if(lastClicked==view &&
     			  view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
     	  {

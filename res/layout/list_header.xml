@@ -43,7 +43,7 @@ Permission is granted to anyone to use this software for any purpose, including 
                 android:layout_height="wrap_content"
                 android:background="@drawable/toolbar_buttons"
                 android:padding="10dp"
-                android:src="@drawable/sync_static" />
+                android:src="@drawable/loading_animation" />
 
             <ImageButton
                 android:id="@+id/settings"
