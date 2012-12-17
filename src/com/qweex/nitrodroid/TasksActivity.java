@@ -225,6 +225,8 @@ public class TasksActivity
 			int order = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num").getCount();
 			ListsActivity.syncHelper.db.insertTask(lastClickedID, v.getContext().getResources().getString(R.string.default_task),
 					0, 0, "", listHash, 0, "", order);
+			ListsActivity.syncHelper.db.insertTaskTimes(lastClickedID, (new Date()).getTime(),
+					0, 0, 0, 0, 0, 0);
 			
 			createTheAdapterYouSillyGoose();
 			
@@ -261,6 +263,7 @@ public class TasksActivity
 	        case DialogInterface.BUTTON_POSITIVE:
 	            if(!ListsActivity.syncHelper.db.deleteTask(lastClickedID))
 	            	return;
+	            
 	            
 	            createTheAdapterYouSillyGoose();
 	            lastClicked = null;

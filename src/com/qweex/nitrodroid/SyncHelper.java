@@ -14,32 +14,227 @@ Permission is granted to anyone to use this software for any purpose, including 
  */
 package com.qweex.nitrodroid;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.database.Cursor;
 
 public class SyncHelper {
 	
+	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
+    			  STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
 	public JSONObject jObject, jLists, jListDetails, jTasks;
 	public DatabaseConnector db;
+	Context context;
+	final String POST_URL = "http://app.nitrotasks.com/sync/";
 	
 	public SyncHelper(Context c)
 	{
 		db = new DatabaseConnector(c);
+		this.context = c;
+	}
+	
+	public boolean performSync()
+	{
+//		testRead();
+		JSONObject local = writeSQLtoJSON();
+		try {
+			String result = postData(local,
+					SERVICE,
+					OATH_TOKEN_SECRET,
+					OATH_TOKEN,
+					UID,
+					STATS__UID,
+					STATS__OS,
+					STATS__LANGUAGE,
+					STATS__VERSION);
+			debugPrint(result);
+			db.clearEverything(context);
+			readJSONtoSQL(result, context);
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public void testRead()
+	{
+        try {
+         	InputStream input = context.getAssets().open("nitro_data.json");
+             
+         	 db.clearEverything(context);
+         	
+             int size = input.available();
+             byte[] buffer = new byte[size];
+             input.read(buffer);
+             input.close();
+             
+
+             // byte buffer into a string
+             String text = new String(buffer);
+             readJSONtoSQL(text, context);
+     		} catch(Exception e) {
+     			e.printStackTrace();
+     		}
 	}
 	
 	
-	public String[] parseTasksString(JSONArray jArray)
+	public JSONObject writeSQLtoJSON()
 	{
-		String[] result = new String[jArray.length()];
-		for(int i=0; i<jArray.length(); i++)
+		try {
+		jObject = new JSONObject();
+		jTasks = new JSONObject();
+		jLists = new JSONObject();
+		jListDetails = new JSONObject();
+		
+		HashMap<String, String> chart = new HashMap<String, String>();
+		chart.put("today","f");
+		chart.put("next", "s");
+		chart.put("logbook", "v");
+		Cursor c;
+		String hash, name;
+		
+		
+		//------LISTS------
+		boolean isSpecial = false;
+		c = db.getAllLists();
+		c.moveToNext();
+		JSONArray N_1 = new JSONArray();
+		while(!c.isAfterLast())
 		{
-			try {
-				result[i] = jArray.getString(i);
-			} catch(Exception e) {}
+			hash = c.getString(c.getColumnIndex("hash"));
+			name = c.getString(c.getColumnIndex("name"));
+			JSONObject curr = new JSONObject();
+			isSpecial = !hash.contains("-");
+			if(isSpecial)
+			{
+				hash = chart.get(hash);
+				if(hash==null || hash.equals(""))
+				{
+					c.moveToNext();
+					continue;
+				}
+			}
+			else
+			{
+				N_1.put(hash);
+				curr.put("a", name);
+			}
+			
+			JSONArray N = new JSONArray();
+			String tasks[] = c.getString(c.getColumnIndex("tasks_in_order")).split(",");
+			for(String t : tasks)
+				if(!t.trim().equals(""))
+					N.put(t);
+			curr.put("n", N);
+			
+			JSONObject K = new JSONObject();
+			long timestampA = db.getListTime(hash, "name"),
+				 timestampN = db.getListTime(hash, "tasks_in_order");	//TODO
+			if(!isSpecial)
+				K.put("a", timestampA);
+			K.put("n", timestampN);
+			curr.put("k", K);
+			
+			jListDetails.put(hash, curr);
+			c.moveToNext();
 		}
-		return result;
+		jLists.put("n", N_1);
+		jLists.put("r", jListDetails);
+		
+		//------TASKS------
+		c = db.getTasksOfList("", null);
+		c.moveToNext();
+		String priorities[] = {"none", "low", "medium", "high"}; 
+		while(!c.isAfterLast())
+		{
+			JSONObject curr = new JSONObject();
+			hash = c.getString(c.getColumnIndex("hash"));
+			
+			curr.put("c", c.getString(c.getColumnIndex("name")));
+			curr.put("d", priorities[c.getInt(c.getColumnIndex("priority"))]);
+			if(c.getLong(c.getColumnIndex("date"))>0)
+				curr.put("e", c.getLong(c.getColumnIndex("date")));
+			else
+				curr.put("e", "");
+			curr.put("q", c.getString(c.getColumnIndex("notes")));
+			curr.put("h", c.getString(c.getColumnIndex("list")));
+			long x = c.getLong(c.getColumnIndex("logged"));
+			if(x>0)
+				curr.put("j", x);
+			else
+				curr.put("j", false);
+			
+			JSONArray tags = new JSONArray();
+			String tagsA[] = c.getString(c.getColumnIndex("tags")).split(",");
+			for(String t : tagsA)
+				if(!t.equals(""))
+					tags.put(t);
+			curr.put("y", tags);
+			JSONObject times = new JSONObject();
+			times.put("c", db.getTaskTime(hash, "name"));
+			times.put("d", db.getTaskTime(hash, "priority"));
+			times.put("e", db.getTaskTime(hash, "date"));
+			times.put("q", db.getTaskTime(hash, "notes"));
+			times.put("h", db.getTaskTime(hash, "list"));
+			times.put("j", db.getTaskTime(hash, "logged"));
+			times.put("y", db.getTaskTime(hash, "tags"));
+			
+			curr.put("k", times);
+			jTasks.put(hash, curr);
+			c.moveToNext();
+		}
+		//------DELETED------
+		c = db.getAllDeleted();
+		c.moveToNext();
+		while(!c.isAfterLast())
+		{
+			JSONObject curr = new JSONObject();
+			hash = c.getString(c.getColumnIndex("hash"));
+			curr.put("u", c.getLong(c.getColumnIndex("date")));
+			jTasks.put(hash, curr);
+			c.moveToNext();
+		}
+
+		jLists.put("k", (long)0);				//TODO FUCK MUFFINS
+		jObject.put("i", jLists);
+		jObject.put("b", jTasks);
+		jObject.put("x", context.getResources().getString(R.string.version_for_JSON));
+		} catch(Exception e) {
+			e.printStackTrace();
+		}		
+		return jObject;
+	}
+	
+	static void debugPrint(String butts)
+	{
+		int x = 900;
+		for(int i=0; ; i = i+x)
+		{
+			if(i>butts.length())
+				break;
+			int j = (i+x) >= butts.length() ? butts.length() : (i+x);
+			System.out.println(butts.substring(i, j));
+		}
 	}
 	
 	public void readJSONtoSQL(String JSONstring, Context c)
@@ -63,74 +258,58 @@ public class SyncHelper {
 	        	 hash = "f";
 	        	 name = c.getResources().getString(R.string.Today);
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
+	        	 JSONObject times = item.getJSONObject("k");
+	        	 
+	        	 db.insertListTimes(hash, 0, times.getLong("n"));
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
+	        	 
 	        	 hash = "today";
-	        	 
-	        	 //Tasks
-	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
-	        		 try {
-	        		 readAndInsertTask(item.getJSONArray("n").getString(i), i);
-			    	 } catch(Exception e) {
-			    		 System.err.println("Error in tasks");
-			    	 }
-	        	 
 	        	 db.insertList(hash, name, tasksString);
 	         } catch(Exception e) {
-	        	 System.err.println("Error in today");
+	        	 System.err.println("Error in today: " + e.getClass());
 	         }
 	         //Next
 	         try {
 	        	 hash = "s";
 	        	 name = c.getResources().getString(R.string.Next);
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
+	        	 JSONObject times = item.getJSONObject("k");
+	        	 
+	        	 db.insertListTimes(hash, 0, times.getLong("n"));
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
+	        	 
 	        	 hash = "next";
-	        	 
-	        	 //Tasks
-	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
-	        		 try {
-	        		 readAndInsertTask(item.getJSONArray("n").getString(i), i);
-			    	 } catch(Exception e) {
-			    		 System.err.println("Error in tasks");
-			    	 }
-	        	 
 	        	 db.insertList(hash, name, tasksString);
 	         } catch(Exception e) {
-	        	 System.err.println("Error in Next");
+	        	 System.err.println("Error in Next: " + e.getClass());
 	         }
 	         //Logbook
 	         try {
 	        	 hash = "v";
-	        	 name = c.getResources().getString(R.string.Logbook);
+	        	 name = c.getResources().getString(R.string.Next);
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
+	        	 JSONObject times = item.getJSONObject("k");
+	        	 
+	        	 db.insertListTimes(hash, 0, times.getLong("n"));
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
-	        	 hash = "logbook";	//DANGER WILL ROBINSON
 	        	 
-	        	 //Tasks
-	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
-	        		 try {
-	        		 readAndInsertTask(item.getJSONArray("n").getString(i), i);
-			    	 } catch(Exception e) {
-			    		 System.err.println("Error in tasks");
-			    	 }
-	        	 
+	        	 hash = "logbook";
 	        	 db.insertList(hash, name, tasksString);
+	        	
 	         } catch(Exception e) {
-	        	 System.err.println("Error in Log");
-	         }
-	         //All
-	         try {
-	        	 hash = "b";
-	        	 name = c.getResources().getString(R.string.AllTasks);
-	        	 JSONObject item = jObject.getJSONObject(hash);	//NOTE: This is different!
-	        	 tasksString = new String[0];					// <-   So is this!
-	        	 hash = "all";
-	        	 
-	        	 db.insertList(hash, name, tasksString);
-	         } catch(Exception e) {
-	        	 System.err.println("Error in All");
+	        	 System.err.println("Error in Log: " + e.getClass());
 	         }
 	         
+	         //All
+	         try {
+	        	 name = c.getResources().getString(R.string.AllTasks);
+	        	 hash = "all";
+	        	 
+	        	 db.insertList(hash, name, null);
+	         } catch(Exception e) {
+	        	 System.err.println("Error in All: " + e.getClass());
+	         }
+	         //*/
 	         
 	         
 	         //Misc.
@@ -143,18 +322,24 @@ public class SyncHelper {
 	        	 name = item.getString("a");
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
 	        	 
-	        	 //Tasks
-	        	 for(int i=0; i<item.getJSONArray("n").length(); i++)
-	        		 try {
-	        		 readAndInsertTask(item.getJSONArray("n").getString(i), i);
-			    	 } catch(Exception e) {
-			    		 System.err.println("Error in tasks");
-			    	 }
-	        	 
 	        	 db.insertList(hash, name, tasksString);
+	        	 JSONObject times = item.getJSONObject("k");
+	        	 db.insertListTimes(hash, times.getLong("a"), times.getLong("n"));
 	         }
 	         } catch(Exception e) {
-	        	 System.err.println("Error in misc");
+	        	 System.err.println("Error in misc: " + e.getClass());
+	         }
+	         
+	         
+	         //Tasks
+	         jTasks.names().length();
+	         for(int i=0; i<jTasks.names().length(); i++)
+	         {
+        		 try {
+        			 readAndInsertTask(jTasks.names().getString(i), 0);	//FIX: Derp. Fucked up order
+		    	 } catch(Exception e) {
+		    		 System.err.println("Error in tasks");
+		    	 }
 	         }
 	         
 	         
@@ -164,12 +349,30 @@ public class SyncHelper {
 	    }
 	}
 	
+	public String[] parseTasksString(JSONArray jArray)
+	{
+		String[] result = new String[jArray.length()];
+		for(int i=0; i<jArray.length(); i++)
+		{
+			try {
+				result[i] = jArray.getString(i);
+			} catch(Exception e) {}
+		}
+		return result;
+	}
+	
 	void readAndInsertTask(String hash, int order) throws org.json.JSONException
 	{
 		JSONObject item = jTasks.getJSONObject(hash);
 		String name, notes, list, tags, priority_;
 		int priority;
 		long date, logged;
+		
+		try {
+			long delorted = item.getLong("u");
+			db.insertDeleted(hash, delorted);
+			return;
+		}catch(Exception e) {}
 		
 		name = item.getString("c");
 		notes = item.getString("q");
@@ -184,7 +387,7 @@ public class SyncHelper {
 		else
 			priority = 0;
 		try {
-		date = item.getLong("e");
+			date = item.getLong("e");
 		} catch(org.json.JSONException e){
 			date = 0;
 		}
@@ -203,21 +406,146 @@ public class SyncHelper {
 		
 		db.insertTask(hash, name, priority, date, notes, list, logged, tags, order);
 		
+		JSONObject times = item.getJSONObject("k");
+		db.insertTaskTimes(
+				hash,
+				times.getLong("c"),	//name
+				times.getLong("d"), //priority
+				times.getLong("e"), //date
+				times.getLong("q"), //notes
+				times.getLong("h"), //list
+				times.getLong("j"), //logged
+				times.getLong("y")  //tags
+				);
 	}
 	
-	static String bit()
+	
+	
+	
+	public String postData(JSONObject JSONdata, String service,
+			String access_oathS, String access_oath, String access_uid,
+			String stats_uid, String stats_os, String stats_language, String stats_version) throws ClientProtocolException, IOException, org.json.JSONException 
 	{
-		
+	    // Create a new HttpClient and Post Header
+	    HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost httppost = new HttpPost(POST_URL); //"http://qweex.com/sync.php");
+
+        // Add your data
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        
+        //data w/ sites
+        JSONObject stats = new JSONObject();
+        stats.put("uid", stats_uid);
+        stats.put("os", stats_os);
+        stats.put("language", stats_language);
+        stats.put("version", stats_version);
+        JSONdata.put("stats", stats);
+        String x = JSONdata.toString();		//Compress?
+        nameValuePairs.add(new BasicNameValuePair("data", x));
+
+        //access
+        nameValuePairs.add(new BasicNameValuePair("access[oauth_token_secret]", access_oathS));
+        nameValuePairs.add(new BasicNameValuePair("access[oauth_token]", access_oath));
+        nameValuePairs.add(new BasicNameValuePair("access[uid]", access_uid));
+        
+        //service
+        nameValuePairs.add(new BasicNameValuePair("service", service));
+        System.out.println("POST:");
+        // Execute HTTP Post Request
+        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpclient.execute(httppost);
+        
+        return convertStreamToString(response.getEntity().getContent());
+	} 
+	
+	
+	public static String convertStreamToString(java.io.InputStream is) throws IOException {
+		//read it with BufferedReader
+    	BufferedReader br
+        	= new BufferedReader(
+        		new InputStreamReader(is));
+ 
+    	StringBuilder sb = new StringBuilder();
+ 
+    	String line;
+    	while ((line = br.readLine()) != null) {
+    		sb.append(line);
+    	} 
+ 
+    	return sb.toString();
+	}
+	
+	
+	
+	/*
+	HashMap<String, String> C_chart = new HashMap<String, String>();
+	private JSONObject compress(JSONObject obj)
+	{
+		if(C_chart.isEmpty())
+		{
+			C_chart.put("name", "a");
+			C_chart.put("tasks", "b");
+			C_chart.put("content", "c");
+			C_chart.put("priority", "d");
+			C_chart.put("date", "e");
+			C_chart.put("today", "f");
+			C_chart.put("showInToday", "g");
+			C_chart.put("list", "h");
+			C_chart.put("lists", "i");
+			C_chart.put("logged", "j");
+			C_chart.put("time", "k");
+			C_chart.put("sync", "l");
+			C_chart.put("synced", "m");
+			C_chart.put("order", "n");
+			C_chart.put("queue", "o");
+			C_chart.put("length", "p");
+			C_chart.put("notes", "q");
+			C_chart.put("items", "r");
+			C_chart.put("next", "s");
+			C_chart.put("someday", "t");
+			C_chart.put("deleted", "u");
+			C_chart.put("logbook", "v");
+			C_chart.put("scheduled", "w");
+			C_chart.put("version", "x");
+			C_chart.put("tags", "y");
+		}
+			
+		JSONObject out = new JSONObject();
+		Iterator<?> keys = obj.keys();
+		try {
+		while(keys.hasNext())
+		{
+			String key = (String)keys.next();
+			if(C_chart.containsKey(key))
+			{
+				out.put(C_chart.get(key), obj.get(key));
+				if( obj.get(key) instanceof JSONObject)
+				{
+					out.put(C_chart.get(key), compress(out.getJSONObject(C_chart.get(key))));
+				}
+			} else {
+				out.put(key, obj.get(key));
+				if( obj.get(key) instanceof JSONObject)
+				{
+					out.put(key, compress(out.getJSONObject(key)));
+				}
+			}
+		}
+		} catch(Exception e) {}
+		System.out.println("GRAAAAAHHHHH: " + out.toString());
+		return out;
+	}
+	*/
+	
+	static String bit() {
 		return Integer.toString((int)Math.floor(Math.random() *36), 36);
 	}
 	
-	static String part()
-	{
+	static String part() {
 		return bit() + bit() + bit() + bit();
 	}
 	
-	static String getID()
-	{
+	static String getID() {
 		return part() + "-" + part() + "-" + part();
 	}
 }

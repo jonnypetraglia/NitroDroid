@@ -40,13 +40,7 @@ public class ListAdapter extends SimpleCursorAdapter
 	
 	private int numberOfTags(String s)
 	{
-		int res = -1, last = 0;
-		do
-		{
-			res++;
-			last = s.indexOf('|', last+1);
-		} while(last!=-1);
-		return res;
+		return ListsActivity.syncHelper.db.getTasksOfList(s, null).getCount();
 	}
 
 	public View getView(int pos, View inView, ViewGroup parent)
@@ -77,7 +71,7 @@ public class ListAdapter extends SimpleCursorAdapter
         else if(hash.equals("today")) //Today
         	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(todayCount));
         else
-        	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(tasks_in_order)));
+        	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(hash)));
 		
 		return row;
 	}

@@ -15,6 +15,8 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 
+//TODO: Modify list w/ updating times
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -32,7 +34,7 @@ public class DatabaseConnector
 {
 	//------Basic Functions
 	private static final String DATABASE_NAME = "Nitro.db", TASKS_TABLE = "tasks", TASKS_TIME_TABLE = "ttimes",
-								LISTS_TABLE = "lists", LISTS_TIME_TABLE = "ltimes";
+								LISTS_TABLE = "lists", LISTS_TIME_TABLE = "ltimes", TASKS_DEL_TABLE = "deleted";
 	private SQLiteDatabase database;
 	private DatabaseOpenHelper databaseOpenHelper = null;
 	
@@ -56,6 +58,8 @@ public class DatabaseConnector
 	   if (database != null)
 	      database.close();
 	}
+	
+	
 	
 	public void insertTask(String hash,
 							  String name,
@@ -81,41 +85,91 @@ public class DatabaseConnector
 	   database.insert(TASKS_TABLE, null, newTask);
 	}
 	
+	public void insertTaskTimes(String hash,
+			  long name,
+			  long priority,
+			  long date,
+			  long notes,
+			  long list,
+			  long logged,
+			  long tags)
+	{
+		ContentValues newTask = new ContentValues();
+		newTask.put("hash", hash);
+		newTask.put("name", name);
+		newTask.put("priority", priority);
+		newTask.put("date", date);
+		newTask.put("notes", notes);
+		newTask.put("list", list);
+		newTask.put("logged", logged);
+		newTask.put("tags", tags);
+		
+		database.insert(TASKS_TIME_TABLE, null, newTask);
+	}
+	
 	public boolean deleteTask(String hash) 
 	{
-	    return database.delete(TASKS_TABLE, "hash='" + hash + "'", null) > 0;
+		boolean x = database.delete(TASKS_TABLE, "hash='" + hash + "'", null) > 0;
+		if(x)
+		{
+			database.delete(TASKS_TIME_TABLE, "hash='" + hash + "'", null);
+			insertDeleted(hash, (new java.util.Date()).getTime());
+		}
+	    return x;
 	}
 	
 	//OVERLOAD _ALL_ THE FUNCTIONS!
 	
 	public boolean modifyTask(String hash, String[] columns, String[] new_vals)
 	{
-		ContentValues args = new ContentValues();
+		ContentValues args = new ContentValues(), args2 = new ContentValues();
+		long now = (new java.util.Date()).getTime();
 		for(int i=0; i<columns.length; i++)
+		{
 			args.put(columns[i], new_vals[i]);
-	    return database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
+			args2.put(columns[i], now);
+		}
+		boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
+		System.out.println("Updating Task" + x);
+		if(x)
+			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
+	    return x;
 	}
 	
 	public boolean modifyTask(String hash, String column, int new_val)
 	{
-		ContentValues args = new ContentValues();
+		ContentValues args = new ContentValues(), args2 = new ContentValues();
 	    args.put(column, new_val);
-	    return database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
+	    args2.put(column, (new java.util.Date()).getTime());
+	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
+	    System.out.println("Updating Task" + x);
+		if(x)
+			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
+	    return x;
 	}
 	
 	public boolean modifyTask(String hash, String column, long new_val)
 	{
-		ContentValues args = new ContentValues();
+		ContentValues args = new ContentValues(), args2 = new ContentValues();
 	    args.put(column, new_val);
-	    return database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
+	    args2.put(column, (new java.util.Date()).getTime());
+	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
+	    System.out.println("Updating Task" + x);
+		if(x)
+			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
+	    return x;
 	}
 	
 	public boolean modifyTask(String hash, String column, String new_val)
 	{
-		ContentValues args = new ContentValues();
-		System.out.println("MODIFYTASK : " + column);
+		ContentValues args = new ContentValues(), args2 = new ContentValues();
 	    args.put(column, new_val);
-	    return database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
+	    args2.put(column, (new java.util.Date()).getTime());
+	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
+	    System.out.println("Updating Task" + x);
+		if(x)
+			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
+	    return x;
 	}
 	
 	
@@ -126,9 +180,11 @@ public class DatabaseConnector
 	
 	public void modifyListOrder(String hash, String new_order)
 	{
-	 	ContentValues args = new ContentValues();
+	 	ContentValues args = new ContentValues(), args2 = new ContentValues();
 	    args.put("tasks_in_order", new_order);
+	    args2.put("tasks_in_order", (new java.util.Date()).getTime());
 	    database.update(LISTS_TABLE, args, "hash='" + hash + "'", null);
+	    database.update(LISTS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	}
 	
 	public void insertList(String hash,
@@ -142,17 +198,28 @@ public class DatabaseConnector
 		if(tasks_in_order!=null && tasks_in_order.length>0)
 		{
 			tasksString = tasks_in_order[0];
-			for(int i=0; i<tasks_in_order.length; i++)
-				tasksString = tasksString.concat("|" + tasks_in_order[i]);
+			for(int i=1; i<tasks_in_order.length; i++)
+				tasksString = tasksString.concat("," + tasks_in_order[i]);
 		}
 		newList.put("tasks_in_order", tasksString);
 		
 		database.insert(LISTS_TABLE, null, newList);
 	}
 	
+	public void insertListTimes(String hash,
+			  long name,
+			  long tasks_in_order)
+	{
+		ContentValues newTask = new ContentValues();
+		newTask.put("hash", hash);
+		newTask.put("name", name);
+		newTask.put("tasks_in_order", tasks_in_order);
+		
+		database.insert(LISTS_TIME_TABLE, null, newTask);
+	}
+	
 	public Cursor getAllLists()
 	{
-		System.out.println("HEY THERE");
 		return database.query(LISTS_TABLE, new String[] {"_id", "hash", "name", "tasks_in_order"},
 				null, null, null, null, null);
 	}
@@ -189,9 +256,63 @@ public class DatabaseConnector
 		database.execSQL("DROP TABLE " + TASKS_TABLE);
 		database.execSQL("DROP TABLE " + LISTS_TIME_TABLE);
 		database.execSQL("DROP TABLE " + TASKS_TIME_TABLE);
+		database.execSQL("DROP TABLE " + TASKS_DEL_TABLE);
 		createThemTables(database);
 		open();
-		System.out.println("CELARD: " + getAllLists().getCount());
+	}
+	
+	public long getListTime(String hash, String column)
+	{
+		long result = 0;
+		Cursor c= database.query(LISTS_TIME_TABLE, new String[] {"_id", column}, 
+				"hash='" + hash + "'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			c.moveToFirst();
+			result = c.getLong(c.getColumnIndex(column));
+		}
+		return result;
+	}
+	
+	public long getTaskTime(String hash, String column)
+	{
+		long result = 0;
+		Cursor c= database.query(TASKS_TIME_TABLE, new String[] {"_id", column}, 
+				"hash='" + hash + "'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			c.moveToFirst();
+			result = c.getLong(c.getColumnIndex(column));
+		}
+		return result;
+	}
+	
+	public void insertDeleted(String hash, long date)
+	{
+		ContentValues newTask = new ContentValues();
+		newTask.put("hash", hash);
+		newTask.put("date", date);
+		
+		database.insert(TASKS_DEL_TABLE, null, newTask);
+	}
+	
+	public long getDelete(String hash)
+	{
+		long result = 0;
+		Cursor c= database.query(TASKS_DEL_TABLE, new String[] {"_id", "date"}, 
+				"hash='" + hash + "'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			c.moveToFirst();
+			result = c.getLong(c.getColumnIndex("date"));
+		}
+		return result;
+	}
+	
+	public Cursor getAllDeleted()
+	{
+		return database.query(TASKS_DEL_TABLE, new String[] {"_id", "hash", "date"}, 
+				null, null, null, null, null);
 	}
 	
 	
@@ -212,13 +333,13 @@ public class DatabaseConnector
 	 	      String createQuery2 = "CREATE TABLE " + TASKS_TIME_TABLE + " " + 
 	 	 	         "(_id integer primary key autoincrement, " +
 	 	 	         	"hash TEXT, " +
-	 	 	         	"name TEXT, " +
+	 	 	         	"name INTEGER, " +
 	 	 	         	"priority INTEGER, " + 
 	 	 	         	"date INTEGER, " +
-	 	 	         	"notes TEXT, " +
-	 	 	         	"list TEXT, " +
+	 	 	         	"notes INTEGER, " +
+	 	 	         	"list INTEGER, " +
 	 	 	         	"logged INTEGER, " +
-	 	 	         	"tags TEXT);";
+	 	 	         	"tags INTEGER);";
 	 	      db.execSQL(createQuery2);
 	 	      String createQuery3 = "CREATE TABLE " + LISTS_TABLE + " " + 
 	 		 	         "(_id integer primary key autoincrement, " +
@@ -229,9 +350,14 @@ public class DatabaseConnector
 	 	      String createQuery4 = "CREATE TABLE " + LISTS_TIME_TABLE + " " + 
 	 		 	         "(_id integer primary key autoincrement, " +
 	 		 	         	"hash TEXT, " +
-	 		 	         	"name TEXT, " +
-	 		 	         	"tasks_in_order TEXT);";
+	 		 	         	"name INTEGER, " +
+	 		 	         	"tasks_in_order INTEGER);";
 	 	      db.execSQL(createQuery4);
+	 	     String createQuery5 = "CREATE TABLE " + TASKS_DEL_TABLE + " " + 
+ 		 	         "(_id integer primary key autoincrement, " +
+ 		 	         	"hash TEXT, " +
+ 		 	         	"date INTEGER);";
+	 	     db.execSQL(createQuery5);
 	}
 	
 /** Helper open class for DatabaseConnector */

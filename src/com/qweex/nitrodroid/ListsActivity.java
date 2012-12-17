@@ -70,8 +70,6 @@ import android.widget.ViewFlipper;
 
 public class ListsActivity extends Activity
 {
-	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
-    STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
 	
 	/** Static variables concerning the preferences of the program **/
 	public static int themeID;
@@ -103,15 +101,6 @@ public class ListsActivity extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		SERVICE = "dropbox";
-		OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
-		OATH_TOKEN = "5bnt7mpm6sgoprb";
-		UID = "336890";
-		STATS__UID = "notbryant@gmail.com";
-		STATS__OS = "android";
-		STATS__LANGUAGE = "english";
-		STATS__VERSION = "1.5";
-		
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
@@ -120,7 +109,17 @@ public class ListsActivity extends Activity
 		locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
 		doViewStuff();
 		
+		
 		context = this;
+		syncHelper = new SyncHelper(context);
+		syncHelper.SERVICE = "dropbox";
+		syncHelper.OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
+		syncHelper.OATH_TOKEN = "5bnt7mpm6sgoprb";
+		syncHelper.UID = "336890";
+		syncHelper.STATS__UID = "notbryant@gmail.com";
+		syncHelper.STATS__OS = "android";
+		syncHelper.STATS__LANGUAGE = "english";
+		syncHelper.STATS__VERSION = "1.5";
 		
 		//Show Splash
 		splash = findViewById(R.id.splash);
@@ -277,6 +276,14 @@ public class ListsActivity extends Activity
 				startActivity(x);
 			}
          });
+		((ImageButton) findViewById(R.id.sync)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				ListsActivity.syncHelper.performSync();
+			}
+		});
+		
          mainListView.setOnItemClickListener(selectList);
          mainListView.setEmptyView(findViewById(R.id.empty1));
          
@@ -334,7 +341,6 @@ public class ListsActivity extends Activity
 
 		@Override
 	    protected Void doInBackground(Void... params) {
-			syncHelper = new SyncHelper(context);
 			syncHelper.db.open();
 			DP = context.getResources().getDisplayMetrics().density;
 			
@@ -353,7 +359,6 @@ public class ListsActivity extends Activity
 	        .setView(newList)
 	        .setPositiveButton(android.R.string.ok, createList).setNegativeButton(android.R.string.cancel, null);
 	        loadingOnCreate = false;
-	        testRead();
 	        doCreateThingsHandler.sendEmptyMessage(0);
 	        return null;
         } 
@@ -386,7 +391,10 @@ public class ListsActivity extends Activity
             String newListName = newList.getText().toString();
             if("".equals(newListName))
             	return;
-            syncHelper.db.insertList(SyncHelper.getID(), newListName, null);
+            String new_id = SyncHelper.getID();
+            syncHelper.db.insertList(new_id, newListName, null);
+            syncHelper.db.insertListTimes(new_id, (new java.util.Date()).getTime(), 0);
+            
             System.out.println(newListName);
             listAdapter.changeCursor(syncHelper.db.getAllLists());
             //listAdapter.notifyDataSetChanged();
@@ -439,27 +447,6 @@ public class ListsActivity extends Activity
     
     
     /************************** Utility methods **************************/
-    
-	public void testRead()
-	{
-        try {
-         	InputStream input = getAssets().open("nitro_data.json");
-             
-         	 syncHelper.db.clearEverything(this);
-         	
-             int size = input.available();
-             byte[] buffer = new byte[size];
-             input.read(buffer);
-             input.close();
-             
-
-             // byte buffer into a string
-             String text = new String(buffer);
-             syncHelper.readJSONtoSQL(text, this);
-     		} catch(Exception e) {
-     			e.printStackTrace();
-     		}
-	}
     
 	//http://stackoverflow.com/a/9624844/1526210
 	@TargetApi(4)

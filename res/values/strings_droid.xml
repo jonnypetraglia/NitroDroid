@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">NitroDroid</string>
+    <string name="version_for_JSON">1.4.7</string>
     <string name="force_phone_mode">Force phone mode</string>
     <string name="advanced">Advanced</string>
     
