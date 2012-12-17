@@ -22,6 +22,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -83,12 +84,13 @@ public class ListsActivity extends Activity
 	public static ViewFlipper flip;
 	public static SyncHelper syncHelper;
 	public static float DP;
+	public static String lastList;
 	
 	/** Local variables **/
-	private int list_normalDrawable, task_selectedDrawable;
+	private static int list_normalDrawable, task_selectedDrawable;
 	private EditText newList;
 	private Builder newListDialog;
-	private Context context;
+	private static Context context;
 	private boolean loadingApp  = true, loadingOnCreate = true;
 	private View splash;
 	private ListView mainListView;
@@ -106,6 +108,7 @@ public class ListsActivity extends Activity
 		themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
+		lastList = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("last_list", "today");
 		doViewStuff();
 		
 		
@@ -402,13 +405,27 @@ public class ListsActivity extends Activity
             //listAdapter.notifyDataSetChanged();
         }
     };
-
+    
 	
-	OnItemClickListener selectList = new OnItemClickListener() 
+	static OnItemClickListener selectList = new OnItemClickListener() 
     {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
+    	  if(SyncHelper.isSyncing)
+    		  return;
+    	  
+    	  String hash, name;
+    	  Context c;
+		  name=(String) ((TextView)view.findViewById(R.id.listName)).getText();
+		  hash=(String)((TextView)view.findViewById(R.id.listId)).getText();
+		  if(parent!=null)
+		  {
+    		  Editor e = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
+        	  e.putString("last_list", hash);
+        	  e.commit();
+		  }
+    	  
     	  if(isTablet)
     	  {
     		  View tempy = currentList;
@@ -423,13 +440,13 @@ public class ListsActivity extends Activity
     	  {
     		  ta = new TasksActivity();
     		  ta.context = (Activity) view.getContext();
-    		  ta.listHash = (String)((TextView)view.findViewById(R.id.listId)).getText();
-    		  ta.listName = (String) ((TextView)view.findViewById(R.id.listName)).getText();
+    		  ta.listHash = hash;
+    		  ta.listName = name;
     		  ta.onCreate(null);
     	  }else
     	  {
-    		  ta.listHash = (String)((TextView)view.findViewById(R.id.listId)).getText();
-    		  ta.listName = (String) ((TextView)view.findViewById(R.id.listName)).getText();
+    		  ta.listHash = hash;
+    		  ta.listName = name;
     		  ta.createTheAdapterYouSillyGoose();
     	  }
     		  

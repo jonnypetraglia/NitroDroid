@@ -17,6 +17,7 @@ package com.qweex.nitrodroid;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class ListAdapter extends SimpleCursorAdapter
     private Context context;
     int todayCount = 0;
     int totalCount = 0;
+    View clickThisPlz;
 
 	public ListAdapter(Context context, int layout, Cursor c)
 	{
@@ -61,8 +63,9 @@ public class ListAdapter extends SimpleCursorAdapter
 		
 		
 		String hash = this.c.getString(this.c.getColumnIndex("hash"));
+		System.out.println(hash + "==" + ListsActivity.lastList);
 		String name = this.c.getString(this.c.getColumnIndex("name"));
-        String tasks_in_order = this.c.getString(this.c.getColumnIndex("tasks_in_order"));
+//        String tasks_in_order = this.c.getString(this.c.getColumnIndex("tasks_in_order"));
 		
         ((TextView)row.findViewById(R.id.listId)).setText(hash);
         ((TextView)row.findViewById(R.id.listName)).setText(name);
@@ -73,6 +76,27 @@ public class ListAdapter extends SimpleCursorAdapter
         else
         	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(hash)));
 		
+        //Select it if it is the item list 
+        if(ListsActivity.isTablet && hash.equals(ListsActivity.lastList))
+		{
+			ListsActivity.lastList = null;
+			clickThisPlz = row;
+			hd.post(rd);
+//			ListsActivity.selectList.onItemClick(null, row, 0, 0);
+		}
+        
 		return row;
 	}
+	
+	android.os.Handler hd = new android.os.Handler();
+	
+    Runnable rd = new Runnable()
+    {
+    	@Override
+		public void run()
+    	{
+//    		for(long i=0; i<10000L; i++) System.out.println("Derp");;
+    		ListsActivity.selectList.onItemClick(null, clickThisPlz, 0, 0);
+    	}
+    };
 }

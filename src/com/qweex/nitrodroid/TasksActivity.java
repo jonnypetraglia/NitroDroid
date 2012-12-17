@@ -130,7 +130,6 @@ public class TasksActivity
 		datePickerDialog.setBackgroundDrawable(new BitmapDrawable());
 		datePickerDialog.setAnimationStyle(R.style.CalendarShow);
 		createCalendar();
-
 	
         doCreateStuff();
 	}
@@ -180,8 +179,9 @@ public class TasksActivity
         ((ImageButton)context.findViewById(R.id.deletebutton)).setOnClickListener(clickDelete);
         
 		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
+		System.out.println(lv);
 		lv.setEmptyView(context.findViewById(R.id.empty2));
-		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);		
+		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);
 		lv.setOnItemClickListener(selectTask);
 		createTheAdapterYouSillyGoose();
 		
@@ -192,9 +192,7 @@ public class TasksActivity
 		Cursor r;
 		if(listHash==null)
 			return;
-		if(listHash.equals("all"))			//All
-			listHash = null;
-		else if(listHash.equals("today"))		//Today
+		if(listHash.equals("today"))		//Today
 		{
 			listHash = null;
 			System.out.println("Time: " + getBeginningOfDayInSeconds());
@@ -202,8 +200,11 @@ public class TasksActivity
 			lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
 			return;
 		}
+		else if(listHash.equals("all"))			//All
+			listHash = null;
 		
 		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
+		System.out.println("SDSADSADSA" + r.getCount());
         lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
         lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
 	}
