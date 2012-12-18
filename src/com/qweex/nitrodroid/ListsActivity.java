@@ -30,6 +30,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,7 +88,7 @@ public class ListsActivity extends Activity
 	public static String lastList;
 	
 	/** Local variables **/
-	private static int list_normalDrawable, task_selectedDrawable;
+	private static int list_normalDrawable, list_selectedDrawable;
 	private EditText newList;
 	private Builder newListDialog;
 	private static Context context;
@@ -103,7 +104,10 @@ public class ListsActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Log.d("ListsActivity::()", "Creating ListsActivity");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		//Load preferences
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
@@ -111,7 +115,7 @@ public class ListsActivity extends Activity
 		lastList = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("last_list", "today");
 		doViewStuff();
 		
-		
+		//Create/set locals
 		context = this;
 		syncHelper = new SyncHelper(context);
 		
@@ -124,7 +128,7 @@ public class ListsActivity extends Activity
 			public void onAnimationEnd(Animation animation)
 			{
 				for(long i=0; splashEnabled && i<(procUtils.getCPUFreq()>0 ? procUtils.getCPUFreq()*10 : 10000l); i++);
-				doCreateThings.execute();
+				doCreateAsyncronously.execute();
 			}
 			@Override
 			public void onAnimationRepeat(Animation animation) {}
@@ -139,6 +143,7 @@ public class ListsActivity extends Activity
     { 
 		if(isTablet)
 		{
+			Log.d("ListsActivity::onCreateOptionsMenu", "'s a tablet. Doing some shit that I forget why I did it.");
 			findViewById(R.id.frame).setVisibility(View.VISIBLE);
 			((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener(){
 				@Override
@@ -156,7 +161,6 @@ public class ListsActivity extends Activity
 	@Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-		
 		pressCreateList();
 		return true;
     }
@@ -165,10 +169,16 @@ public class ListsActivity extends Activity
 	public void onResume()
 	{
 		super.onResume();
+		Log.d("ListsActivity::onResume", "Resuming main activity");
+		
+		//Usually resumes after visiting Preferences.
+		//Re-read preferences
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
+		
+		//If any of them have changed, rebuild the UI
 		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || new_locale!=locale)
 		{
 			java.util.Locale derlocale = new java.util.Locale(new_locale);
@@ -189,6 +199,7 @@ public class ListsActivity extends Activity
 	{
 		super.onDestroy();
 		syncHelper.db.close();
+		Log.d("ListsActivity::onDestroy", "Herp");
 	}
 	
     @TargetApi(5)
@@ -211,7 +222,7 @@ public class ListsActivity extends Activity
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        System.out.println("Herp");
+        Log.d("ListsActivity::onConfigurationChanged", "Herp");
     }
 	
    /************************** Yoda methods **************************/
@@ -221,8 +232,11 @@ public class ListsActivity extends Activity
 	
 	public void doViewStuff()
 	{
+		Log.d("ListsActivity::doViewStuff", "Doing view things");
+		//Theme
 		setTheme(themeID);
 		
+		//Force Phone
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		if(!forcePhone && isTabletDevice(this))
 		{
@@ -239,6 +253,8 @@ public class ListsActivity extends Activity
 			setContentView(R.layout.phone);
 			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
 		}
+		
+		//If we are NOT in the middle of the splash screen, remove the splash view
 		if(!loadingApp)
 		{
 			((ViewFlipper)findViewById(R.id.FLIP)).removeViewAt(0);
@@ -248,12 +264,17 @@ public class ListsActivity extends Activity
 	public void doCreateStuff() { doCreateStuff(false); }
 	public void doCreateStuff(boolean noSetMainView)
 	{
+		Log.d("ListsActivity::doCreateStuff", "Doing create things");
 		if(loadingOnCreate)
 			return;
 		if(!noSetMainView)
 			doViewStuff();
 		
 		flip = (ViewFlipper) findViewById(R.id.FLIP);
+		mainListView = (ListView) findViewById(android.R.id.list);
+		syncLoading = ((ImageButton) findViewById(R.id.sync));
+		
+		//Add them onClickListeners
 		((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener()
 		{
 			@Override
@@ -262,7 +283,6 @@ public class ListsActivity extends Activity
 				newListDialog.show();
 			}
 		});
-		mainListView = (ListView) findViewById(android.R.id.list);
 		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -271,7 +291,6 @@ public class ListsActivity extends Activity
 				startActivity(x);
 			}
          });
-		syncLoading = ((ImageButton) findViewById(R.id.sync));
 		syncLoading.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -288,10 +307,10 @@ public class ListsActivity extends Activity
 				syncHelper.new performSync().execute();
 			}
 		});
-		
          mainListView.setOnItemClickListener(selectList);
          mainListView.setEmptyView(findViewById(R.id.empty1));
          
+         //Create the ListAdapter & set it
          Cursor r = syncHelper.db.getAllLists();
          listAdapter = new ListAdapter(context, R.layout.list_item, r);
          listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
@@ -299,22 +318,25 @@ public class ListsActivity extends Activity
          
          mainListView.setAdapter(listAdapter);
          
+         
+         //Do animation things with the splash
          if(loadingApp)
          {
-				Animation animation = AnimationUtils.loadAnimation(ListsActivity.this, android.R.anim.fade_out);
-				animation.setAnimationListener(new AnimationListener(){
-					@Override
-					public void onAnimationEnd(Animation animation)
-					{
-						flip.setInAnimation(context, R.anim.slide_in_right);
-						doCreateThingsHandler.sendEmptyMessage(1);
-					}
-					@Override
-					public void onAnimationRepeat(Animation animation) {}
-					@Override
-					public void onAnimationStart(Animation animation) { System.out.println("nerts2"); }
-				});
-				splash.startAnimation(animation);
+			Animation animation = AnimationUtils.loadAnimation(ListsActivity.this, android.R.anim.fade_out);
+			animation.setAnimationListener(new AnimationListener(){
+				@Override
+				public void onAnimationEnd(Animation animation)
+				{
+					//TODO: WHAT THE FUCK IS THIS SHIT 
+					flip.setInAnimation(context, R.anim.slide_in_right);
+					doCreateThingsHandler.sendEmptyMessage(1);
+				}
+				@Override
+				public void onAnimationRepeat(Animation animation) {}
+				@Override
+				public void onAnimationStart(Animation animation) {}
+			});
+			splash.startAnimation(animation);
          }
          
          loadingApp = false;
@@ -341,29 +363,33 @@ public class ListsActivity extends Activity
     	}
     }
 	
-    AsyncTask<Void, Void, Void> doCreateThings = new AsyncTask<Void, Void, Void>()
+    AsyncTask<Void, Void, Void> doCreateAsyncronously = new AsyncTask<Void, Void, Void>()
 	{
 
 		@Override
 	    protected Void doInBackground(Void... params) {
+			Log.d("ListsActivity::doCreateThingsAsyncronously", "Launching asyncronously");
 			syncHelper.db.open();
 			DP = context.getResources().getDisplayMetrics().density;
-			
+
+			//Get the drawables for normal & selected according to the theme 
 			TypedArray a;
 			a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});     
-	        list_normalDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
+        	list_normalDrawable = a.getResourceId(0, 0);
 	        a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
-	        task_selectedDrawable = a.getResourceId(0, 0); //this.getResources().getDrawable(a.getResourceId(0, 0));
-	        //task_selectedDrawable = R.drawable.listitem_selected_default;
+        	list_selectedDrawable = a.getResourceId(0, 0);
 	        
+        	//Create the "New List" dialog
 	        newList = new EditText(context);
 	        newList.setId(42);
-	        
 	        newListDialog = new AlertDialog.Builder(context)
-	        .setTitle(R.string.add_list)
-	        .setView(newList)
-	        .setPositiveButton(android.R.string.ok, createList).setNegativeButton(android.R.string.cancel, null);
+	        	.setTitle(R.string.add_list)
+	        	.setView(newList)
+	        	.setPositiveButton(android.R.string.ok, createList).setNegativeButton(android.R.string.cancel, null);
+	        
+	        //Done creating
 	        loadingOnCreate = false;
+	        Log.d("ListsActivity::doCreateThingsAsyncronously", "Done with the async stuff");
 	        doCreateThingsHandler.sendEmptyMessage(0);
 	        return null;
         } 
@@ -391,18 +417,18 @@ public class ListsActivity extends Activity
 		newListDialog.show();
 	}
 	
-	DialogInterface.OnClickListener createList = new DialogInterface.OnClickListener() {
+	DialogInterface.OnClickListener createList = new DialogInterface.OnClickListener()
+	{
         public void onClick(DialogInterface dialog, int whichButton) {
             String newListName = newList.getText().toString();
             if("".equals(newListName))
             	return;
             String new_id = SyncHelper.getID();
+            Log.d("ListsActivity::createList", "Creating a List " + newListName + " [" + new_id + "]");
             syncHelper.db.insertList(new_id, newListName, null);
             syncHelper.db.insertListTimes(new_id, (new java.util.Date()).getTime(), 0);
             
-            System.out.println(newListName);
             listAdapter.changeCursor(syncHelper.db.getAllLists());
-            //listAdapter.notifyDataSetChanged();
         }
     };
     
@@ -414,50 +440,57 @@ public class ListsActivity extends Activity
       {
     	  if(SyncHelper.isSyncing)
     		  return;
+    	  Log.d("ListsActivity::selectList", "List Selected");
     	  
+    	  //Get info
     	  String hash, name;
 		  name=(String) ((TextView)view.findViewById(R.id.listName)).getText();
 		  hash=(String)((TextView)view.findViewById(R.id.listId)).getText();
+		  Log.d("ListsActivity::selectList", "List Selected is: " + name);
+		  
+		  //parent==null signifies that it is programatically selected so no need to update.
 		  if(parent!=null)
 		  {
+			  Log.d("ListsActivity::selectList", "Updating LastList to " + hash);
     		  Editor e = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         	  e.putString("last_list", hash);
         	  e.commit();
 		  }
     	  
+		  //Set background of last selected to normal & the current to selected
+    	  if(isTablet && currentList!=null)
+    		  currentList.setBackgroundResource(list_normalDrawable);
+    	  currentList = view;
     	  if(isTablet)
-    	  {
-    		  View tempy = currentList;
-	    	  if(tempy!=null)
-	    		  tempy.setBackgroundResource(list_normalDrawable);
-    	  }
+    		  currentList.setBackgroundResource(list_selectedDrawable);
     	  
-    	  
+    	  //Yay update shit
     	  TasksActivity.lastClicked = null;
 		  TasksActivity.lastClickedID = null;
     	  if(ta==null)
     	  {
+    		  Log.d("ListsActivity::selectList", "Instanciating TaskActivity");
     		  ta = new TasksActivity();
     		  ta.context = (Activity) view.getContext();
     		  ta.listHash = hash;
     		  ta.listName = name;
-    		  ta.onCreate(null);
+    		  ta.onCreate(null);	//I think I might get away with calling "doCreateThings" or even "sillygoose" but whatevs
     	  }else
     	  {
+    		  Log.d("ListsActivity::selectList", "Updating TaskActivity");
     		  ta.listHash = hash;
     		  ta.listName = name;
     		  ta.createTheAdapterYouSillyGoose();
     	  }
     		  
+    	  //Show the animation & flip the flipper if it is a phone
     	  if(!isTablet)
           {
+    		  Log.d("ListsActivity::selectList", "Flipping to that TaskActivity");
     		  flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
     		  flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
     		  flip.showNext();
           }
-    	  if(isTablet)
-    		  view.setBackgroundResource(task_selectedDrawable);
-    	  currentList = view;
       }
     };
     

@@ -17,7 +17,7 @@ package com.qweex.nitrodroid;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +36,7 @@ public class ListAdapter extends SimpleCursorAdapter
 	public ListAdapter(Context context, int layout, Cursor c)
 	{
 		super(context, layout, c, new String[] {}, new int[] {});
+		Log.d("ListAdapter", "Creating a new ListAdapter");
 		this.c = c;
 		this.context = context;
 	}
@@ -48,6 +49,7 @@ public class ListAdapter extends SimpleCursorAdapter
 	public View getView(int pos, View inView, ViewGroup parent)
 	{
 		View row = inView;
+		//Inflate it if we are not reusing a view
 		if(row==null)
 		{
 			LayoutInflater inflater=(LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
@@ -61,12 +63,12 @@ public class ListAdapter extends SimpleCursorAdapter
 		this.c = getCursor();
         this.c.moveToPosition(pos);
 		
-		
+		//Get the data
 		String hash = this.c.getString(this.c.getColumnIndex("hash"));
-		System.out.println(hash + "==" + ListsActivity.lastList);
 		String name = this.c.getString(this.c.getColumnIndex("name"));
 //        String tasks_in_order = this.c.getString(this.c.getColumnIndex("tasks_in_order"));
 		
+		//Set that shit!
         ((TextView)row.findViewById(R.id.listId)).setText(hash);
         ((TextView)row.findViewById(R.id.listName)).setText(name);
         if(hash.equals("all"))
@@ -76,26 +78,26 @@ public class ListAdapter extends SimpleCursorAdapter
         else
         	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(hash)));
 		
-        //Select it if it is the item list 
+        //Select it if it is the last used List
         if(ListsActivity.isTablet && hash.equals(ListsActivity.lastList))
 		{
 			ListsActivity.lastList = null;
 			clickThisPlz = row;
 			hd.post(rd);
-//			ListsActivity.selectList.onItemClick(null, row, 0, 0);
 		}
         
 		return row;
 	}
 	
-	android.os.Handler hd = new android.os.Handler();
 	
+	
+	//I do not like the existence of these two things but I cbf to work around it
+	android.os.Handler hd = new android.os.Handler();
     Runnable rd = new Runnable()
     {
     	@Override
 		public void run()
     	{
-//    		for(long i=0; i<10000L; i++) System.out.println("Derp");;
     		ListsActivity.selectList.onItemClick(null, clickThisPlz, 0, 0);
     	}
     };

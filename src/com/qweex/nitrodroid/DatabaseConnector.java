@@ -44,8 +44,8 @@ public class DatabaseConnector
 	public DatabaseConnector(Context context) 
 	{
 	    databaseOpenHelper = new DatabaseOpenHelper(context, DATABASE_NAME, null, 1);
-	    open();
-	    this.createThemTables(database);
+//	    open();
+//	    this.createThemTables(database);
 	}
 	
 	/** Opens the database so that it can be read or written. */

@@ -38,6 +38,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 public class SyncHelper {
@@ -56,14 +57,13 @@ public class SyncHelper {
 	
 	public SyncHelper(Context c)
 	{
+		Log.d("SyncHelper::()", "Creating a new SyncHelper object");
 		if(localeToLanguage==null)
 		{
 			 localeToLanguage = new HashMap<String, String>();
 			 localeToLanguage.put("en", "english");
 			 localeToLanguage.put("es", "spanish");
 		}
-		
-		
 		
 		
 		db = new DatabaseConnector(c);
@@ -76,15 +76,7 @@ public class SyncHelper {
 		UID 			  = sp.getString("uid", null);
 		STATS__EMAIL 	  = sp.getString("stats_email", null);
 		STATS__LANGUAGE   = localeToLanguage.get(ListsActivity.locale);
-		
-		/*
-		SERVICE = "dropbox";
-		OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
-		OATH_TOKEN = "5bnt7mpm6sgoprb";
-		UID = "336890";
-		STATS__EMAIL = "notbryant@gmail.com";
-		STATS__LANGUAGE = "english";
-		*/
+		Log.d("SyncHelper::()", "Retrieved sync service info: " + SERVICE);
 	}
 	
 	
@@ -94,7 +86,7 @@ public class SyncHelper {
 		@Override
 	    protected Boolean doInBackground(Void... params) {
 			isSyncing = true;
-//			testRead();
+			Log.d("SyncHelper::performSync", "Starting Sync...");
 			try {
 				JSONObject local = writeSQLtoJSON();
 				String result = postData(local,
@@ -106,11 +98,13 @@ public class SyncHelper {
 						STATS__OS,
 						STATS__LANGUAGE,
 						STATS__VERSION);
-				debugPrint(result);
+//				debugPrint(result);
+				Log.d("SyncHelper::performSync", "Sync has completed. Clearing old DB.");
 				db.clearEverything(context);
 				readJSONtoSQL(result, context);
 			} catch(Exception e)
 			{
+				Log.e("SyncHelper::performSync", "Error in sync occurred");
 				e.printStackTrace();
 				return false;
 			}
@@ -123,9 +117,11 @@ public class SyncHelper {
 			((android.graphics.drawable.AnimationDrawable) ListsActivity.syncLoading.getDrawable()).stop();
 			ListsActivity.syncLoading.setImageResource(R.drawable.loading_animation);
 			if(success) {
+				Log.d("SyncHelper::performSync", "Sync performed without errors, changing cursor");
 				ListsActivity.listAdapter.changeCursor(db.getAllLists());
 				if(ListsActivity.flip.getCurrentView() != ListsActivity.flip.getChildAt(0))
 				{
+					Log.d("SyncHelper::performSync", "User is on a List page....somehow. Flipping back.");
 					ListsActivity.flip.setInAnimation(context, android.R.anim.slide_in_left);
 					ListsActivity.flip.setOutAnimation(context, android.R.anim.slide_out_right);
 					ListsActivity.ta = null;
@@ -133,8 +129,10 @@ public class SyncHelper {
 				}
 			}
 			else {
+				Log.e("SyncHelper::performSync", "And error doth occurred. Check thineself before thy wreck thyself.");
 				Toast.makeText(context, R.string.sync_error, Toast.LENGTH_LONG).show();
 			}
+			Log.d("SyncHelper::performSync", "Finished syncing.");
 			isSyncing = false;
 		}
 		
@@ -142,6 +140,8 @@ public class SyncHelper {
 	
 	public void testRead()
 	{
+		Log.d("SyncHelper::testRead", "You're performing a test read, you little cunt!");
+		Log.d("SyncHelper::testRead", "I'm sorry, I didn't mean that.");
         try {
          	InputStream input = context.getAssets().open("nitro_data.json");
              
@@ -164,6 +164,7 @@ public class SyncHelper {
 	
 	public JSONObject writeSQLtoJSON()
 	{
+		Log.d("SyncHelper::writeSQLtoJSON", "Converting SQL db to JSON");
 		try {
 		jObject = new JSONObject();
 		jTasks = new JSONObject();
@@ -227,7 +228,7 @@ public class SyncHelper {
 		jLists.put("r", jListDetails);
 		} catch(Exception e)
 		{
-			System.err.println("No lists found");
+			Log.e("SyncHelper::writeSQLtoJSON", "No Lists Found");
 		}
 		
 		//------TASKS------
@@ -275,7 +276,7 @@ public class SyncHelper {
 		}
 		} catch(Exception e)
 		{
-			System.err.println("No tasks found");
+			Log.e("SyncHelper::writeSQLtoJSON", "No Tasks Found");
 		}
 		//------DELETED------
 		try {
@@ -291,7 +292,7 @@ public class SyncHelper {
 		}
 		} catch(Exception e)
 		{
-			System.err.println("No deleted found");
+			Log.e("SyncHelper::writeSQLtoJSON", "No Deleted Found");
 		}
 
 		jLists.put("k", (long)0);				//TODO FUCK MUFFINS
@@ -299,6 +300,7 @@ public class SyncHelper {
 		jObject.put("b", jTasks);
 		jObject.put("x", context.getResources().getString(R.string.version_for_JSON));
 		} catch(Exception e) {
+			Log.e("SyncHelper::writeSQLtoJSON", "A error occurred somewhere it certainly shouldn't have. You are fucked.");
 			e.printStackTrace();
 		}		
 		return jObject;
@@ -318,6 +320,7 @@ public class SyncHelper {
 	
 	public void readJSONtoSQL(String JSONstring, Context c)
 	{
+		Log.d("SyncHelper::readJSONtoSQL", "Parsing the JSON to the SQL db");
 	    try {
 	         
 	         
@@ -345,7 +348,7 @@ public class SyncHelper {
 	        	 hash = "today";
 	        	 db.insertList(hash, name, tasksString);
 	         } catch(Exception e) {
-	        	 System.err.println("Error in today: " + e.getClass());
+	        	 Log.e("SyncHelper::readJSONtoSQL", "Error in today: " + e.getClass());
 	         }
 	         //Next
 	         try {
@@ -360,7 +363,7 @@ public class SyncHelper {
 	        	 hash = "next";
 	        	 db.insertList(hash, name, tasksString);
 	         } catch(Exception e) {
-	        	 System.err.println("Error in Next: " + e.getClass());
+	        	 Log.e("SyncHelper::readJSONtoSQL", "Error in next: " + e.getClass());
 	         }
 	         //Logbook
 	         try {
@@ -376,7 +379,7 @@ public class SyncHelper {
 	        	 db.insertList(hash, name, tasksString);
 	        	
 	         } catch(Exception e) {
-	        	 System.err.println("Error in Log: " + e.getClass());
+	        	 Log.e("SyncHelper::readJSONtoSQL", "Error in logbook: " + e.getClass());
 	         }
 	         
 	         //All
@@ -386,29 +389,28 @@ public class SyncHelper {
 	        	 
 	        	 db.insertList(hash, name, null);
 	         } catch(Exception e) {
-	        	 System.err.println("Error in All: " + e.getClass());
+	        	 Log.e("SyncHelper::readJSONtoSQL", "Error in All: " + e.getClass());
 	         }
 	         //*/
 	         
 	         
 	         //Misc.
-	         try {
 	         for (int j = 0; j < listIDs.length(); j++)
 	         {
-	        	 JSONObject item = jListDetails.getJSONObject(listIDs.getString(j));
-
-	        	 hash = listIDs.getString(j);
-	        	 name = item.getString("a");
-	        	 tasksString = parseTasksString(item.getJSONArray("n"));
-	        	 
-	        	 db.insertList(hash, name, tasksString);
-	        	 JSONObject times = item.getJSONObject("k");
-	        	 db.insertListTimes(hash, times.getLong("a"), times.getLong("n"));
+		         try {
+		        	 JSONObject item = jListDetails.getJSONObject(listIDs.getString(j));
+	
+		        	 hash = listIDs.getString(j);
+		        	 name = item.getString("a");
+		        	 tasksString = parseTasksString(item.getJSONArray("n"));
+		        	 
+		        	 db.insertList(hash, name, tasksString);
+		        	 JSONObject times = item.getJSONObject("k");
+		        	 db.insertListTimes(hash, times.getLong("a"), times.getLong("n"));
+		         } catch(Exception e) {
+		        	 Log.e("SyncHelper::readJSONtoSQL", "Error in Misc: " + e.getClass());
+		         }
 	         }
-	         } catch(Exception e) {
-	        	 System.err.println("Error in misc: " + e.getClass());
-	         }
-	         
 	         
 	         //Tasks
 	         jTasks.names().length();
@@ -417,13 +419,13 @@ public class SyncHelper {
         		 try {
         			 readAndInsertTask(jTasks.names().getString(i), 0);	//FIX: Derp. Fucked up order
 		    	 } catch(Exception e) {
-		    		 System.err.println("Error in tasks");
+		    		 Log.e("SyncHelper::readJSONtoSQL", "Error in Tasks: " + e.getClass());
 		    	 }
 	         }
 	         
 	         
 	    } catch (Exception e) {
-	        // TODO Auto-generated catch block
+	    	Log.e("SyncHelper::readJSONtoSQL", "An horrible error occurred and you are fucked.");
 	        e.printStackTrace();
 	    }
 	}
@@ -442,6 +444,7 @@ public class SyncHelper {
 	
 	void readAndInsertTask(String hash, int order) throws org.json.JSONException
 	{
+		Log.d("SyncHelper::readAndInsertTask", "Reading task: " + hash);
 		JSONObject item = jTasks.getJSONObject(hash);
 		String name, notes, list, tags, priority_;
 		int priority;
@@ -450,6 +453,7 @@ public class SyncHelper {
 		try {
 			long delorted = item.getLong("u");
 			db.insertDeleted(hash, delorted);
+			Log.d("SyncHelper::readAndInsertTask", "Task is a deleted");
 			return;
 		}catch(Exception e) {}
 		
@@ -483,6 +487,7 @@ public class SyncHelper {
 			tags = tags.concat(tags_.getString(i)).concat(",");
 		}
 		
+		Log.d("SyncHelper::readAndInsertTask", "Inserting task: " + name);
 		db.insertTask(hash, name, priority, date, notes, list, logged, tags, order);
 		
 		JSONObject times = item.getJSONObject("k");
@@ -505,6 +510,7 @@ public class SyncHelper {
 			String access_oathS, String access_oath, String access_uid,
 			String stats_uid, String stats_os, String stats_language, String stats_version) throws ClientProtocolException, IOException, org.json.JSONException 
 	{
+		Log.d("SyncHelper::postData", "Preparing the post dat data");
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost(POST_URL); //"http://qweex.com/sync.php");
@@ -529,7 +535,8 @@ public class SyncHelper {
         
         //service
         nameValuePairs.add(new BasicNameValuePair("service", service));
-        System.out.println("POST:");
+        
+        Log.d("SyncHelper::postData", "Doing dat post...");
         // Execute HTTP Post Request
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpclient.execute(httppost);
@@ -539,7 +546,6 @@ public class SyncHelper {
 	
 	
 	public static String convertStreamToString(java.io.InputStream is) throws IOException {
-		//read it with BufferedReader
     	BufferedReader br
         	= new BufferedReader(
         		new InputStreamReader(is));
@@ -547,9 +553,8 @@ public class SyncHelper {
     	StringBuilder sb = new StringBuilder();
  
     	String line;
-    	while ((line = br.readLine()) != null) {
+    	while ((line = br.readLine()) != null)
     		sb.append(line);
-    	} 
  
     	return sb.toString();
 	}

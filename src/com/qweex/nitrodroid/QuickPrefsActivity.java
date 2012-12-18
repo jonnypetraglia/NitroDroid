@@ -34,12 +34,14 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.PopupWindow;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -60,19 +62,17 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 	public final static String DONATION_APP = "com.qweex.donation";
 	PopupWindow aboutWindow, syncWindow;
 	String[] themes;
-	final String POST_URL = "http://app.nitrotasks.com/request_url",
-			     POST_URL2 = "http://app.nitrotasks.com/auth";
+	final String REQUEST_URL = "http://app.nitrotasks.com/request_url",
+			     AUTH_URL = "http://app.nitrotasks.com/auth";
 	String authorize_url, oauth_token, oauth_token_secret, service;
 	Preference sync, notsync;
 	
-	public String capitalize(String word)
-	{
-		return word.substring(0,1).toUpperCase() + word.substring(1);
-	}
-	
+
 	/** Called when the activity is created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {        
+    public void onCreate(Bundle savedInstanceState)
+    {
+    	Log.d("QuickPrefsActivity", "Creating the Prefs Activity");
         super.onCreate(savedInstanceState);        
         addPreferencesFromResource(R.xml.preferences);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -84,10 +84,10 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         notsync.setOnPreferenceClickListener(ClickLogout);
         updateSyncPrefs();
         
-        
-        
+        //Force Phone preference
         if(!ListsActivity.forcePhone && !ListsActivity.isTablet)
         {
+        	Log.d("QuickPrefsActivity", "Updating the pref for forcePhone");
         	((PreferenceCategory)findPreference("advanced")).removePreference(findPreference("force_phone"));
         	if(((PreferenceCategory)findPreference("advanced")).getPreferenceCount()==0)
         		getPreferenceScreen().removePreference(findPreference("advanced"));
@@ -106,43 +106,60 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         		l.setValue(getResources().getString(R.string.theme1));
         }
         
+        //Create AboutWindow
     	aboutWindow = new PopupWindow(this);
     	aboutWindow.setContentView(getLayoutInflater().inflate(R.layout.about, null, false));
     	aboutWindow.setBackgroundDrawable(new BitmapDrawable());
     	aboutWindow.setAnimationStyle(android.R.style.Animation_Dialog);
     	aboutWindow.setOutsideTouchable(true);
     	
+    	//Create SyncWindow
     	syncWindow = new PopupWindow(this);
     	syncWindow.setContentView(getLayoutInflater().inflate(R.layout.sync_setup, null, false));
     	syncWindow.setBackgroundDrawable(new BitmapDrawable());
     	syncWindow.setAnimationStyle(android.R.style.Animation_Dialog);
     	syncWindow.setOutsideTouchable(true);
+    	
+    	//Set OnClickListeners
     	((android.widget.Button)(syncWindow.getContentView().findViewById(R.id.dropbox_button))).setOnClickListener(pressAuth);
     	((android.widget.Button)(syncWindow.getContentView().findViewById(R.id.ubuntu_button))).setOnClickListener(pressAuth);
     	
+    	//If the user pressed the sync button without it set up, show the dialog immediately
+    	// We "post" it because it must be run after the Activity is completely done loading.
     	if(getIntent().getExtras().getBoolean("show_popup"))
-    	getListView().post(new Runnable()
-    	{
-    		public void run()
-    		{
-            		ClickSync.onPreferenceClick(sync);
-    		}
-    	});
+	    	getListView().post(new Runnable() {
+	    		public void run()
+	    		{
+	            		ClickSync.onPreferenceClick(sync);
+	    		}});
     }
     
-    void updateSyncPrefs()
+    
+	@SuppressLint("NewApi")
+	void updateSyncPrefs()
     {
 	    if(getPreferenceScreen().getSharedPreferences().getString("service", null)!=null)
 	    {
+	    	Log.d("QuickPrefsActivity::updateSyncPrefs", "Updating sync prefs: is set up");
 	    	sync.setEnabled(false);
 	    	sync.setTitle(capitalize(ListsActivity.syncHelper.SERVICE) + ": " + ListsActivity.syncHelper.STATS__EMAIL);
-//	    	sync.setIcon(R.drawable.dropbox);
+	    	if(Integer.parseInt(android.os.Build.VERSION.SDK)>=11)
+	    	{
+	    		if("dropbox".equals(ListsActivity.syncHelper.SERVICE))
+    				sync.setIcon(R.drawable.dropbox_mini);
+	    		else
+	    			sync.setIcon(R.drawable.ubuntu_mini);
+	    		
+	    	}
 	    	notsync.setEnabled(true);
 	    }
 	    else
 	    {
+	    	Log.d("QuickPrefsActivity::updateSyncPrefs", "Updating sync prefs: is not set up");
 	    	sync.setEnabled(true);
 	    	sync.setTitle("Set Up");
+	    	if(Integer.parseInt(android.os.Build.VERSION.SDK)>=11)
+	    		sync.setIcon(null);
 	    	notsync.setEnabled(false);
 	    }
     }
@@ -161,13 +178,14 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     public void getAuth(String serv)
     {
+    	Log.d("QuickPrefsActivity::getAuth", "Yo dawg setting you up with some auth");
 		try {
 		service = serv;
 		
 		String arg1[] = {"service", serv};
 		String arg2[] = {"app", "android"};
 		
-		JSONObject result = new JSONObject(postData(POST_URL, arg1, arg2));
+		JSONObject result = new JSONObject(postData(REQUEST_URL, arg1, arg2));
 		authorize_url = result.getString("authorize_url");
 		oauth_token = result.getString("oauth_token");
 		oauth_token_secret = result.getString("oauth_token_secret");
@@ -175,11 +193,14 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 		Intent auth = new Intent(QuickPrefsActivity.this, AuthorizeActivity.class);
 		auth.putExtra("authorize_url", authorize_url);
 		startActivityForResult(auth, 1);
+		
 //		Intent i = new Intent(Intent.ACTION_VIEW);
 //		i.setData(android.net.Uri.parse(result_url));
 //		startActivity(i);
+		
 		}catch(Exception e)
 		{
+			Log.e("QuickPrefsActivity::getAuth", "An error occurred in getting the auth: " + e.getClass());
 			e.printStackTrace();
 		}
     }
@@ -187,32 +208,35 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-    	System.out.println("derp" + resultCode);
+    	Log.d("QuickPrefsActivity::onActivityResult", "Got result from activity");
     	if(resultCode==RESULT_OK)
     	{
     		syncWindow.dismiss();
     		//Write auth codes and whatnot
     		try {
+    			//Build the POST arguments
     			JSONObject result = new JSONObject();
     			result.put("oauth_token_secret", oauth_token_secret);
     			result.put("oauth_token", oauth_token);
     			result.put("authorize_url", authorize_url);
-    			
     			String arg1[] = {"token", result.toString()};
     			String arg2[] = {"service", service};
     			
-    			result = new JSONObject(postData(POST_URL2, arg1, arg2));
+    			Log.d("QuickPrefsActivity::onActivityResult", "Posting data...");
+    			result = new JSONObject(postData(AUTH_URL, arg1, arg2));
+    			
+    			//Extract the result
     			JSONObject access = result.getJSONObject("access");
-    			System.out.println(result);
     			String email = result.getString("email");
     			String uid = access.getString("uid");
     			oauth_token = access.getString("oauth_token");
     			oauth_token_secret = access.getString("oauth_token_secret");
+    			
+    			//Save the settings to the current SyncHelper & write them
     			ListsActivity.syncHelper.OATH_TOKEN = oauth_token;
     			ListsActivity.syncHelper.OATH_TOKEN_SECRET = oauth_token_secret;
     			ListsActivity.syncHelper.SERVICE = service;
     			ListsActivity.syncHelper.STATS__EMAIL = email;
-    			
     			Editor e = getPreferenceScreen().getSharedPreferences().edit();
         		e.putString("service", service);
         		e.putString("oauth_token", oauth_token);
@@ -220,18 +244,17 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         		e.putString("uid", uid);
         		e.putString("stats_email", email);
         		e.commit();
+        		
         		updateSyncPrefs();
     			oauth_token = oauth_token_secret = authorize_url = service = null;
             	
     		} catch(Exception e)
     		{
+    			Log.e("QuickPrefsActivity::onActivityResult", "SERIOUSLY fucked. Something happened in requesting the auth information.");
     			e.printStackTrace();
     		}
     	}
     }
-    
-    //5. Set oath, oathsecret, uid, email, version?
-    //6. Adjust views
     
     
 	public String postData(String URL, String first[], String second[]) throws ClientProtocolException, IOException, org.json.JSONException 
@@ -244,7 +267,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         nameValuePairs.add(new BasicNameValuePair(second[0], second[1]));
         
 
-        System.out.println("POST:");
+        Log.d("QuickPrefsActivity::postData", "Posting data..." + URL);
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpclient.execute(httppost);
         
@@ -261,18 +284,14 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
        		    public void onClick(DialogInterface dialog, int which) {
        		        switch (which){
        		        case DialogInterface.BUTTON_POSITIVE:
-       		            //Yes button clicked
+       		        	Log.d("QuickPrefsActivity::ClickReset", "WARNING: Resetting data!");
        		        	ListsActivity.syncHelper.db.clearEverything(QuickPrefsActivity.this);
        		        	ListsActivity.listAdapter.changeCursor(ListsActivity.syncHelper.db.getAllLists());
-       		            break;
-
        		        case DialogInterface.BUTTON_NEGATIVE:
-       		            //No button clicked
-       		            break;
        		        }
        		    }
        		};
-
+       		Log.d("QuickPrefsActivity::ClickReset", "User has clicked reset");
        		AlertDialog.Builder builder = new AlertDialog.Builder(preference.getContext());
        		builder.setTitle(R.string.warning);
        		builder.setMessage(R.string.warning_msg);
@@ -285,7 +304,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     OnPreferenceClickListener ClickAbout = new OnPreferenceClickListener() {
         public boolean onPreferenceClick(Preference preference) {
-        	
+        	Log.d("QuickPrefsActivity::ClickAbout", "User has clicked About");
         	Display display = getWindowManager().getDefaultDisplay(); 
         	int width = display.getWidth();  // deprecated
         	int height = display.getHeight();  // deprecated
@@ -298,6 +317,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     OnPreferenceClickListener ClickSync = new OnPreferenceClickListener() {
         public boolean onPreferenceClick(Preference preference) {
+        	Log.d("QuickPrefsActivity::ClickReset", "User has clicked Sync");
         	Display display = getWindowManager().getDefaultDisplay();
         	int width = display.getWidth();
         	int height = display.getHeight();
@@ -311,6 +331,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     OnPreferenceClickListener ClickLogout = new OnPreferenceClickListener() {
         public boolean onPreferenceClick(Preference preference) {
+        	Log.d("QuickPrefsActivity::ClickReset", "User has clicked Logout");
 			Editor e = getPreferenceScreen().getSharedPreferences().edit();
 			e.remove("service");
 			e.remove("oauth_token");
@@ -329,9 +350,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        // Override back button
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (aboutWindow.isShowing()) {
                 aboutWindow.dismiss();
@@ -377,4 +397,9 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 	    }  
 	    return true;
    }
+    
+	public String capitalize(String word)
+	{
+		return word.substring(0,1).toUpperCase() + word.substring(1);
+	}
 }
