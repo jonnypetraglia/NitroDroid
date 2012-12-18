@@ -36,7 +36,10 @@ Permission is granted to anyone to use this software for any purpose, including 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QuickPrefsActivity"></activity>
+        <activity android:name=".QuickPrefsActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"></activity>
+        <activity android:name=".AuthorizeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"></activity>
     </application>
 
 </manifest>

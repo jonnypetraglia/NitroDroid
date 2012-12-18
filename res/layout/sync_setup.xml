@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012 Qweex
+Copyright (c) 2012 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:padding="3dp"
+        android:background="#777777"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:text="Choose a Service"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp" >
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/sync_dropbox_bg" >
+
+                    <Button
+                        android:id="@+id/dropbox_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="0.75dp"
+                        android:layout_marginRight="0.75dp"
+                        android:layout_marginTop="0.75dp"
+                        android:background="@drawable/sync_dropbox"
+                        android:drawablePadding="3dp"
+                        android:drawableTop="@drawable/dropbox"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="20dp"
+                        android:text="Dropbox"
+                        android:textColor="@color/sync_text"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/sync_ubuntu_bg" >
+
+                    <Button
+                        android:id="@+id/ubuntu_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="0.75dp"
+                        android:layout_marginRight="0.75dp"
+                        android:layout_marginTop="0.75dp"
+                        android:background="@drawable/sync_ubuntu"
+                        android:drawablePadding="3dp"
+                        android:drawableTop="@drawable/ubuntu"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="20dp"
+                        android:text="Ubuntu"
+                        android:textColor="@color/sync_text"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

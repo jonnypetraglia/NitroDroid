@@ -34,24 +34,57 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 public class SyncHelper {
 	
 	public String SERVICE, OATH_TOKEN_SECRET, OATH_TOKEN, UID,
-    			  STATS__UID, STATS__OS, STATS__LANGUAGE, STATS__VERSION;
+    			  STATS__EMAIL, STATS__LANGUAGE;
+	private final String STATS__OS = "android", STATS__VERSION = "0.99";
 	public JSONObject jObject, jLists, jListDetails, jTasks;
 	public DatabaseConnector db;
 	Context context;
 	final String POST_URL = "http://app.nitrotasks.com/sync/";
 	public static boolean isSyncing = false;
 	
+	HashMap<String, String> localeToLanguage;
+	
+	
 	public SyncHelper(Context c)
 	{
+		if(localeToLanguage==null)
+		{
+			 localeToLanguage = new HashMap<String, String>();
+			 localeToLanguage.put("en", "english");
+			 localeToLanguage.put("es", "spanish");
+		}
+		
+		
+		
+		
 		db = new DatabaseConnector(c);
 		this.context = c;
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
+		
+		SERVICE 		  = sp.getString("service", null);
+		OATH_TOKEN_SECRET = sp.getString("oauth_token_secret", null);
+		OATH_TOKEN 		  = sp.getString("oauth_token", null);
+		UID 			  = sp.getString("uid", null);
+		STATS__EMAIL 	  = sp.getString("stats_email", null);
+		STATS__LANGUAGE   = localeToLanguage.get(ListsActivity.locale);
+		
+		/*
+		SERVICE = "dropbox";
+		OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
+		OATH_TOKEN = "5bnt7mpm6sgoprb";
+		UID = "336890";
+		STATS__EMAIL = "notbryant@gmail.com";
+		STATS__LANGUAGE = "english";
+		*/
 	}
 	
 	
@@ -69,7 +102,7 @@ public class SyncHelper {
 						OATH_TOKEN_SECRET,
 						OATH_TOKEN,
 						UID,
-						STATS__UID,
+						STATS__EMAIL,
 						STATS__OS,
 						STATS__LANGUAGE,
 						STATS__VERSION);
@@ -147,6 +180,7 @@ public class SyncHelper {
 		
 		//------LISTS------
 		boolean isSpecial = false;
+		try {
 		c = db.getAllLists();
 		c.moveToNext();
 		JSONArray N_1 = new JSONArray();
@@ -191,8 +225,13 @@ public class SyncHelper {
 		}
 		jLists.put("n", N_1);
 		jLists.put("r", jListDetails);
+		} catch(Exception e)
+		{
+			System.err.println("No lists found");
+		}
 		
 		//------TASKS------
+		try {
 		c = db.getTasksOfList("", null);
 		c.moveToNext();
 		String priorities[] = {"none", "low", "medium", "high"}; 
@@ -234,7 +273,12 @@ public class SyncHelper {
 			jTasks.put(hash, curr);
 			c.moveToNext();
 		}
+		} catch(Exception e)
+		{
+			System.err.println("No tasks found");
+		}
 		//------DELETED------
+		try {
 		c = db.getAllDeleted();
 		c.moveToNext();
 		while(!c.isAfterLast())
@@ -244,6 +288,10 @@ public class SyncHelper {
 			curr.put("u", c.getLong(c.getColumnIndex("date")));
 			jTasks.put(hash, curr);
 			c.moveToNext();
+		}
+		} catch(Exception e)
+		{
+			System.err.println("No deleted found");
 		}
 
 		jLists.put("k", (long)0);				//TODO FUCK MUFFINS
@@ -507,66 +555,6 @@ public class SyncHelper {
 	}
 	
 	
-	
-	/*
-	HashMap<String, String> C_chart = new HashMap<String, String>();
-	private JSONObject compress(JSONObject obj)
-	{
-		if(C_chart.isEmpty())
-		{
-			C_chart.put("name", "a");
-			C_chart.put("tasks", "b");
-			C_chart.put("content", "c");
-			C_chart.put("priority", "d");
-			C_chart.put("date", "e");
-			C_chart.put("today", "f");
-			C_chart.put("showInToday", "g");
-			C_chart.put("list", "h");
-			C_chart.put("lists", "i");
-			C_chart.put("logged", "j");
-			C_chart.put("time", "k");
-			C_chart.put("sync", "l");
-			C_chart.put("synced", "m");
-			C_chart.put("order", "n");
-			C_chart.put("queue", "o");
-			C_chart.put("length", "p");
-			C_chart.put("notes", "q");
-			C_chart.put("items", "r");
-			C_chart.put("next", "s");
-			C_chart.put("someday", "t");
-			C_chart.put("deleted", "u");
-			C_chart.put("logbook", "v");
-			C_chart.put("scheduled", "w");
-			C_chart.put("version", "x");
-			C_chart.put("tags", "y");
-		}
-			
-		JSONObject out = new JSONObject();
-		Iterator<?> keys = obj.keys();
-		try {
-		while(keys.hasNext())
-		{
-			String key = (String)keys.next();
-			if(C_chart.containsKey(key))
-			{
-				out.put(C_chart.get(key), obj.get(key));
-				if( obj.get(key) instanceof JSONObject)
-				{
-					out.put(C_chart.get(key), compress(out.getJSONObject(C_chart.get(key))));
-				}
-			} else {
-				out.put(key, obj.get(key));
-				if( obj.get(key) instanceof JSONObject)
-				{
-					out.put(key, compress(out.getJSONObject(key)));
-				}
-			}
-		}
-		} catch(Exception e) {}
-		System.out.println("GRAAAAAHHHHH: " + out.toString());
-		return out;
-	}
-	*/
 	
 	static String bit() {
 		return Integer.toString((int)Math.floor(Math.random() *36), 36);

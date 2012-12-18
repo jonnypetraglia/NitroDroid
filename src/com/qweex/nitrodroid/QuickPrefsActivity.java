@@ -14,6 +14,20 @@ Permission is granted to anyone to use this software for any purpose, including 
  */
 package com.qweex.nitrodroid;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -24,11 +38,14 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.PopupWindow;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,8 +58,17 @@ import android.graphics.drawable.BitmapDrawable;
 public class QuickPrefsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {    
 	public final static String DONATION_APP = "com.qweex.donation";
-	PopupWindow aboutWindow;
+	PopupWindow aboutWindow, syncWindow;
 	String[] themes;
+	final String POST_URL = "http://app.nitrotasks.com/request_url",
+			     POST_URL2 = "http://app.nitrotasks.com/auth";
+	String authorize_url, oauth_token, oauth_token_secret, service;
+	Preference sync, notsync;
+	
+	public String capitalize(String word)
+	{
+		return word.substring(0,1).toUpperCase() + word.substring(1);
+	}
 	
 	/** Called when the activity is created. */
     @Override
@@ -52,6 +78,13 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         ((Preference) findPreference("clear")).setOnPreferenceClickListener(ClickReset);
         ((Preference) findPreference("about")).setOnPreferenceClickListener(ClickAbout);
+        sync = ((Preference) findPreference("sync"));
+        notsync = ((Preference) findPreference("logout"));
+        sync.setOnPreferenceClickListener(ClickSync);
+        notsync.setOnPreferenceClickListener(ClickLogout);
+        updateSyncPrefs();
+        
+        
         
         if(!ListsActivity.forcePhone && !ListsActivity.isTablet)
         {
@@ -76,8 +109,150 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     	aboutWindow = new PopupWindow(this);
     	aboutWindow.setContentView(getLayoutInflater().inflate(R.layout.about, null, false));
     	aboutWindow.setBackgroundDrawable(new BitmapDrawable());
-    	aboutWindow.setAnimationStyle(R.style.AboutShow);
+    	aboutWindow.setAnimationStyle(android.R.style.Animation_Dialog);
+    	aboutWindow.setOutsideTouchable(true);
+    	
+    	syncWindow = new PopupWindow(this);
+    	syncWindow.setContentView(getLayoutInflater().inflate(R.layout.sync_setup, null, false));
+    	syncWindow.setBackgroundDrawable(new BitmapDrawable());
+    	syncWindow.setAnimationStyle(android.R.style.Animation_Dialog);
+    	syncWindow.setOutsideTouchable(true);
+    	((android.widget.Button)(syncWindow.getContentView().findViewById(R.id.dropbox_button))).setOnClickListener(pressAuth);
+    	((android.widget.Button)(syncWindow.getContentView().findViewById(R.id.ubuntu_button))).setOnClickListener(pressAuth);
+    	
+    	if(getIntent().getExtras().getBoolean("show_popup"))
+    	getListView().post(new Runnable()
+    	{
+    		public void run()
+    		{
+            		ClickSync.onPreferenceClick(sync);
+    		}
+    	});
     }
+    
+    void updateSyncPrefs()
+    {
+	    if(getPreferenceScreen().getSharedPreferences().getString("service", null)!=null)
+	    {
+	    	sync.setEnabled(false);
+	    	sync.setTitle(capitalize(ListsActivity.syncHelper.SERVICE) + ": " + ListsActivity.syncHelper.STATS__EMAIL);
+//	    	sync.setIcon(R.drawable.dropbox);
+	    	notsync.setEnabled(true);
+	    }
+	    else
+	    {
+	    	sync.setEnabled(true);
+	    	sync.setTitle("Set Up");
+	    	notsync.setEnabled(false);
+	    }
+    }
+    
+    OnClickListener pressAuth = new OnClickListener()
+    {
+		@Override
+		public void onClick(View v) {
+			if(v.getId()==R.id.dropbox_button)
+				getAuth("dropbox");
+			else if(v.getId()==R.id.ubuntu_button)
+				getAuth("ubuntu");
+		}
+    };
+    
+    
+    public void getAuth(String serv)
+    {
+		try {
+		service = serv;
+		
+		String arg1[] = {"service", serv};
+		String arg2[] = {"app", "android"};
+		
+		JSONObject result = new JSONObject(postData(POST_URL, arg1, arg2));
+		authorize_url = result.getString("authorize_url");
+		oauth_token = result.getString("oauth_token");
+		oauth_token_secret = result.getString("oauth_token_secret");
+		
+		Intent auth = new Intent(QuickPrefsActivity.this, AuthorizeActivity.class);
+		auth.putExtra("authorize_url", authorize_url);
+		startActivityForResult(auth, 1);
+//		Intent i = new Intent(Intent.ACTION_VIEW);
+//		i.setData(android.net.Uri.parse(result_url));
+//		startActivity(i);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+    }
+    
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+    	System.out.println("derp" + resultCode);
+    	if(resultCode==RESULT_OK)
+    	{
+    		syncWindow.dismiss();
+    		//Write auth codes and whatnot
+    		try {
+    			JSONObject result = new JSONObject();
+    			result.put("oauth_token_secret", oauth_token_secret);
+    			result.put("oauth_token", oauth_token);
+    			result.put("authorize_url", authorize_url);
+    			
+    			String arg1[] = {"token", result.toString()};
+    			String arg2[] = {"service", service};
+    			
+    			result = new JSONObject(postData(POST_URL2, arg1, arg2));
+    			JSONObject access = result.getJSONObject("access");
+    			System.out.println(result);
+    			String email = result.getString("email");
+    			String uid = access.getString("uid");
+    			oauth_token = access.getString("oauth_token");
+    			oauth_token_secret = access.getString("oauth_token_secret");
+    			ListsActivity.syncHelper.OATH_TOKEN = oauth_token;
+    			ListsActivity.syncHelper.OATH_TOKEN_SECRET = oauth_token_secret;
+    			ListsActivity.syncHelper.SERVICE = service;
+    			ListsActivity.syncHelper.STATS__EMAIL = email;
+    			
+    			Editor e = getPreferenceScreen().getSharedPreferences().edit();
+        		e.putString("service", service);
+        		e.putString("oauth_token", oauth_token);
+        		e.putString("oauth_token_secret", oauth_token_secret);
+        		e.putString("uid", uid);
+        		e.putString("stats_email", email);
+        		e.commit();
+        		updateSyncPrefs();
+    			oauth_token = oauth_token_secret = authorize_url = service = null;
+            	
+    		} catch(Exception e)
+    		{
+    			e.printStackTrace();
+    		}
+    	}
+    }
+    
+    //5. Set oath, oathsecret, uid, email, version?
+    //6. Adjust views
+    
+    
+	public String postData(String URL, String first[], String second[]) throws ClientProtocolException, IOException, org.json.JSONException 
+	{
+	    HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost httppost = new HttpPost(URL);
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair(first[0], first[1]));
+        nameValuePairs.add(new BasicNameValuePair(second[0], second[1]));
+        
+
+        System.out.println("POST:");
+        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        HttpResponse response = httpclient.execute(httppost);
+        
+        return SyncHelper.convertStreamToString(response.getEntity().getContent());
+	} 
+    
+   
+    
     
     OnPreferenceClickListener ClickReset = new OnPreferenceClickListener() {
         public boolean onPreferenceClick(Preference preference) {
@@ -121,6 +296,37 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         }
     };
     
+    OnPreferenceClickListener ClickSync = new OnPreferenceClickListener() {
+        public boolean onPreferenceClick(Preference preference) {
+        	Display display = getWindowManager().getDefaultDisplay();
+        	int width = display.getWidth();
+        	int height = display.getHeight();
+        	View v = getCurrentFocus();
+        	v = getListView();
+        	syncWindow.showAtLocation(v, Gravity.CENTER, 40, width/2);
+        	syncWindow.update(0, 0, width-40, height-80);
+        	return true;
+        }
+    };
+    
+    OnPreferenceClickListener ClickLogout = new OnPreferenceClickListener() {
+        public boolean onPreferenceClick(Preference preference) {
+			Editor e = getPreferenceScreen().getSharedPreferences().edit();
+			e.remove("service");
+			e.remove("oauth_token");
+			e.remove("oauth_token_secret");
+			e.remove("uid");
+			e.remove("stats_email");
+    		e.commit();
+			ListsActivity.syncHelper.OATH_TOKEN = null;
+			ListsActivity.syncHelper.OATH_TOKEN_SECRET = null;
+			ListsActivity.syncHelper.SERVICE = null;
+			ListsActivity.syncHelper.STATS__EMAIL = null;
+			updateSyncPrefs();
+    		return true;
+        }
+    };
+    
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -131,6 +337,10 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
                 aboutWindow.dismiss();
                 return false;
             }
+        	if(syncWindow.isShowing()) {
+        		syncWindow.dismiss();
+        		return false;
+        	}
         }
         return super.onKeyDown(keyCode, event);
     } 

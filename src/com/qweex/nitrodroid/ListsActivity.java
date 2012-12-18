@@ -107,21 +107,13 @@ public class ListsActivity extends Activity
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
-		locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
+		locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("locale", "en");
 		lastList = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("last_list", "today");
 		doViewStuff();
 		
 		
 		context = this;
 		syncHelper = new SyncHelper(context);
-		syncHelper.SERVICE = "dropbox";
-		syncHelper.OATH_TOKEN_SECRET = "k34znqvh8cgftb4";
-		syncHelper.OATH_TOKEN = "5bnt7mpm6sgoprb";
-		syncHelper.UID = "336890";
-		syncHelper.STATS__UID = "notbryant@gmail.com";
-		syncHelper.STATS__OS = "android";
-		syncHelper.STATS__LANGUAGE = "english";
-		syncHelper.STATS__VERSION = "1.5";
 		
 		//Show Splash
 		splash = findViewById(R.id.splash);
@@ -275,6 +267,7 @@ public class ListsActivity extends Activity
 			@Override
 			public void onClick(View v) {
 				Intent x = new Intent(ListsActivity.this, QuickPrefsActivity.class);
+				x.putExtra("show_popup", false);
 				startActivity(x);
 			}
          });
@@ -284,6 +277,13 @@ public class ListsActivity extends Activity
 			public void onClick(View v) {
 				if(SyncHelper.isSyncing)
 					return;
+				if(syncHelper.SERVICE==null)
+				{
+					Intent x = new Intent(ListsActivity.this, QuickPrefsActivity.class);
+					x.putExtra("show_popup", true);
+					startActivity(x);
+					return;
+				}
 				((android.graphics.drawable.AnimationDrawable) ListsActivity.syncLoading.getDrawable()).start();
 				syncHelper.new performSync().execute();
 			}
@@ -416,7 +416,6 @@ public class ListsActivity extends Activity
     		  return;
     	  
     	  String hash, name;
-    	  Context c;
 		  name=(String) ((TextView)view.findViewById(R.id.listName)).getText();
 		  hash=(String)((TextView)view.findViewById(R.id.listId)).getText();
 		  if(parent!=null)

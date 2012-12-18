@@ -37,7 +37,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="add"> @drawable/add </item>
     	<item name="delete"> @drawable/delete </item>
     	<item name="sort"> @drawable/sort </item>
-    	<item name="background"> @android:color/transparent </item>
+    	<!-- <item name="background"> @android:color/transparent </item> -->
     	<item name="empty_background"> #66ffffff </item>
     	<item name="tasks_padding"> 0dp </item>
     	<item name="lists_padding"> 0dp </item>

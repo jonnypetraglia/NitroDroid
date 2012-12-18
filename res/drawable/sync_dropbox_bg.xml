@@ -13,14 +13,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<resources>
-    <color name="buttonDarken">#77000000</color>
-    <color name="buttonDarkenLess">#BB000000</color>
-    <color name="dropbox">#6fc6ff</color>
-    <color name="dropbox_bgstart">#FF639BC0</color> <!-- 100 saturation, 69 bright -->
-    <color name="dropbox_bgend">#FF476A82</color>
-    <color name="ubuntu">#EC7748</color>
-    <color name="ubuntu_bgstart">#FFB4684A</color>
-    <color name="ubuntu_bgend">#FF794A37</color>
-    <color name="sync_text">#DD444444</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="5dp" />
+    <gradient
+        android:startColor="@color/dropbox_bgstart"
+        android:endColor="@color/dropbox_bgend"
+        android:angle="270" />
+</shape>
