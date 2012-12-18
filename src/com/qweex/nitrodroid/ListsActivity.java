@@ -240,6 +240,7 @@ public class ListsActivity extends Activity
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		if(!forcePhone && isTabletDevice(this))
 		{
+			Log.d("ListsActivity::doViewStuff", "Setting tablet");
 		    isTablet = true;
 		    if(themeID==R.style.Wunderlist || themeID==R.style.Right)
 		    	setContentView(R.layout.tablet_right);
@@ -249,6 +250,7 @@ public class ListsActivity extends Activity
 		}
 		else
 		{
+			Log.d("ListsActivity::doViewStuff", "Setting phone");
 			isTablet = false;
 			setContentView(R.layout.phone);
 			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
@@ -308,7 +310,6 @@ public class ListsActivity extends Activity
 			}
 		});
          mainListView.setOnItemClickListener(selectList);
-         mainListView.setEmptyView(findViewById(R.id.empty1));
          
          //Create the ListAdapter & set it
          Cursor r = syncHelper.db.getAllLists();
@@ -316,6 +317,12 @@ public class ListsActivity extends Activity
          listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
          listAdapter.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
          
+         if(r.getCount()<3)
+         {
+        	 syncHelper.readJSONtoSQL("", this);
+        	 System.out.println(r.getCount());
+        	 listAdapter.changeCursor(syncHelper.db.getAllLists());
+         }
          mainListView.setAdapter(listAdapter);
          
          
@@ -480,7 +487,12 @@ public class ListsActivity extends Activity
     		  Log.d("ListsActivity::selectList", "Updating TaskActivity");
     		  ta.listHash = hash;
     		  ta.listName = name;
-    		  ta.createTheAdapterYouSillyGoose();
+    		  ((Activity) context).findViewById(R.id.tasksListView).post(new Runnable(){
+    			 public void run()
+    			 {
+    				 ta.createTheAdapterYouSillyGoose();
+    			 }
+    		  });
     	  }
     		  
     	  //Show the animation & flip the flipper if it is a phone

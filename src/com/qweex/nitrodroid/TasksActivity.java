@@ -163,9 +163,6 @@ public class TasksActivity
 	
 	public void doCreateStuff()
 	{
-		//context.setTheme(ListsActivity.themeID);
-		//context.setContentView(R.layout.tasks);
-		
 		ImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
         sortButton.setOnClickListener(new OnClickListener()
     	{
@@ -183,13 +180,19 @@ public class TasksActivity
 		lv.setEmptyView(context.findViewById(R.id.empty2));
 		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);
 		lv.setOnItemClickListener(selectTask);
-		createTheAdapterYouSillyGoose();
+		lv.post(new Runnable(){
+			public void run()
+			{
+				createTheAdapterYouSillyGoose();
+			}
+		});
 		
 	}
 	
 	void createTheAdapterYouSillyGoose()
 	{
 		Cursor r;
+		System.out.println("creatingtheadapter: " + getBeginningOfDayInSeconds());
 		if(listHash==null)
 			return;
 		if(listHash.equals("today"))		//Today
@@ -215,7 +218,7 @@ public class TasksActivity
 		@Override
 		public void onClick(View v)
 		{
-			if(listHash.equals("logbook") || listHash.equals("today") || listHash.equals("next"))
+			if(listHash==null || "logbook".equals(listHash) || "today".equals(listHash) || "next".equals(listHash))
 			{
 				Toast.makeText(v.getContext(), R.string.long_winded_reprimand, Toast.LENGTH_LONG).show();
 				return;

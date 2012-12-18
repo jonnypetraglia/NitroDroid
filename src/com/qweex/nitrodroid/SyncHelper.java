@@ -323,75 +323,84 @@ public class SyncHelper {
 		Log.d("SyncHelper::readJSONtoSQL", "Parsing the JSON to the SQL db");
 	    try {
 	         
-	         
+	    	 JSONArray listIDs = null;
+	         try {
 	         jObject = new JSONObject(JSONstring);
 	         jTasks = jObject.getJSONObject("b");
 	         jLists = jObject.getJSONObject("i");
-	         JSONArray listIDs = jLists.getJSONArray("n");
+	         listIDs = jLists.getJSONArray("n");
 	         jListDetails = jLists.getJSONObject("r");
+	         } catch(Exception e)
+	         {
+	        	 Log.w("SyncHelper::readJSONtoSQL", "No JSON found. Proceeding.");
+	         }
 	         
 	         String hash, name;
-	         String[] tasksString;
+	         String[] tasksString = null;
+	         long x = 0;
 	         
 	         
 	         //Today
-	         try
-	         {
-	        	 hash = "f";
-	        	 name = c.getResources().getString(R.string.Today);
+        	 hash = "f";
+        	 name = c.getResources().getString(R.string.Today);
+        	 try {
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
 	        	 JSONObject times = item.getJSONObject("k");
-	        	 
-	        	 db.insertListTimes(hash, 0, times.getLong("n"));
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
-	        	 
-	        	 hash = "today";
-	        	 db.insertList(hash, name, tasksString);
-	         } catch(Exception e) {
-	        	 Log.e("SyncHelper::readJSONtoSQL", "Error in today: " + e.getClass());
-	         }
+	        	 x = times.getLong("n");
+        	 } catch(Exception e)
+        	 {
+        		 Log.w("SyncHelper::readJSONtoSQL", "No JSON Today found. Proceeding.");
+        	 }
+        	 hash = "today";
+        	 db.insertListTimes(hash, 0, x);
+        	 db.insertList(hash, name, tasksString);
+        	 tasksString = null;
+        	 x = 0;
+	         
 	         //Next
-	         try {
-	        	 hash = "s";
-	        	 name = c.getResources().getString(R.string.Next);
+        	 hash = "s";
+        	 name = c.getResources().getString(R.string.Next);
+        	 try {
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
 	        	 JSONObject times = item.getJSONObject("k");
-	        	 
-	        	 db.insertListTimes(hash, 0, times.getLong("n"));
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
-	        	 
-	        	 hash = "next";
-	        	 db.insertList(hash, name, tasksString);
-	         } catch(Exception e) {
-	        	 Log.e("SyncHelper::readJSONtoSQL", "Error in next: " + e.getClass());
-	         }
+	        	 x = times.getLong("n");
+        	 }catch(Exception e)
+        	 {
+        		 Log.w("SyncHelper::readJSONtoSQL", "No JSON Next found. Proceeding.");
+        	 }
+        	 hash = "next";
+        	 db.insertListTimes(hash, 0, x);
+        	 db.insertList(hash, name, tasksString);
+        	 tasksString = null;
+        	 x = 0;
+	         
 	         //Logbook
-	         try {
-	        	 hash = "v";
-	        	 name = c.getResources().getString(R.string.Next);
+        	 hash = "v";
+        	 name = c.getResources().getString(R.string.Logbook);
+        	 try {
 	        	 JSONObject item = jListDetails.getJSONObject(hash);
 	        	 JSONObject times = item.getJSONObject("k");
-	        	 
-	        	 db.insertListTimes(hash, 0, times.getLong("n"));
 	        	 tasksString = parseTasksString(item.getJSONArray("n"));
-	        	 
-	        	 hash = "logbook";
-	        	 db.insertList(hash, name, tasksString);
-	        	
-	         } catch(Exception e) {
-	        	 Log.e("SyncHelper::readJSONtoSQL", "Error in logbook: " + e.getClass());
-	         }
+	        	 x = times.getLong("n");
+        	 }catch(Exception e)
+        	 {
+        		 Log.w("SyncHelper::readJSONtoSQL", "No JSON Logbook found. Proceeding.");
+        	 }
+        	 
+        	 hash = "logbook";
+        	 db.insertListTimes(hash, 0, x);
+        	 db.insertList(hash, name, tasksString);
+        	 tasksString = null;
+        	 x = 0;
+        	 
 	         
 	         //All
-	         try {
-	        	 name = c.getResources().getString(R.string.AllTasks);
-	        	 hash = "all";
-	        	 
-	        	 db.insertList(hash, name, null);
-	         } catch(Exception e) {
-	        	 Log.e("SyncHelper::readJSONtoSQL", "Error in All: " + e.getClass());
-	         }
-	         //*/
+        	 name = c.getResources().getString(R.string.AllTasks);
+        	 hash = "all";
+        	 
+        	 db.insertList(hash, name, null);
 	         
 	         
 	         //Misc.

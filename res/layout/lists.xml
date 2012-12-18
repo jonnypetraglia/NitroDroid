@@ -31,17 +31,6 @@ Permission is granted to anyone to use this software for any purpose, including 
 		android:layout_alignParentTop="true"
 		android:dividerHeight="?lists_padding"/>
         
-        <TextView android:id="@+id/empty1"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center_horizontal"
-               android:gravity="center_horizontal"
-               android:background="?empty_background"
-               android:textSize="25dp"
-               android:text="@string/NoTasks"
-               android:layout_marginTop="50dp"
-               android:padding="30dp"
-               />
 
         <FrameLayout 
             android:id="@+id/frame"

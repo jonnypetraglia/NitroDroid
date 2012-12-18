@@ -159,7 +159,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 	    	sync.setEnabled(true);
 	    	sync.setTitle("Set Up");
 	    	if(Integer.parseInt(android.os.Build.VERSION.SDK)>=11)
-	    		sync.setIcon(null);
+//	    		sync.setIcon
+	    		sync.setIcon((android.graphics.drawable.Drawable)null);
 	    	notsync.setEnabled(false);
 	    }
     }
@@ -186,9 +187,14 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 		String arg2[] = {"app", "android"};
 		
 		JSONObject result = new JSONObject(postData(REQUEST_URL, arg1, arg2));
+		Log.d("QuickPrefsActivity::getAuth", result.toString());
 		authorize_url = result.getString("authorize_url");
 		oauth_token = result.getString("oauth_token");
-		oauth_token_secret = result.getString("oauth_token_secret");
+		if("dropbox".equals(service))
+			oauth_token_secret = result.getString("oauth_token_secret");
+		else
+			oauth_token_secret = result.getString("oauth_secret");
+		
 		
 		Intent auth = new Intent(QuickPrefsActivity.this, AuthorizeActivity.class);
 		auth.putExtra("authorize_url", authorize_url);
@@ -216,21 +222,32 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     		try {
     			//Build the POST arguments
     			JSONObject result = new JSONObject();
-    			result.put("oauth_token_secret", oauth_token_secret);
+    			if("dropbox".equals(service))
+    				result.put("oauth_token_secret", oauth_token_secret);
+    			else
+    				result.put("oauth_secret", oauth_token_secret);
     			result.put("oauth_token", oauth_token);
     			result.put("authorize_url", authorize_url);
     			String arg1[] = {"token", result.toString()};
     			String arg2[] = {"service", service};
     			
     			Log.d("QuickPrefsActivity::onActivityResult", "Posting data...");
-    			result = new JSONObject(postData(AUTH_URL, arg1, arg2));
+    			String berg = postData(AUTH_URL, arg1, arg2);
+    			Log.d("QuickPrefsActivity::onActivityResult", "Result: " + berg);
+    			result = new JSONObject(berg);
     			
     			//Extract the result
     			JSONObject access = result.getJSONObject("access");
     			String email = result.getString("email");
-    			String uid = access.getString("uid");
+    			String uid = null;
+    			if("dropbox".equals(service))
+    			{
+    				uid = access.getString("uid");
+    				oauth_token_secret = access.getString("oauth_token_secret");
+    			}
+    			else
+    				oauth_token_secret = access.getString("oauth_secret");
     			oauth_token = access.getString("oauth_token");
-    			oauth_token_secret = access.getString("oauth_token_secret");
     			
     			//Save the settings to the current SyncHelper & write them
     			ListsActivity.syncHelper.OATH_TOKEN = oauth_token;
@@ -241,7 +258,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         		e.putString("service", service);
         		e.putString("oauth_token", oauth_token);
         		e.putString("oauth_token_secret", oauth_token_secret);
-        		e.putString("uid", uid);
+        		if("dropbox".equals(service))
+        			e.putString("uid", uid);
         		e.putString("stats_email", email);
         		e.commit();
         		
