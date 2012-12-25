@@ -315,7 +315,7 @@ public class TasksActivity
 				Collections.sort(nert, new MagicComparator());
 				adapter = new TaskAdapter(context, R.layout.task_item, nert);
 				lv.setAdapter(adapter);
-				//adapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();
 				return;
 			case ID_HAND:
 				return;
@@ -335,8 +335,7 @@ public class TasksActivity
 			}
 			adapter = new TaskAdapter(context, R.layout.task_item, r);
 			lv.setAdapter(adapter);
-			//ta.notifyDataSetChanged();
-
+			adapter.notifyDataSetChanged();
 		}
 	};
 

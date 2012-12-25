@@ -39,7 +39,7 @@ Permission is granted to anyone to use this software for any purpose, including 
          android:layout_alignParentBottom="true"
          android:background="?addList_border"
          android:paddingTop="1dp"
-         android:visibility="visible" >
+         android:visibility="gone" >
      <Button
          android:id="@+id/add_list"
          android:layout_width="fill_parent"

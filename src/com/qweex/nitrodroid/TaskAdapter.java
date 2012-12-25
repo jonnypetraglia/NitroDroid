@@ -29,7 +29,7 @@ import android.widget.*;
 import android.widget.ExpandableListAdapter;
 import android.database.DataSetObserver;
 
-public class TaskAdapter implements ExpandableListAdapter
+public class TaskAdapter extends BaseExpandableListAdapter
 {
     private Cursor c;
     private TasksActivity.taskObject T;

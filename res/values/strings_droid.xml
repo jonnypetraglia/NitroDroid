@@ -50,5 +50,8 @@
 	
 	<string name="long_winded_reprimand">You cannot create a task in this special list. Try creating it in one of the lists you created.</string>
 	<string name="sync_error">A sync error occurred. If you are sure your connection is solid, try force stopping the app and trying again.</string>
+    <string name="edit_list">Edit List</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
 	
 </resources>

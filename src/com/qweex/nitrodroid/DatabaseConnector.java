@@ -119,6 +119,27 @@ public class DatabaseConnector
 		}
 	    return x;
 	}
+
+    public boolean deleteList(String hash)
+    {
+        boolean x = database.delete(LISTS_TABLE, "hash='" + hash + "'", null) > 0;
+        if(x)
+        {
+            Cursor c = getTasksOfList(hash,null);
+            if(c.getCount()>0)
+                c.moveToFirst();
+            while(!c.isAfterLast())
+            {
+                System.out.println("DELETING: " + c.getString(c.getColumnIndex("name")));
+                database.delete(TASKS_TABLE, "hash='" + c.getString(c.getColumnIndex("hash")) + "'", null);
+                database.delete(TASKS_TIME_TABLE, "hash='" + c.getString(c.getColumnIndex("hash")) + "'", null);
+                c.moveToNext();
+            }
+            database.delete(LISTS_TIME_TABLE, "hash='" + hash + "'", null);
+            insertDeleted(hash, (new java.util.Date()).getTime());
+        }
+        return x;
+    }
 	
 	//OVERLOAD _ALL_ THE FUNCTIONS!
 	
@@ -129,11 +150,12 @@ public class DatabaseConnector
 		for(int i=0; i<columns.length; i++)
 		{
 			args.put(columns[i], new_vals[i]);
-			args2.put(columns[i], now);
+            if(!columns[i].equals("order_num"))
+			    args2.put(columns[i], now);
 		}
 		boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
 		System.out.println("Updating Task" + x);
-		if(x)
+        if(x)
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
 	}
@@ -145,7 +167,7 @@ public class DatabaseConnector
 	    args2.put(column, (new java.util.Date()).getTime());
 	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
 	    System.out.println("Updating Task" + x);
-		if(x)
+		if(x && !column.equals("order_num"))
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
 	}
@@ -157,7 +179,7 @@ public class DatabaseConnector
 	    args2.put(column, (new java.util.Date()).getTime());
 	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
 	    System.out.println("Updating Task" + x);
-		if(x)
+        if(x && !column.equals("order_num"))
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
 	}
@@ -169,7 +191,7 @@ public class DatabaseConnector
 	    args2.put(column, (new java.util.Date()).getTime());
 	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
 	    System.out.println("Updating Task" + x);
-		if(x)
+        if(x && !column.equals("order_num"))
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
 	}

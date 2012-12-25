@@ -46,6 +46,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ViewFlipper;
 
 /*	
@@ -90,7 +91,7 @@ public class ListsActivity extends Activity
 	/** Local variables **/
 	private static int list_normalDrawable, list_selectedDrawable;
 	private EditText newList;
-	private Builder newListDialog;
+	private Builder newListDialog, editListDialog;
 	private static Context context;
 	private boolean loadingApp  = true, loadingOnCreate = true;
 	private View splash;
@@ -141,7 +142,7 @@ public class ListsActivity extends Activity
 	@Override
     public boolean onCreateOptionsMenu(Menu menu)
     { 
-		if(isTablet)
+		if(isTablet && !forcePhone && false)
 		{
 			Log.d("ListsActivity::onCreateOptionsMenu", "'s a tablet. Doing some shit that I forget why I did it.");
 			findViewById(R.id.frame).setVisibility(View.VISIBLE);
@@ -310,6 +311,7 @@ public class ListsActivity extends Activity
 			}
 		});
          mainListView.setOnItemClickListener(selectList);
+         mainListView.setOnItemLongClickListener(longSelectList);
          
          //Create the ListAdapter & set it
          Cursor r = syncHelper.db.getAllLists();
@@ -393,7 +395,10 @@ public class ListsActivity extends Activity
 	        	.setTitle(R.string.add_list)
 	        	.setView(newList)
 	        	.setPositiveButton(android.R.string.ok, createList).setNegativeButton(android.R.string.cancel, null);
-	        
+            editListDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.edit_list)
+                .setPositiveButton(R.string.rename,deleteList).setNegativeButton(R.string.delete,deleteList);
+
 	        //Done creating
 	        loadingOnCreate = false;
 	        Log.d("ListsActivity::doCreateThingsAsyncronously", "Done with the async stuff");
@@ -438,8 +443,47 @@ public class ListsActivity extends Activity
             listAdapter.changeCursor(syncHelper.db.getAllLists());
         }
     };
-    
-	
+
+    DialogInterface.OnClickListener deleteList = new DialogInterface.OnClickListener()
+    {
+        public void onClick(DialogInterface dialog, int whichButton) {
+            new AlertDialog.Builder(context)
+                    .setTitle("Really delete?")
+                    .setPositiveButton(android.R.string.yes, reallyDelete).setNegativeButton(android.R.string.no, null).show();
+
+        }
+        DialogInterface.OnClickListener reallyDelete = new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String hash = ((TextView)currentList.findViewById(R.id.listId)).getText().toString();
+                syncHelper.db.deleteList(hash);
+                listAdapter.changeCursor(syncHelper.db.getAllLists());
+            }
+        };
+    };
+
+
+    OnItemLongClickListener longSelectList = new OnItemLongClickListener()
+    {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            String derp = ((TextView)view.findViewById(R.id.listId)).getText().toString();
+            currentList.setBackgroundResource(list_normalDrawable);
+            currentList = view;
+            currentList.setBackgroundResource(list_selectedDrawable);
+            if(derp.equals("today") || derp.equals("next") || derp.equals("logbook") || derp.equals("all"))
+                return true;
+            TextView tv = new TextView(view.getContext());
+            tv.setText("     '" + ((TextView)currentList.findViewById(R.id.listName)).getText() + "'");
+            tv.setTextColor(0xffffffff);
+            tv.setTextSize(20);
+            editListDialog.setView(tv);
+            editListDialog.show();
+            return true;
+        }
+    };
+
 	static OnItemClickListener selectList = new OnItemClickListener() 
     {
       @Override
