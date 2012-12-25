@@ -69,11 +69,12 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
 	        android:background="?background"
+            android:id="@+id/background"
 	        android:layout_weight="0.3">
         <include
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="?background"
+
         layout="@layout/tasks" />
         </FrameLayout>
 	    

@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -60,12 +63,13 @@ import android.graphics.drawable.BitmapDrawable;
 public class QuickPrefsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {    
 	public final static String DONATION_APP = "com.qweex.donation";
+    private final int SYNC_ID = 1, IMAGE_ID = 2;
 	PopupWindow aboutWindow, syncWindow;
 	String[] themes;
 	final String REQUEST_URL = "http://app.nitrotasks.com/request_url",
 			     AUTH_URL = "http://app.nitrotasks.com/auth";
 	String authorize_url, oauth_token, oauth_token_secret, service;
-	Preference sync, notsync;
+	Preference sync, notsync, bg, notbg;
 	
 
 	/** Called when the activity is created. */
@@ -78,8 +82,12 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         ((Preference) findPreference("clear")).setOnPreferenceClickListener(ClickReset);
         ((Preference) findPreference("about")).setOnPreferenceClickListener(ClickAbout);
+        bg = ((Preference) findPreference("background"));
+        notbg = ((Preference) findPreference("default_background"));
         sync = ((Preference) findPreference("sync"));
         notsync = ((Preference) findPreference("logout"));
+        bg.setOnPreferenceClickListener(ClickBG);
+        notbg.setOnPreferenceClickListener(ClickBG);
         sync.setOnPreferenceClickListener(ClickSync);
         notsync.setOnPreferenceClickListener(ClickLogout);
         updateSyncPrefs();
@@ -198,7 +206,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 		
 		Intent auth = new Intent(QuickPrefsActivity.this, AuthorizeActivity.class);
 		auth.putExtra("authorize_url", authorize_url);
-		startActivityForResult(auth, 1);
+		startActivityForResult(auth, SYNC_ID);
 		
 //		Intent i = new Intent(Intent.ACTION_VIEW);
 //		i.setData(android.net.Uri.parse(result_url));
@@ -215,65 +223,85 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
     	Log.d("QuickPrefsActivity::onActivityResult", "Got result from activity");
-    	if(resultCode==RESULT_OK)
-    	{
-    		syncWindow.dismiss();
-    		//Write auth codes and whatnot
-    		try {
-    			//Build the POST arguments
-    			JSONObject result = new JSONObject();
-    			if("dropbox".equals(service))
-    				result.put("oauth_token_secret", oauth_token_secret);
-    			else
-    				result.put("oauth_secret", oauth_token_secret);
-    			result.put("oauth_token", oauth_token);
-    			result.put("authorize_url", authorize_url);
-    			String arg1[] = {"token", result.toString()};
-    			String arg2[] = {"service", service};
-    			
-    			Log.d("QuickPrefsActivity::onActivityResult", "Posting data...");
-    			String berg = postData(AUTH_URL, arg1, arg2);
-    			Log.d("QuickPrefsActivity::onActivityResult", "Result: " + berg);
-    			result = new JSONObject(berg);
-    			
-    			//Extract the result
-    			JSONObject access = result.getJSONObject("access");
-    			String email = result.getString("email");
-    			String uid = null;
-    			if("dropbox".equals(service))
-    			{
-    				uid = access.getString("uid");
-    				oauth_token_secret = access.getString("oauth_token_secret");
-    			}
-    			else
-    				oauth_token_secret = access.getString("oauth_secret");
-    			oauth_token = access.getString("oauth_token");
-    			
-    			//Save the settings to the current SyncHelper & write them
-    			ListsActivity.syncHelper.OATH_TOKEN = oauth_token;
-    			ListsActivity.syncHelper.OATH_TOKEN_SECRET = oauth_token_secret;
-    			ListsActivity.syncHelper.SERVICE = service;
-    			ListsActivity.syncHelper.STATS__EMAIL = email;
-    			Editor e = getPreferenceScreen().getSharedPreferences().edit();
-        		e.putString("service", service);
-        		e.putString("oauth_token", oauth_token);
-        		e.putString("oauth_token_secret", oauth_token_secret);
-        		if("dropbox".equals(service))
-        			e.putString("uid", uid);
-        		e.putString("stats_email", email);
-        		e.commit();
-        		
-        		updateSyncPrefs();
-    			oauth_token = oauth_token_secret = authorize_url = service = null;
-            	
-    		} catch(Exception e)
-    		{
-    			Log.e("QuickPrefsActivity::onActivityResult", "SERIOUSLY fucked. Something happened in requesting the auth information.");
-    			e.printStackTrace();
-    		}
-    	}
+        if(requestCode==SYNC_ID)
+        {
+            if(resultCode==RESULT_OK)
+            {
+                syncWindow.dismiss();
+                //Write auth codes and whatnot
+                try {
+                    //Build the POST arguments
+                    JSONObject result = new JSONObject();
+                    if("dropbox".equals(service))
+                        result.put("oauth_token_secret", oauth_token_secret);
+                    else
+                        result.put("oauth_secret", oauth_token_secret);
+                    result.put("oauth_token", oauth_token);
+                    result.put("authorize_url", authorize_url);
+                    String arg1[] = {"token", result.toString()};
+                    String arg2[] = {"service", service};
+
+                    Log.d("QuickPrefsActivity::onActivityResult", "Posting data...");
+                    String berg = postData(AUTH_URL, arg1, arg2);
+                    Log.d("QuickPrefsActivity::onActivityResult", "Result: " + berg);
+                    result = new JSONObject(berg);
+
+                    //Extract the result
+                    JSONObject access = result.getJSONObject("access");
+                    String email = result.getString("email");
+                    String uid = null;
+                    if("dropbox".equals(service))
+                    {
+                        uid = access.getString("uid");
+                        oauth_token_secret = access.getString("oauth_token_secret");
+                    }
+                    else
+                        oauth_token_secret = access.getString("oauth_secret");
+                    oauth_token = access.getString("oauth_token");
+
+                    //Save the settings to the current SyncHelper & write them
+                    ListsActivity.syncHelper.OATH_TOKEN = oauth_token;
+                    ListsActivity.syncHelper.OATH_TOKEN_SECRET = oauth_token_secret;
+                    ListsActivity.syncHelper.SERVICE = service;
+                    ListsActivity.syncHelper.STATS__EMAIL = email;
+                    Editor e = getPreferenceScreen().getSharedPreferences().edit();
+                    e.putString("service", service);
+                    e.putString("oauth_token", oauth_token);
+                    e.putString("oauth_token_secret", oauth_token_secret);
+                    if("dropbox".equals(service))
+                        e.putString("uid", uid);
+                    e.putString("stats_email", email);
+                    e.commit();
+
+                    updateSyncPrefs();
+                    oauth_token = oauth_token_secret = authorize_url = service = null;
+
+                } catch(Exception e)
+                {
+                    Log.e("QuickPrefsActivity::onActivityResult", "SERIOUSLY fucked. Something happened in requesting the auth information.");
+                    e.printStackTrace();
+                }
+            }
+        } else if(requestCode==IMAGE_ID)
+        {
+            if(resultCode==RESULT_OK)
+            {
+                String selectedImagePath = getPath(data.getData());
+                System.out.println("DERP: " + selectedImagePath);
+                Editor e = getPreferenceScreen().getSharedPreferences().edit();
+                e.putString("background", selectedImagePath);
+                e.commit();
+            }
+        }
     }
-    
+    //http://stackoverflow.com/questions/2169649/open-an-image-in-androids-built-in-gallery-app-programmatically
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
     
 	public String postData(String URL, String first[], String second[]) throws ClientProtocolException, IOException, org.json.JSONException 
 	{
@@ -290,9 +318,23 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         HttpResponse response = httpclient.execute(httppost);
         
         return SyncHelper.convertStreamToString(response.getEntity().getContent());
-	} 
-    
-   
+	}
+
+    OnPreferenceClickListener ClickBG = new OnPreferenceClickListener() {
+        public boolean onPreferenceClick(Preference preference) {
+            if(preference.equals(notbg))
+            {
+                Editor e = getPreferenceScreen().getSharedPreferences().edit();
+                e.remove("background");
+                e.commit();
+                return true;
+            }
+            Intent img = new Intent(Intent.ACTION_GET_CONTENT);
+            img.setType("image/*");
+            startActivityForResult(img, IMAGE_ID);
+            return true;
+        }
+    };
     
     
     OnPreferenceClickListener ClickReset = new OnPreferenceClickListener() {

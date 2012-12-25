@@ -178,7 +178,6 @@ public class TasksActivity
         ((ImageButton)context.findViewById(R.id.deletebutton)).setOnClickListener(clickDelete);
         
 		lv = (ExpandableListView) ((Activity) context).findViewById(R.id.tasksListView);
-		System.out.println(lv);
 		lv.setEmptyView(context.findViewById(R.id.empty2));
 		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);
 		lv.setOnGroupClickListener(selectTask);
@@ -211,6 +210,7 @@ public class TasksActivity
 		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
         adapter = new TaskAdapter(context, R.layout.task_item, r);
         lv.setAdapter(adapter);
+        System.out.println("Dudewtf: " + adapter.getGroupCount());
         lv.setDescendantFocusability(ExpandableListView.FOCUS_AFTER_DESCENDANTS);
 	}
 	
@@ -638,7 +638,7 @@ public class TasksActivity
     
     boolean doBackThings()
     {
-    	if(datePickerDialog.isShowing())
+    	if(datePickerDialog!=null && datePickerDialog.isShowing())
     	{
     		datePickerDialog.dismiss();
     	}

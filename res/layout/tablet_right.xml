@@ -22,7 +22,7 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         layout="@layout/splash" />
-    
+
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -57,14 +57,14 @@ Permission is granted to anyone to use this software for any purpose, including 
 	    <FrameLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
-	        android:background="?background"
+            android:id="@+id/background"
+            android:background="?background"
 	        android:layout_weight="0.3">
 	        
 	        <include
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="0.3"
-	        android:background="?background"
 	        layout="@layout/tasks" />
 	        
         </FrameLayout>

@@ -40,14 +40,9 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ViewFlipper;
 
 /*	
 -arabic.js
@@ -75,7 +70,7 @@ public class ListsActivity extends Activity
 	/** Static variables concerning the preferences of the program **/
 	public static int themeID;
 	public static boolean forcePhone;
-	public static String locale = null;
+	public static String locale = null, backgroundPath = null;
 	public static boolean isTablet = false;
 	boolean splashEnabled = false;
 	
@@ -114,6 +109,7 @@ public class ListsActivity extends Activity
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("locale", "en");
 		lastList = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("last_list", "today");
+        backgroundPath = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("background", null);
 		doViewStuff();
 		
 		//Create/set locals
@@ -175,12 +171,13 @@ public class ListsActivity extends Activity
 		//Usually resumes after visiting Preferences.
 		//Re-read preferences
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
+        String new_background = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("background", null);
 		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
 		
 		//If any of them have changed, rebuild the UI
-		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || new_locale!=locale)
+		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || !new_locale.equals(locale) || !new_background.equals(backgroundPath))
 		{
 			java.util.Locale derlocale = new java.util.Locale(new_locale);
 			java.util.Locale.setDefault(derlocale);
@@ -191,6 +188,7 @@ public class ListsActivity extends Activity
 			locale = new_locale;
 			themeID = new_themeID;
 			forcePhone = new_force;
+            backgroundPath = new_background;
 			doCreateStuff();
 		}
 	}
@@ -201,6 +199,7 @@ public class ListsActivity extends Activity
 		super.onDestroy();
 		syncHelper.db.close();
 		Log.d("ListsActivity::onDestroy", "Herp");
+        ta = null;
 	}
 	
     @TargetApi(5)
@@ -256,6 +255,18 @@ public class ListsActivity extends Activity
 			setContentView(R.layout.phone);
 			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
 		}
+
+        //Background
+        if(backgroundPath!=null)
+        {
+            try {
+            android.graphics.drawable.Drawable backgroundImage = new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeFile(backgroundPath));
+            View v = (View)findViewById(R.id.background);
+            if(v==null)
+                v = findViewById(R.id.FLIP);
+            v.setBackgroundDrawable(backgroundImage);
+            } catch(Exception e) {}
+        }
 		
 		//If we are NOT in the middle of the splash screen, remove the splash view
 		if(!loadingApp)
@@ -445,7 +456,7 @@ public class ListsActivity extends Activity
             } else
             {
                 Log.d("ListsActivity::createList", "Renaming a List " + newListName);
-                syncHelper.db.modifyList(((TextView)currentList.findViewById(R.id.listId)).getText().toString(), "name", newListName);
+                syncHelper.db.modifyList(((TextView) currentList.findViewById(R.id.listId)).getText().toString(), "name", newListName);
                }
             
             listAdapter.changeCursor(syncHelper.db.getAllLists());
@@ -535,6 +546,7 @@ public class ListsActivity extends Activity
     	  //Yay update shit
     	  TasksActivity.lastClicked = null;
 		  TasksActivity.lastClickedID = null;
+          System.out.println("Dude:::" + ta);
     	  if(ta==null)
     	  {
     		  Log.d("ListsActivity::selectList", "Instanciating TaskActivity");

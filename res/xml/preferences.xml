@@ -51,13 +51,15 @@ Permission is granted to anyone to use this software for any purpose, including 
 	            android:entryValues="@array/themes"
 	            android:defaultValue="@string/theme1"
 		        />
-	    <!-- http://stackoverflow.com/questions/3679330/choosing-background-for-live-wallpaper -->
 	    <Preference
+                android:key="background"
 	        	android:title="@string/background" 
 	        />
-	    <!-- <Preference
-	        	android:title="Background Size"
-        	<Preference
+        <Preference
+                android:key="default_background"
+                android:title="@string/default_background"
+                />
+	    <!--  <Preference
 	        	android:title="Heading Color" 
 	        /> -->
     </PreferenceCategory>

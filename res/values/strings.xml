@@ -51,6 +51,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 	<string name="theme">Theme</string>
     <string name="background">Change the Background</string>
+    <string name="default_background">Use the default background</string>
     <string name="sync">Sync</string>
     <string name="set_up">Set up</string>
     <string name="logout">Logout</string>
