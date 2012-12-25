@@ -18,13 +18,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="?attr/tasks_selector"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="8dp" >
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/taskId"
@@ -67,87 +62,5 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
             android:text="when due" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/taskInfo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/taskdesc_border"
-        android:focusable="false"
-        android:orientation="vertical"
-        android:padding="10dp" >
-
-        <EditText
-            android:id="@+id/tags_edit"
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            android:singleLine="true"
-            android:layout_marginBottom="9dp"
-            android:visibility="gone"
-             />
-        
-		<HorizontalScrollView
-		    android:id="@+id/tag_scroller"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_marginBottom="10dp"
-		    android:background="?attr/tag_scroller"
-		    android:scrollbars="none" >
-
-	        <LinearLayout
-	            android:id="@+id/tag_container"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:orientation="horizontal"
-	             >
-
-	             
-				<TextView
-				    android:id="@+id/tag"
-				    android:gravity="center"
-				    android:layout_width="fill_parent"
-				    android:layout_height="wrap_content"
-				    android:padding="10dp"
-				    android:text="No Tags" />
-	  
-	        </LinearLayout>
-	        
-        </HorizontalScrollView>
-
-        <Button
-            android:id="@+id/timeButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:text="Date Due" />
-
-        <Button
-            android:id="@+id/priority"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button_high"
-            android:focusable="false"
-            android:padding="15dp"
-            android:text="Priority"
-            android:textSize="16dp" />
-
-        <EditText
-            android:id="@+id/notes"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:focusable="true"
-            android:gravity="center_vertical|top"
-            android:hint="Notes"
-            android:inputType="textMultiLine"
-            android:minLines="4" >
-        </EditText>
-    </LinearLayout>
 
 </LinearLayout>

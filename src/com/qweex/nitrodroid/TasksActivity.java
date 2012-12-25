@@ -60,10 +60,10 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.Toast;
 
 public class TasksActivity
@@ -74,7 +74,8 @@ public class TasksActivity
 	private static final int ID_DATE   = 4;
 	private static final int ID_PRIORITY  = 5;	
 	
-	ListView lv;
+	ExpandableListView lv;
+    TaskAdapter adapter;
 	boolean allTasks = false;
 	static View lastClicked = null;
 	static EditText editingTags = null;
@@ -91,6 +92,7 @@ public class TasksActivity
 	PopupWindow datePickerDialog; 
 	LinearLayout popupLayout;
 	View datePicker;
+    int lastDate = 0;
 	
 	//@Overload
 	public void onCreate(Bundle savedInstanceState)
@@ -116,25 +118,25 @@ public class TasksActivity
 		deleteDialog.setMessage(R.string.delete_task);
 		deleteDialog.setPositiveButton(R.string.yes, confirmDelete);
 		deleteDialog.setNegativeButton(R.string.no, confirmDelete);
-		
-		
-		
+
+
+
 		popupLayout = new LinearLayout(context);
 		popupLayout.setOrientation(LinearLayout.VERTICAL);
 		popupLayout.setBackgroundColor(0xFFAAAAAA);
 		popupLayout.setPadding((int)ListsActivity.DP, (int)ListsActivity.DP, (int)ListsActivity.DP, (int)ListsActivity.DP);
-		
-		
+
+
 		datePickerDialog = new PopupWindow(context);
 		datePickerDialog.setContentView(popupLayout);
 		datePickerDialog.setBackgroundDrawable(new BitmapDrawable());
 		datePickerDialog.setAnimationStyle(R.style.CalendarShow);
 		createCalendar();
-	
+
         doCreateStuff();
 	}
-	
-	
+
+
 	public Drawable createTitleDrawable()
 	{
 		final int DIM = 24;
@@ -175,11 +177,11 @@ public class TasksActivity
         ((ImageButton)context.findViewById(R.id.addbutton)).setOnClickListener(clickAdd);
         ((ImageButton)context.findViewById(R.id.deletebutton)).setOnClickListener(clickDelete);
         
-		lv = (ListView) ((Activity) context).findViewById(R.id.tasksListView);
+		lv = (ExpandableListView) ((Activity) context).findViewById(R.id.tasksListView);
 		System.out.println(lv);
 		lv.setEmptyView(context.findViewById(R.id.empty2));
 		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);
-		lv.setOnItemClickListener(selectTask);
+		lv.setOnGroupClickListener(selectTask);
 		lv.post(new Runnable(){
 			public void run()
 			{
@@ -192,7 +194,6 @@ public class TasksActivity
 	void createTheAdapterYouSillyGoose()
 	{
 		Cursor r;
-		System.out.println("creatingtheadapter: " + getBeginningOfDayInSeconds());
 		if(listHash==null)
 			return;
 		if(listHash.equals("today"))		//Today
@@ -200,16 +201,17 @@ public class TasksActivity
 			listHash = null;
 			System.out.println("Time: " + getBeginningOfDayInSeconds());
 			r = ListsActivity.syncHelper.db.getTodayTasks(getBeginningOfDayInSeconds());
-			lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
+            adapter = new TaskAdapter(context, R.layout.task_item, r);
+			lv.setAdapter(adapter);
 			return;
 		}
 		else if(listHash.equals("all"))			//All
 			listHash = null;
 		
 		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
-		System.out.println("SDSADSADSA" + r.getCount());
-        lv.setAdapter(new TaskAdapter(context, R.layout.task_item, r));
-        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
+        adapter = new TaskAdapter(context, R.layout.task_item, r);
+        lv.setAdapter(adapter);
+        lv.setDescendantFocusability(ExpandableListView.FOCUS_AFTER_DESCENDANTS);
 	}
 	
 	
@@ -235,7 +237,7 @@ public class TasksActivity
 			createTheAdapterYouSillyGoose();
 			
 			try {
-				Method func = ListView.class.getMethod("smoothScrollToPosition", Integer.TYPE);
+				Method func = ExpandableListView.class.getMethod("smoothScrollToPosition", Integer.TYPE);
 				func.invoke(lv, lv.getCount() - 1);
 			}catch(Exception e)
 			{
@@ -311,9 +313,9 @@ public class TasksActivity
 					r.moveToNext();
 				}
 				Collections.sort(nert, new MagicComparator());
-				MagicTaskAdapter tx = new MagicTaskAdapter(context, R.layout.task_item, nert);
-				lv.setAdapter(tx);
-				tx.notifyDataSetChanged();
+				adapter = new TaskAdapter(context, R.layout.task_item, nert);
+				lv.setAdapter(adapter);
+				//adapter.notifyDataSetChanged();
 				return;
 			case ID_HAND:
 				return;
@@ -331,13 +333,13 @@ public class TasksActivity
 			default:
 				return;
 			}
-			TaskAdapter ta = new TaskAdapter(context, R.layout.task_item, r);
-			lv.setAdapter(ta);
-			ta.notifyDataSetChanged();
-			
+			adapter = new TaskAdapter(context, R.layout.task_item, r);
+			lv.setAdapter(adapter);
+			//ta.notifyDataSetChanged();
+
 		}
 	};
-	
+
 	public class MagicComparator implements Comparator<taskObject> {
 		@Override
 		public int compare(taskObject a, taskObject b) {
@@ -436,48 +438,7 @@ public class TasksActivity
 		}
 		ListsActivity.syncHelper.db.modifyListOrder(listHash, tempHashString);
 	}
-    
-	
-	void expand(View view)
-	{
-		if(view!=null && view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
-		{
-			System.out.println("Expanding");
-		  view.findViewById(R.id.taskName).setVisibility(View.GONE);
-		  view.findViewById(R.id.taskTime).setVisibility(View.GONE);
-		  view.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
-		  ((TextView)view.findViewById(R.id.taskName_edit)).setText(((TextView)view.findViewById(R.id.taskName)).getText());
-		  
-		  view.findViewById(R.id.taskInfo).setVisibility(View.VISIBLE);
-		  lastClicked = view; //Skeptical Jon is skeptical
-		  getThemTagsSon((LinearLayout)view.findViewById(R.id.tag_container), 
-				  ((EditText)view.findViewById(R.id.tags_edit)).getText().toString());
-		  
-		  ((EditText)view.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
-		  ((EditText)view.findViewById(R.id.notes)).addTextChangedListener(TasksActivity.writeNotes);
-		  ((android.widget.Button)view.findViewById(R.id.priority)).setOnClickListener(pressPriority);
-		  ((android.widget.Button)view.findViewById(R.id.timeButton)).setOnClickListener(pressDate);
-		}
-	}
-	
-	void collapse(View view)
-	{
-		if(view!=null && view.findViewById(R.id.taskInfo).getVisibility()!=View.GONE)
-		{
-		  view.findViewById(R.id.taskName).setVisibility(View.VISIBLE);
-		  view.findViewById(R.id.taskTime).setVisibility(View.VISIBLE);
-		  view.findViewById(R.id.taskName_edit).setVisibility(View.GONE);
-		  ((TextView)view.findViewById(R.id.taskName)).setText(((TextView)view.findViewById(R.id.taskName_edit)).getText());
-		  
-		  view.findViewById(R.id.taskInfo).setVisibility(View.GONE);
-		  
-		  ((EditText)view.findViewById(R.id.taskName_edit)).removeTextChangedListener(TasksActivity.writeName);
-		  ((EditText)view.findViewById(R.id.notes)).removeTextChangedListener(TasksActivity.writeNotes);
-		  ((android.widget.Button)view.findViewById(R.id.priority)).setOnClickListener(null);
-		  ((android.widget.Button)view.findViewById(R.id.timeButton)).setOnClickListener(null);
-		}
-	}
-	
+
 	OnClickListener pressPriority = new OnClickListener()
 	{
     	@Override
@@ -507,22 +468,26 @@ public class TasksActivity
 			long dateL = (Long)v.getTag();
 			Calendar date = Calendar.getInstance();
 			date.setTimeInMillis(dateL);
+            lastDate = date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+date.get(Calendar.DAY_OF_MONTH);
 			
 			if(android.os.Build.VERSION.SDK_INT<11)
 			{
-				System.out.println(v.getTag() + "->" + date.get(Calendar.YEAR) + " " + date.get(Calendar.MONTH) + " " + date.get(Calendar.DATE));
 				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
 																   date.get(Calendar.MONTH),
 																   date.get(Calendar.DATE));
 			}else
 			{
 				((android.widget.CalendarView)datePicker).setDate(dateL);
-				((android.widget.CalendarView)datePicker).setFirstDayOfWeek(Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("week_starts_on", "3")));
+                int ix = 1;
+                try {
+                    ix = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("week_starts_on", "3"));
+                }catch(Exception e) {}
+
+				((android.widget.CalendarView)datePicker).setFirstDayOfWeek(ix);
 			}
 
-			
 			datePickerDialog.showAtLocation(context.findViewById(R.id.FLIP), android.view.Gravity.CENTER, 0, 0);
-			//datePickerDialog.update(0, 0, 500, 500);
+			datePickerDialog.update(0, 0, 500, 500);
 		}
 	};
 	
@@ -569,11 +534,12 @@ public class TasksActivity
 	        @Override
 	        public void onSelectedDayChange(android.widget.CalendarView view, int year, int month, int dayOfMonth)
 	        {
-	        	updateDate(year, month, dayOfMonth);
+                if(lastDate!=(year*10000+month*100+dayOfMonth))
+	        	    updateDate(year, month, dayOfMonth);
 	        }
 	    });
 		
-		datePicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+		datePicker_.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 		datePickerDialog.setWidth(datePicker.getMeasuredWidth());
 		datePickerDialog.setHeight((datePicker.getMeasuredHeight()));
 		datePickerDialog.setOutsideTouchable(true);
@@ -585,7 +551,7 @@ public class TasksActivity
     	c.set(year, month, dayOfMonth, 0, 0, 0);
     	c.set(Calendar.MILLISECOND, 0);
     	
-    	((Button)lastClicked.findViewById(R.id.timeButton)).setText(
+    	((Button)context.findViewById(R.id.timeButton)).setText(
     			TaskAdapter.sdf.format(c.getTime())
     			);
     	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "date", c.getTimeInMillis());
@@ -639,31 +605,33 @@ public class TasksActivity
 		public void onTextChanged(CharSequence s, int start, int before, int count){}
     };
 	
-	OnItemClickListener selectTask = new OnItemClickListener() 
+	OnGroupClickListener selectTask = new OnGroupClickListener()
     {
       @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+      public boolean onGroupClick(ExpandableListView parent, View view, int position, long id)
       {
     	  if(SyncHelper.isSyncing)
-    		  return;
-    	  
-    	  if(lastClicked==view &&
-    			  view.findViewById(R.id.taskInfo).getVisibility()==View.GONE)
+    		  return false;
+
+          if(adapter.lastClicked>0)
+              ListsActivity.ta.lv.collapseGroup(adapter.lastClicked);
+          adapter.lastClicked = position;
+
+    	  if(lastClicked!=null && lastClicked==view)
     	  {
-    		  
-    		  lastClicked.setBackgroundDrawable(normalDrawable);
-    		  System.out.println("Preparing to expand");
-    		  expand(view);
+       		  lastClicked.setBackgroundDrawable(normalDrawable);
+    		  //parent.expandGroup(position);
+              return false;
     	  }
     	  else
     	  {
-    		  
-    		  collapse(lastClicked);
+    		  parent.collapseGroup(position);
     		  if(lastClicked!=null)
     			  lastClicked.setBackgroundDrawable(normalDrawable);
     		  lastClicked = view;
     		  lastClicked.setBackgroundDrawable(selectedDrawable);
     		  lastClickedID = (String) ((TextView)lastClicked.findViewById(R.id.taskId)).getText();
+              return true;
     	  }
       }
     };
@@ -701,12 +669,9 @@ public class TasksActivity
     	//Deselect an item
     	else if(lastClicked!=null || lastClickedID!=null)
     	{
-	    	collapse(lastClicked);
-	    	
-	    	//Perform update
-	    	//Name
-	    	//Notes
-	    	
+            lv.collapseGroup(adapter.lastClicked);
+            adapter.lastClicked = -1;
+	    	//collapse(lastClicked);
 	    	if(lastClicked!=null)
 	    		lastClicked.setBackgroundDrawable(normalDrawable);
 	    	lastClicked = null;

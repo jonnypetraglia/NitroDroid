@@ -19,14 +19,16 @@ Permission is granted to anyone to use this software for any purpose, including 
     android:orientation="vertical"
     android:background="?background" >
     
-   <ListView
+   <ExpandableListView
         android:id="@+id/tasksListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@android:color/transparent"
         android:padding="?tasks_padding"
-  		android:dividerHeight="?tasks_padding"/>
+  		android:dividerHeight="?tasks_padding"
+        android:groupIndicator="@null"
+           />
     
 		<TextView android:id="@+id/empty2"
                android:layout_width="wrap_content"
