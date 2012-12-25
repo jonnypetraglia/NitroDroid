@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) 2012 Qweex
+Copyright (c) 2012 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source distribution.
+-->
 <resources>
     <string name="app_name">NitroDroid</string>
     <string name="version_for_JSON">1.4.7</string>
@@ -53,5 +67,10 @@
     <string name="edit_list">Edit List</string>
     <string name="rename">Rename</string>
     <string name="delete">Delete</string>
-	
+    <string name="set_up">Set up</string>
+
+    <string-array name="weekdays_val">
+        <item>0</item> <item>1</item> <item>2</item> <item>3</item> <item>4</item> <item>5</item> <item>6</item>
+    </string-array>
+
 </resources>

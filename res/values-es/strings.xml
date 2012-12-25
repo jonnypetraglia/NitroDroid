@@ -62,7 +62,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="Medium">Prioridad media</string>
     <string name="High">Prioridad alta</string>
     <string name="None">No prioritario</string>
-    
     <string name="NoTasks">Ninguna tarea en este grupo</string>
     
     <string name="General">Opciones</string>
@@ -86,8 +85,8 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 	<string name="theme">Tema</string>
     <string name="background">Aplicar un tema personalizado</string>
+    <string name="default_background">Aplicar un tema personalizado</string>
     <string name="sync">Sync</string>
-    <string name="set_up">Set up</string>
     <string name="logout">Desconectar</string>
     <string name="none">None</string>
     
