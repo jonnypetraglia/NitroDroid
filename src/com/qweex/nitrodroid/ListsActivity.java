@@ -397,7 +397,7 @@ public class ListsActivity extends Activity
 	        	.setPositiveButton(android.R.string.ok, createList).setNegativeButton(android.R.string.cancel, null);
             editListDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.edit_list)
-                .setPositiveButton(R.string.rename,deleteList).setNegativeButton(R.string.delete,deleteList);
+                .setPositiveButton(R.string.rename,renameList).setNegativeButton(R.string.delete,deleteList);
 
 	        //Done creating
 	        loadingOnCreate = false;
@@ -426,6 +426,7 @@ public class ListsActivity extends Activity
    
 	void pressCreateList()
 	{
+        newList.setTag("create");
 		newListDialog.show();
 	}
 	
@@ -435,12 +436,28 @@ public class ListsActivity extends Activity
             String newListName = newList.getText().toString();
             if("".equals(newListName))
             	return;
-            String new_id = SyncHelper.getID();
-            Log.d("ListsActivity::createList", "Creating a List " + newListName + " [" + new_id + "]");
-            syncHelper.db.insertList(new_id, newListName, null);
-            syncHelper.db.insertListTimes(new_id, (new java.util.Date()).getTime(), 0);
+            if(newList.getTag().equals("create"))
+            {
+                String new_id = SyncHelper.getID();
+                Log.d("ListsActivity::createList", "Creating a List " + newListName + " [" + new_id + "]");
+                syncHelper.db.insertList(new_id, newListName, null);
+                syncHelper.db.insertListTimes(new_id, (new java.util.Date()).getTime(), 0);
+            } else
+            {
+                Log.d("ListsActivity::createList", "Renaming a List " + newListName);
+                syncHelper.db.modifyList(((TextView)currentList.findViewById(R.id.listId)).getText().toString(), "name", newListName);
+               }
             
             listAdapter.changeCursor(syncHelper.db.getAllLists());
+        }
+    };
+
+    DialogInterface.OnClickListener renameList = new DialogInterface.OnClickListener()
+    {
+        public void onClick(DialogInterface dialog, int whichButton) {
+            newList.setTag("rename");
+            newList.setText(((TextView)currentList.findViewById(R.id.listName)).getText());
+            newListDialog.show();
         }
     };
 

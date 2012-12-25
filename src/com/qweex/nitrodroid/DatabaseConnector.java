@@ -140,6 +140,18 @@ public class DatabaseConnector
         }
         return x;
     }
+
+    public boolean modifyList(String hash, String col, String newname)
+    {
+        ContentValues args = new ContentValues(), args2 = new ContentValues();
+        args.put(col, newname);
+        args2.put(col, (new java.util.Date()).getTime());
+        boolean x = database.update(LISTS_TABLE, args, "hash='" + hash + "'", null)>0;
+        System.out.println("Updating list" + x);
+        if(x)
+            database.update(LISTS_TIME_TABLE, args2, "hash='" + hash + "'", null);
+        return x;
+    }
 	
 	//OVERLOAD _ALL_ THE FUNCTIONS!
 	
