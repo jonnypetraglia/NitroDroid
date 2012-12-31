@@ -29,6 +29,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -177,7 +178,7 @@ public class ListsActivity extends Activity
 		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
 		
 		//If any of them have changed, rebuild the UI
-		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || !new_locale.equals(locale) || !new_background.equals(backgroundPath))
+		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || !new_locale.equals(locale) || new_background==null || !new_background.equals(backgroundPath))
 		{
 			java.util.Locale derlocale = new java.util.Locale(new_locale);
 			java.util.Locale.setDefault(derlocale);
@@ -279,6 +280,7 @@ public class ListsActivity extends Activity
 	public void doCreateStuff(boolean noSetMainView)
 	{
 		Log.d("ListsActivity::doCreateStuff", "Doing create things");
+        ta = null;
 		if(loadingOnCreate)
 			return;
 		if(!noSetMainView)
@@ -382,7 +384,7 @@ public class ListsActivity extends Activity
     		}
     	}
     }
-	
+
     AsyncTask<Void, Void, Void> doCreateAsyncronously = new AsyncTask<Void, Void, Void>()
 	{
 
@@ -392,15 +394,23 @@ public class ListsActivity extends Activity
 			syncHelper.db.open();
 			DP = context.getResources().getDisplayMetrics().density;
 
-			//Get the drawables for normal & selected according to the theme 
+			//Get the drawables for normal & selected according to the theme
 			TypedArray a;
-			a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});     
+			a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selector});
         	list_normalDrawable = a.getResourceId(0, 0);
 	        a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
         	list_selectedDrawable = a.getResourceId(0, 0);
-	        
+
         	//Create the "New List" dialog
+            // The try/catch is hopefully to fix the HTC problem.
+            // btw, FUCK htc
+            try {
 	        newList = new EditText(context);
+            } catch(RuntimeException)
+            {
+                Looper.prepare();
+                newList = new EditText(context);
+            }
 	        newList.setId(42);
 	        newListDialog = new AlertDialog.Builder(context)
 	        	.setTitle(R.string.add_list)
@@ -415,9 +425,9 @@ public class ListsActivity extends Activity
 	        Log.d("ListsActivity::doCreateThingsAsyncronously", "Done with the async stuff");
 	        doCreateThingsHandler.sendEmptyMessage(0);
 	        return null;
-        } 
+        }
    };
-   
+
    Handler doCreateThingsHandler = new Handler()
    {
  	   @Override

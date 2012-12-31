@@ -76,15 +76,11 @@ public class TasksActivity
 	
 	ExpandableListView lv;
     TaskAdapter adapter;
-	boolean allTasks = false;
 	static View lastClicked = null;
 	static EditText editingTags = null;
 	public static String lastClickedID;
-	View separator;
-	TextView tag_bubble;
 	String listName;
 	public String listHash;
-	ArrayList<String> tasksContents;
 	public Activity context;
 	QuickAction sortPopup;
 	Drawable selectedDrawable, normalDrawable;
@@ -101,11 +97,11 @@ public class TasksActivity
 		//context.requestWindowFeature(Window.FEATURE_NO_TITLE);
         sortPopup = new QuickAction(context, QuickAction.VERTICAL);
 		
-        sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.magic), context.getResources().getDrawable(R.drawable.sort_magic)));
-        sortPopup.addActionItem(new ActionItem(ID_HAND, context.getResources().getString(R.string.hand), context.getResources().getDrawable(R.drawable.sort_hand)));
-        sortPopup.addActionItem(new ActionItem(ID_TITLE, context.getResources().getString(R.string.title), createTitleDrawable()));
-        sortPopup.addActionItem(new ActionItem(ID_DATE, context.getResources().getString(R.string.date), context.getResources().getDrawable(R.drawable.sort_date)));
-        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, context.getResources().getString(R.string.priority), context.getResources().getDrawable(R.drawable.sort_priority)));
+        sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.by_magic), context.getResources().getDrawable(R.drawable.sort_magic)));
+        sortPopup.addActionItem(new ActionItem(ID_HAND, context.getResources().getString(R.string.by_hand), context.getResources().getDrawable(R.drawable.sort_hand)));
+        sortPopup.addActionItem(new ActionItem(ID_TITLE, context.getResources().getString(R.string.by_title), createTitleDrawable()));
+        sortPopup.addActionItem(new ActionItem(ID_DATE, context.getResources().getString(R.string.by_date), context.getResources().getDrawable(R.drawable.sort_date)));
+        sortPopup.addActionItem(new ActionItem(ID_PRIORITY, context.getResources().getString(R.string.by_priority), context.getResources().getDrawable(R.drawable.sort_priority)));
         sortPopup.setOnActionItemClickListener(selectSort);
         
         TypedArray a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.tasks_selector});     
@@ -424,10 +420,11 @@ public class TasksActivity
 	{
 		String tempHash;
 		String tempHashString = "";
-		if(r.getCount()>1)
+		if(r.getCount()>0)
 			r.moveToFirst();
 		for(int i=0; i<r.getCount(); i++)
 		{
+            System.out.println("HERPADERP:" + r.getColumnIndex("hash"));
 			tempHash = r.getString(r.getColumnIndex("hash"));
 			if(i>0)
 				tempHashString = tempHashString.concat("|");
@@ -452,7 +449,7 @@ public class TasksActivity
     		done.setButtonDrawable(TaskAdapter.drawsC[pri]);
     		priority.setBackgroundResource(TaskAdapter.drawsB[pri]);
     		priority.setTag(pri);
-    		priority.setText(TaskAdapter.drawsS[pri]);
+    		priority.setText(context.getString(R.string.priority) + ": " + context.getString(TaskAdapter.drawsS[pri]));
     		
     		ListsActivity.syncHelper.db.modifyTask(lastClickedID, "priority", pri);
 		}
@@ -466,14 +463,15 @@ public class TasksActivity
 		{
 			long dateL = (Long)v.getTag();
 			Calendar date = Calendar.getInstance();
-			date.setTimeInMillis(dateL);
+            if(dateL>0)
+			    date.setTimeInMillis(dateL);
             lastDate = date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+date.get(Calendar.DAY_OF_MONTH);
 			
 			if(android.os.Build.VERSION.SDK_INT<11)
 			{
-				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
+/*				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
 																   date.get(Calendar.MONTH),
-																   date.get(Calendar.DATE));
+																   date.get(Calendar.DATE));*/
 			}else
 			{
 				((android.widget.CalendarView)datePicker).setDate(dateL);
@@ -486,12 +484,13 @@ public class TasksActivity
 			}
 
 			datePickerDialog.showAtLocation(context.findViewById(R.id.FLIP), android.view.Gravity.CENTER, 0, 0);
-			datePickerDialog.update(0, 0, 500, 500);
+            int wid = context.getWindowManager().getDefaultDisplay().getWidth();
+            int het = context.getWindowManager().getDefaultDisplay().getHeight();
+			datePickerDialog.update(0, 0, wid<500?wid:500, het<500?het:500);
 		}
 	};
 	
 
-	@TargetApi(11)
 	void createCalendar()
 	{
 		if(android.os.Build.VERSION.SDK_INT<11)
@@ -512,7 +511,7 @@ public class TasksActivity
 					datePickerDialog.dismiss();
 				}
 			});
-			popupLayout.addView(datePicker_);
+			popupLayout.addView(datePicker);
 			popupLayout.addView(confirm);
 			
 			datePicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -654,13 +653,13 @@ public class TasksActivity
     		String newtags = editingTags.getText().toString();
     		
     		ArrayList<String> newtagsList = new ArrayList<String>(Arrays.asList(newtags.split(",")));
-    		
+
+            newtags = "";
     		removeDuplicateWithOrder(newtagsList);
     		for(String S : newtagsList)
     		{
     			newtags = newtags.concat(S).concat(",");
     		}
-    		
     		ListsActivity.syncHelper.db.modifyTask(lastClickedID, "tags", newtags);
     		
     		editingTags = null;
@@ -670,7 +669,6 @@ public class TasksActivity
     	{
             lv.collapseGroup(adapter.lastClicked);
             adapter.lastClicked = -1;
-	    	//collapse(lastClicked);
 	    	if(lastClicked!=null)
 	    		lastClicked.setBackgroundDrawable(normalDrawable);
 	    	lastClicked = null;
@@ -705,11 +703,12 @@ public class TasksActivity
     		tgs[i] = tgs[i].trim();
     	ArrayList<String> arList = new ArrayList<String>(Arrays.asList(tgs));
     	removeDuplicateWithOrder(arList);
-	    tag_cont.removeAllViews();
-	    
-		for(int i=0; i<arList.size()-1; i++)
+
+		for(int i=0; i<arList.size(); i++)
 		{
-			if(i>0)
+            if(i==0)
+                tag_cont.removeAllViews();
+			else
 				tag_cont.addView(new Separator(tag_cont.getContext()));
 			tag_cont.addView(new TagView(tag_cont.getContext(), arList.get(i).trim()));
 		}
@@ -717,15 +716,24 @@ public class TasksActivity
 	
     static int n, m;
     static android.widget.HorizontalScrollView s;
-	
+
 	static OnLongClickListener pressTag = new OnLongClickListener()
 	{
 		
 		@Override
 		public boolean onLongClick(View v)
 		{
-			LinearLayout tagparent = (LinearLayout) ((View)v.getParent());
-			s = (android.widget.HorizontalScrollView) tagparent.getParent();
+            LinearLayout tagparent;
+            if(v.getId()!=R.id.tag_container)
+            {
+			    tagparent = (LinearLayout) ((View)v.getParent());
+                s = (android.widget.HorizontalScrollView) tagparent.getParent();
+            }
+            else
+            {
+                tagparent = (LinearLayout)v;
+                s = (HorizontalScrollView)v.getParent();
+            }
 			LinearLayout sParent = (LinearLayout) s.getParent();
 			editingTags = (EditText) sParent.findViewById(R.id.tags_edit);
 			editingTags.setText("");
@@ -735,12 +743,14 @@ public class TasksActivity
 				@Override
 				public boolean onEditorAction(TextView tv, int actionId, KeyEvent event)
 				{
-					if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE)
+					if(  actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE
+                      || actionId == android.view.inputmethod.EditorInfo.IME_NULL )
 					{
-						System.out.println("Pressed Done you stupid son of a whore");
 						LinearLayout ll = (LinearLayout) editingTags.getParent();
-					    //getThemTagsSon((LinearLayout)ll.findViewById(R.id.tag_container), 
-						  //((EditText)ll.findViewById(R.id.tags_edit)).getText().toString());
+                        String x = tv.getText().toString();
+                        ListsActivity.syncHelper.db.modifyTask(lastClickedID, "tags", x);
+					    getThemTagsSon((LinearLayout)ll.findViewById(R.id.tag_container), x);
+						  ((EditText)ll.findViewById(R.id.tags_edit)).getText().toString();
 					    ll.findViewById(R.id.tag_scroller).setVisibility(View.VISIBLE);
 						editingTags.setVisibility(View.GONE);
 						tv.setVisibility(View.GONE);
@@ -752,33 +762,28 @@ public class TasksActivity
 			
 			for(int i=0; i<(tagparent.getChildCount()); i=i+2)
 			{
+                if(tagparent.getChildAt(i).getId()!=TaskAdapter.ID_TAG)
+                    continue;
 				if(i>0)
 					editingTags.append(", ");
 				editingTags.append(((TextView) (tagparent.getChildAt(i))).getText());
 			}
 			try {
-				n = editingTags.getText().toString().indexOf((String) ((TextView)v).getText());
+                if(v.getId()!=TaskAdapter.ID_TAG)
+                    throw new Exception();
+                String xyz = (String) ((TextView)v).getText();
+                System.out.println("Derpy: " + xyz + " - " + editingTags.getText());
+				n = editingTags.getText().toString().indexOf(xyz);
 				m = ((TextView)v).getText().length();
 			} catch(Exception e) {
 				n = editingTags.getText().length();
 				m = 0;
 			}
-			v.setOnTouchListener(new OnTouchListener(){
+            s.setVisibility(View.GONE);
+            editingTags.setVisibility(View.VISIBLE);
 
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					if(event.getAction()==MotionEvent.ACTION_UP)
-					{
-						s.setVisibility(View.GONE);
-						editingTags.setVisibility(View.VISIBLE);
-						
-						editingTags.setSelection(n+m); //, n + m);
-						editingTags.requestFocus();
-					}
-					return false;
-				}
-				
-			});
+            editingTags.setSelection(n+m); //, n + m);
+            editingTags.requestFocus();
 			return true;
 		}
 		

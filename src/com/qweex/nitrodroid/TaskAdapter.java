@@ -37,6 +37,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
     public int lastClicked = -1;
     ArrayList<TasksActivity.taskObject> a;
     public boolean isMagic;
+    protected static int ID_TAG = 11111;
 
     //God I'm fucking lazy
     public static int[] drawsB = {R.drawable.button_none, R.drawable.button_low, R.drawable.button_med, R.drawable.button_high};
@@ -205,27 +206,19 @@ public class TaskAdapter extends BaseExpandableListAdapter
 		//------Tags------
 		((EditText)row.findViewById(R.id.tags_edit)).setText(c.getString(c.getColumnIndex("tags")));
 
-		if(!(isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))).equals("") && false)
+        LinearLayout tag_cont = (LinearLayout)row.findViewById(R.id.tag_container);
+        tag_cont.setOnLongClickListener(TasksActivity.pressTag);
+
+		if(!((isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))).equals("")))
 		{
-			String[] tgs = (isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))).split(",");
-			LinearLayout tag_cont = (LinearLayout)row.findViewById(R.id.tag_container);
-			tag_cont.removeAllViews();
-			for(int i=0; i<tgs.length; i++)
-			{
-				if(i>0)
-					tag_cont.addView(new Separator(tag_cont.getContext()));
-				tag_cont.addView(new TagView(tag_cont.getContext(), tgs[i]));
-			}
+            TasksActivity.getThemTagsSon(tag_cont, (isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))) );
 		}
-        LinearLayout la = (LinearLayout)row.findViewById(R.id.tag_container);
-        String s = ((EditText)row.findViewById(R.id.tags_edit)).getText().toString();
-        TasksActivity.getThemTagsSon(la,s);
 
 		//------Priority
 		int pri = (isMagic ? T.priority : c.getInt(c.getColumnIndex("priority")));
 		priority.setBackgroundResource(drawsB[pri]);
 		priority.setTag(pri);
-		priority.setText(drawsS[pri]); //context.getResources().getString(R.string.Low));
+		priority.setText(context.getString(R.string.priority) + ": " + context.getString(drawsS[pri]));
         priority.setOnClickListener(ListsActivity.ta.pressPriority);
 		//------Date button
         long dat = (isMagic ? T.date : c.getLong(c.getColumnIndex("date")));
@@ -236,7 +229,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
 			timeButton.setText(sdf.format(d));
 		}
 		else
-			timeButton.setText(R.string.None);
+			timeButton.setText(R.string.no_date_set);
 		timeButton.setTag(dat);
         timeButton.setOnClickListener(ListsActivity.ta.pressDate);
 
@@ -303,19 +296,33 @@ public class TaskAdapter extends BaseExpandableListAdapter
 	
 	
 	
-	static public class TagView extends TextView {
+	static public class TagView extends TextView
+    {
+        boolean isEmpty = false;
 
 		public TagView(Context context, String s) {
 			super(context);
-			float DP = ListsActivity.DP;
-			setId(R.id.tag);
-			setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
-			setPadding((int)(10*DP), (int)(10*DP), (int)(10*DP), (int)(10*DP));
-			setTextSize(20*DP);
-			setTextColor(0xFF1C759C);
-			setOnLongClickListener(TasksActivity.pressTag);
-			setText(s);
+            create(context, s);
+            setId(ID_TAG);
 		}
+        public TagView(Context context, boolean b)
+        {
+            super(context);
+            isEmpty = b;
+            setId(ID_TAG+1);
+            create(context, context.getResources().getString(R.string.no_tags));
+        }
+
+        private void  create(Context context, String s)
+        {
+            float DP = ListsActivity.DP;
+            setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
+            setPadding((int)(10*DP), (int)(10*DP), (int)(10*DP), (int)(10*DP));
+            setTextSize(20*DP);
+            setTextColor(0xFF1C759C);
+            setOnLongClickListener(TasksActivity.pressTag);
+            setText(s);
+        }
 	}
 	
 	static public class Separator extends View {

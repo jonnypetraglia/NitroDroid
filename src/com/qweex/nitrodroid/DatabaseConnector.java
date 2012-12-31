@@ -375,7 +375,7 @@ public class DatabaseConnector
 	 	 	         	"notes INTEGER, " +
 	 	 	         	"list INTEGER, " +
 	 	 	         	"logged INTEGER, " +
-	 	 	         	"tags INTEGER);";
+	 	 	         	"tags TEXT);";
 	 	      db.execSQL(createQuery2);
 	 	      String createQuery3 = "CREATE TABLE " + LISTS_TABLE + " " + 
 	 		 	         "(_id integer primary key autoincrement, " +
