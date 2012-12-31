@@ -15,10 +15,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 
-import java.util.Date;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.ArrayList;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import android.widget.ExpandableListAdapter;
 import android.database.DataSetObserver;
 
 public class TaskAdapter extends BaseExpandableListAdapter
@@ -38,12 +37,14 @@ public class TaskAdapter extends BaseExpandableListAdapter
     ArrayList<TasksActivity.taskObject> a;
     public boolean isMagic;
     protected static int ID_TAG = 11111;
+    private String days[];
 
     //God I'm fucking lazy
     public static int[] drawsB = {R.drawable.button_none, R.drawable.button_low, R.drawable.button_med, R.drawable.button_high};
     public static int[] drawsC = {R.drawable.check_none, R.drawable.check_low, R.drawable.check_med, R.drawable.check_high};
     public static int[] drawsS = {R.string.None, R.string.Low, R.string.Medium, R.string.High};
-    public static java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEE, MMMM d, yyyy");
+    //public static java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEE, MMMM d, yyyy");
+    public static DateFormat sdf = DateFormat.getDateInstance(DateFormat.LONG);
 
     @Override
     public void registerDataSetObserver(DataSetObserver observer)
@@ -224,9 +225,9 @@ public class TaskAdapter extends BaseExpandableListAdapter
         long dat = (isMagic ? T.date : c.getLong(c.getColumnIndex("date")));
 		if(dat>0)
 		{
-			Date d = new Date(dat);
-			System.out.println(sdf.format(d));
-			timeButton.setText(sdf.format(d));
+            Calendar d = Calendar.getInstance();
+            d.setTimeInMillis(dat);
+			timeButton.setText(days[d.get(Calendar.DAY_OF_WEEK)-1] + ", " + sdf.format(d.getTime()));
 		}
 		else
 			timeButton.setText(R.string.no_date_set);
@@ -247,6 +248,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
 		this.c = c;
 		this.context = context;
         this.isMagic = false;
+        days = context.getResources().getStringArray(R.array.weekdays);
 	}
 
     public TaskAdapter(Context context, int layout, ArrayList<TasksActivity.taskObject> objects)
@@ -268,7 +270,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
 
 	static public String getTimeString(long dat, Context context)
 	{
-		long d = (new Date()).getTime();
+		long d = (new java.util.Date()).getTime();
 		String timeString;
 		if(dat==0)
 			timeString = "";

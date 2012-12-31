@@ -76,4 +76,5 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="no_tags">No tags</string>
     <string name="no_date_set">No Date Set</string>
     <string name="priority">Priority</string>
+    <string name="confirm">Confirm</string>
 </resources>

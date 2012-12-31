@@ -14,6 +14,7 @@ Permission is granted to anyone to use this software for any purpose, including 
  */
 package com.qweex.nitrodroid;
 
+import android.view.Gravity;
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
@@ -119,7 +120,7 @@ public class TasksActivity
 
 		popupLayout = new LinearLayout(context);
 		popupLayout.setOrientation(LinearLayout.VERTICAL);
-		popupLayout.setBackgroundColor(0xFFAAAAAA);
+		popupLayout.setBackgroundColor(0x00AAAAAA);
 		popupLayout.setPadding((int)ListsActivity.DP, (int)ListsActivity.DP, (int)ListsActivity.DP, (int)ListsActivity.DP);
 
 
@@ -424,8 +425,7 @@ public class TasksActivity
 			r.moveToFirst();
 		for(int i=0; i<r.getCount(); i++)
 		{
-            System.out.println("HERPADERP:" + r.getColumnIndex("hash"));
-			tempHash = r.getString(r.getColumnIndex("hash"));
+     			tempHash = r.getString(r.getColumnIndex("hash"));
 			if(i>0)
 				tempHashString = tempHashString.concat("|");
 			tempHashString = tempHashString.concat(tempHash);
@@ -484,9 +484,7 @@ public class TasksActivity
 			}
 
 			datePickerDialog.showAtLocation(context.findViewById(R.id.FLIP), android.view.Gravity.CENTER, 0, 0);
-            int wid = context.getWindowManager().getDefaultDisplay().getWidth();
-            int het = context.getWindowManager().getDefaultDisplay().getHeight();
-			datePickerDialog.update(0, 0, wid<500?wid:500, het<500?het:500);
+            datePickerDialog.update(0, 0, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		}
 	};
 	
@@ -497,22 +495,23 @@ public class TasksActivity
 		{
 			android.widget.DatePicker datePicker_ = new android.widget.DatePicker(context);
 			datePicker = datePicker_;
+            ((android.widget.DatePicker)datePicker).setForegroundGravity(Gravity.CENTER);
 			datePicker.setPadding((int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP));
 			Button confirm = new Button(context);
-			confirm.setPadding((int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP));
-			confirm.setText("Confirm"); //R.string.confirm);
+			confirm.setPadding((int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP));
+			confirm.setText(R.string.confirm);
 			confirm.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v)
-				{
-					updateDate(((android.widget.DatePicker)datePicker).getYear(),
-							   ((android.widget.DatePicker)datePicker).getMonth(),
-							   ((android.widget.DatePicker)datePicker).getDayOfMonth());
-					datePickerDialog.dismiss();
-				}
-			});
+                @Override
+                public void onClick(View v) {
+                    updateDate(((android.widget.DatePicker) datePicker).getYear(),
+                            ((android.widget.DatePicker) datePicker).getMonth(),
+                            ((android.widget.DatePicker) datePicker).getDayOfMonth());
+                    datePickerDialog.dismiss();
+                }
+            });
 			popupLayout.addView(datePicker);
 			popupLayout.addView(confirm);
+            popupLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.splash_bg));
 			
 			datePicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 			confirm.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -525,7 +524,7 @@ public class TasksActivity
 		datePicker = datePicker_;
 		popupLayout.addView(datePicker_, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
 		
-		datePicker_.setBackgroundColor(0xFFFFFFFF);
+		datePicker_.setBackgroundColor(0x00FFFFFF);
 		datePicker_.setShowWeekNumber(false);
 		datePicker_.setOnDateChangeListener(new android.widget.CalendarView.OnDateChangeListener() {
 

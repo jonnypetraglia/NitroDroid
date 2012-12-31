@@ -5,8 +5,6 @@
     android:id="@+id/splash"
     android:background="@drawable/splash_bg" >
 
-    
-    
     <TextView
         android:id="@+id/sweetFlatteryWillGetYouEverywhere"
         android:layout_width="wrap_content"

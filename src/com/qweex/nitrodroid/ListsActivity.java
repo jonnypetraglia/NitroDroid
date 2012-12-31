@@ -401,16 +401,8 @@ public class ListsActivity extends Activity
 	        a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
         	list_selectedDrawable = a.getResourceId(0, 0);
 
-        	//Create the "New List" dialog
-            // The try/catch is hopefully to fix the HTC problem.
-            // btw, FUCK htc
-            try {
-	        newList = new EditText(context);
-            } catch(RuntimeException)
-            {
-                Looper.prepare();
-                newList = new EditText(context);
-            }
+            Looper.prepare();   //This is to fix a problem with HTC. FUCK HTC.
+            newList = new EditText(context);
 	        newList.setId(42);
 	        newListDialog = new AlertDialog.Builder(context)
 	        	.setTitle(R.string.add_list)
