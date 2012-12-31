@@ -16,21 +16,30 @@ package com.qweex.nitrodroid;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import org.json.JSONObject;
 
 public class AuthorizeActivity extends Activity {
 
 	WebView wv;
 	String authorize_url;
     ProgressBar Pbar;
+    String serv;
+    final static String REQUEST_URL = "http://app.nitrotasks.com/request_url",
+            AUTH_URL = "http://app.nitrotasks.com/auth";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -38,50 +47,85 @@ public class AuthorizeActivity extends Activity {
 		Log.d("AuthorizeActivity", "Creating web browser thingamabob");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.auth);
-		authorize_url = getIntent().getExtras().getString("authorize_url");
-        Pbar = (ProgressBar) findViewById(R.id.progressBar);
-		
-		wv = (WebView)findViewById(R.id.webView);
-		wv.getSettings().setJavaScriptEnabled(true);
-        wv.getSettings().setBuiltInZoomControls(true);
-        wv.setInitialScale(100);
-        wv.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
-        wv.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress)
-            {
-                if(progress < 100 && Pbar.getVisibility() == ProgressBar.GONE){
-                    Pbar.setVisibility(ProgressBar.VISIBLE);
-                }
-                Pbar.setProgress(progress);
-                if(progress == 100) {
-                    Pbar.setVisibility(ProgressBar.GONE);
-                }
-            }
-        });
-		wv.setWebViewClient(new WebViewClient() {
-			
-			@TargetApi(8)
-			public void onReceivedSslError (WebView view, android.webkit.SslErrorHandler handler, android.net.http.SslError error) {
-				handler.proceed() ;
-				}
-			
-	        @Override
-	        public void onReceivedError(WebView view, int errorCode,
-	                String description, String failingUrl) {
-	        	Log.d("AuthorizeActivity:onReceivedError", "FAIL: " + failingUrl);
-	        }
-
-	        @Override
-	        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-	            view.loadUrl(url);
-	            return true;
-	        }
-		});
-		wv.loadUrl(authorize_url);
+		serv = getIntent().getExtras().getString("service");
+        setTitle("NitroDroid - " + serv);
+        loadPageAsync.execute();
 	}
-	
-	
-	
+
+
+    AsyncTask<Void, Void, Void> loadPageAsync = new AsyncTask<Void, Void, Void>()
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            Log.d("AuthorizeActivity::loadPageAsync", "Launching asyncronously");
+
+            try {
+
+                String arg1[] = {"service", serv};
+                String arg2[] = {"app", "android"};
+
+                JSONObject result = new JSONObject(QuickPrefsActivity.postData(REQUEST_URL, arg1, arg2));
+                Log.d("QuickPrefsActivity::getAuth", result.toString());
+                authorize_url = result.getString("authorize_url");
+                QuickPrefsActivity.oauth_token = result.getString("oauth_token");
+                if("dropbox".equals(serv))
+                    QuickPrefsActivity.oauth_token_secret = result.getString("oauth_token_secret");
+                else
+                    QuickPrefsActivity.oauth_token_secret = result.getString("oauth_secret");
+
+            }catch(Exception e)
+            {
+                Log.e("QuickPrefsActivity::getAuth", "An error occurred in getting the auth: " + e.getClass());
+                e.printStackTrace();
+                doBackThings();
+            }
+
+            Pbar = (ProgressBar) findViewById(R.id.progressBar);
+
+            wv = (WebView)findViewById(R.id.webView); //*/
+
+            wv.getSettings().setJavaScriptEnabled(true);
+            wv.getSettings().setBuiltInZoomControls(true);
+            wv.setInitialScale(100);
+            wv.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+            wv.setWebChromeClient(new WebChromeClient() {
+                public void onProgressChanged(WebView view, int progress)
+                {
+                    if(progress < 100 && Pbar.getVisibility() == ProgressBar.GONE){
+                        Pbar.setVisibility(ProgressBar.VISIBLE);
+                    }
+                    Pbar.setProgress(progress);
+                    if(progress == 100) {
+                        Pbar.setVisibility(ProgressBar.GONE);
+                    }
+                }
+            });
+            wv.setWebViewClient(new WebViewClient() {
+
+                @TargetApi(8)
+                public void onReceivedSslError (WebView view, android.webkit.SslErrorHandler handler, android.net.http.SslError error) {
+                    handler.proceed() ;
+                }
+
+                @Override
+                public void onReceivedError(WebView view, int errorCode,
+                                            String description, String failingUrl) {
+                    Log.d("AuthorizeActivity:onReceivedError", "FAIL: " + failingUrl);
+                }
+
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    view.loadUrl(url);
+                    return true;
+                }
+            });
+            wv.loadUrl(authorize_url);
+            return null;
+        }
+    };
+
+
 	
     @TargetApi(5)
 	public void onBackPressed()
@@ -103,7 +147,7 @@ public class AuthorizeActivity extends Activity {
     void doBackThings()
     {
     	Intent returnIntent = new Intent();
-    	if(wv.getUrl().contains("http://app.nitrotasks.com/success"))
+    	if(wv!=null && wv.getUrl().contains("http://app.nitrotasks.com/success"))
     		setResult(RESULT_OK, returnIntent);
     	else
     		setResult(RESULT_CANCELED, returnIntent);

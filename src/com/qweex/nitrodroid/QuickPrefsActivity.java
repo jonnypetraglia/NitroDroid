@@ -66,9 +66,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     private final int SYNC_ID = 1, IMAGE_ID = 2;
 	PopupWindow aboutWindow, syncWindow;
 	String[] themes;
-	final String REQUEST_URL = "http://app.nitrotasks.com/request_url",
-			     AUTH_URL = "http://app.nitrotasks.com/auth";
-	String authorize_url, oauth_token, oauth_token_secret, service;
+	static String authorize_url, oauth_token, oauth_token_secret, service;
 	Preference sync, notsync, bg, notbg;
 
 
@@ -120,7 +118,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         } catch(Exception e)
         {
             ((PreferenceCategory)findPreference("advanced")).removePreference(findPreference("force_datepicker"));
-            if(((PreferenceCategory)findPreference("advanced"))!=null && ((PreferenceCategory)findPreference("advanced")).getPreferenceCount()==0)
+            if(((PreferenceCategory)findPreference("advanced"))!=null &&
+                    ((PreferenceCategory)findPreference("advanced")).getPreferenceCount()==0)
                 getPreferenceScreen().removePreference(findPreference("advanced"));
         }
         
@@ -193,40 +192,17 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 				getAuth("ubuntu");
 		}
     };
-    
-    
+
+
+
+
     public void getAuth(String serv)
     {
     	Log.d("QuickPrefsActivity::getAuth", "Yo dawg setting you up with some auth");
-		try {
-		service = serv;
-		
-		String arg1[] = {"service", serv};
-		String arg2[] = {"app", "android"};
-		
-		JSONObject result = new JSONObject(postData(REQUEST_URL, arg1, arg2));
-		Log.d("QuickPrefsActivity::getAuth", result.toString());
-		authorize_url = result.getString("authorize_url");
-		oauth_token = result.getString("oauth_token");
-		if("dropbox".equals(service))
-			oauth_token_secret = result.getString("oauth_token_secret");
-		else
-			oauth_token_secret = result.getString("oauth_secret");
-		
-		
-		Intent auth = new Intent(QuickPrefsActivity.this, AuthorizeActivity.class);
-		auth.putExtra("authorize_url", authorize_url);
-		startActivityForResult(auth, SYNC_ID);
-		
-//		Intent i = new Intent(Intent.ACTION_VIEW);
-//		i.setData(android.net.Uri.parse(result_url));
-//		startActivity(i);
-		
-		}catch(Exception e)
-		{
-			Log.e("QuickPrefsActivity::getAuth", "An error occurred in getting the auth: " + e.getClass());
-			e.printStackTrace();
-		}
+        service = serv;
+        Intent auth = new Intent(QuickPrefsActivity.this, AuthorizeActivity.class);
+        auth.putExtra("service", serv);
+        startActivityForResult(auth, SYNC_ID);
     }
     
     
@@ -252,7 +228,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
                     String arg2[] = {"service", service};
 
                     Log.d("QuickPrefsActivity::onActivityResult", "Posting data...");
-                    String berg = postData(AUTH_URL, arg1, arg2);
+                    String berg = postData(AuthorizeActivity.AUTH_URL, arg1, arg2);
                     Log.d("QuickPrefsActivity::onActivityResult", "Result: " + berg);
                     result = new JSONObject(berg);
 
@@ -313,7 +289,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         return cursor.getString(column_index);
     }
     
-	public String postData(String URL, String first[], String second[]) throws ClientProtocolException, IOException, org.json.JSONException 
+	public static String postData(String URL, String first[], String second[]) throws ClientProtocolException, IOException, org.json.JSONException
 	{
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost(URL);
@@ -321,12 +297,12 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair(first[0], first[1]));
         nameValuePairs.add(new BasicNameValuePair(second[0], second[1]));
-        
+
 
         Log.d("QuickPrefsActivity::postData", "Posting data..." + URL);
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpclient.execute(httppost);
-        
+
         return SyncHelper.convertStreamToString(response.getEntity().getContent());
 	}
 

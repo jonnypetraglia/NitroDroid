@@ -312,6 +312,7 @@ public class TasksActivity
 				adapter.notifyDataSetChanged();
 				return;
 			case ID_HAND:
+                Toast.makeText(context, "Sorting by hand is not yet supported", Toast.LENGTH_SHORT).show();
 				return;
 			case ID_TITLE:
 				r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "name");
