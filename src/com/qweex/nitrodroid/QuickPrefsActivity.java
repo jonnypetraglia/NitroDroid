@@ -70,7 +70,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 			     AUTH_URL = "http://app.nitrotasks.com/auth";
 	String authorize_url, oauth_token, oauth_token_secret, service;
 	Preference sync, notsync, bg, notbg;
-	
+
 
 	/** Called when the activity is created. */
     @Override
@@ -97,8 +97,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         {
         	Log.d("QuickPrefsActivity", "Updating the pref for forcePhone");
         	((PreferenceCategory)findPreference("advanced")).removePreference(findPreference("force_phone"));
-        	if(((PreferenceCategory)findPreference("advanced")).getPreferenceCount()==0)
-        		getPreferenceScreen().removePreference(findPreference("advanced"));
+/*        	if(((PreferenceCategory)findPreference("advanced")).getPreferenceCount()==0)
+        		getPreferenceScreen().removePreference(findPreference("advanced"));*/
         	ListPreference l = (ListPreference) findPreference("theme");
         	String[] themes2 = getResources().getStringArray(R.array.themes);
         	themes = new String[themes2.length-1];
@@ -112,6 +112,16 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         	l.setEntryValues(themes);
         	if(ListsActivity.themeID==R.style.Right)
         		l.setValue(getResources().getString(R.string.theme1));
+        }
+
+        try
+        {
+            Class.forName("android.widget.CalendarView", false, getClassLoader());
+        } catch(Exception e)
+        {
+            ((PreferenceCategory)findPreference("advanced")).removePreference(findPreference("force_datepicker"));
+            if(((PreferenceCategory)findPreference("advanced"))!=null && ((PreferenceCategory)findPreference("advanced")).getPreferenceCount()==0)
+                getPreferenceScreen().removePreference(findPreference("advanced"));
         }
         
         //Create AboutWindow

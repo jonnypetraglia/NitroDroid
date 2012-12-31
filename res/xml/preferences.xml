@@ -83,5 +83,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 		        android:key="force_phone"
 		        android:title="@string/force_phone_mode"
 		        />
+        <CheckBoxPreference
+                android:key="force_datepicker"
+                android:title="@string/force_spinner"
+                android:summary="@string/force_spinner_txt"
+                />
     </PreferenceCategory>
 </PreferenceScreen>

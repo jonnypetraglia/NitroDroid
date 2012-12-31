@@ -49,13 +49,10 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -491,7 +488,8 @@ public class TasksActivity
 
 	void createCalendar()
 	{
-		if(android.os.Build.VERSION.SDK_INT<11)
+		if(android.os.Build.VERSION.SDK_INT<11
+                || PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean("force_spinner", false))
 		{
 			android.widget.DatePicker datePicker_ = new android.widget.DatePicker(context);
 			datePicker = datePicker_;

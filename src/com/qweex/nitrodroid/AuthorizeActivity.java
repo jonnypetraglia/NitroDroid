@@ -21,13 +21,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 public class AuthorizeActivity extends Activity {
 
 	WebView wv;
 	String authorize_url;
+    ProgressBar Pbar;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -36,13 +39,25 @@ public class AuthorizeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.auth);
 		authorize_url = getIntent().getExtras().getString("authorize_url");
-		System.out.println(authorize_url);
+        Pbar = (ProgressBar) findViewById(R.id.progressBar);
 		
 		wv = (WebView)findViewById(R.id.webView);
 		wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setBuiltInZoomControls(true);
         wv.setInitialScale(100);
         wv.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+        wv.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress)
+            {
+                if(progress < 100 && Pbar.getVisibility() == ProgressBar.GONE){
+                    Pbar.setVisibility(ProgressBar.VISIBLE);
+                }
+                Pbar.setProgress(progress);
+                if(progress == 100) {
+                    Pbar.setVisibility(ProgressBar.GONE);
+                }
+            }
+        });
 		wv.setWebViewClient(new WebViewClient() {
 			
 			@TargetApi(8)

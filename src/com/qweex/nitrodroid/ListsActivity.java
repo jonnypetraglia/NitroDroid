@@ -45,26 +45,6 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-/*	
--arabic.js
--basque.js
--bulgarian.js
-*chinese.js
-*dutch.js
-*finnish.js
-*french.js
-*german.js
--hungarian.js
-*italian.js
-*pirate.js
-*polish.js
-*portuguese.js
-*russian.js
-*spanish.js
-*turkish.js
-*vietnamese.js
-*/
-
 public class ListsActivity extends Activity
 {
 	
