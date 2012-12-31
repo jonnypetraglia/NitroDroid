@@ -67,11 +67,11 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="days_overdue">days overdue</string>
     <string name="days_left">days left</string>
 
-    <string name="magic">Magic</string>
-    <string name="hand">By hand</string>
-    <string name="title">By title</string>
-    <string name="date">By date</string>
-    <string name="priority">By priority</string>
+    <string name="by_magic">Magic</string>
+    <string name="by_hand">By hand</string>
+    <string name="by_title">By title</string>
+    <string name="by_date">By date</string>
+    <string name="by_priority">By priority</string>
     
     <string name="default_list">New List</string>
     <string name="default_task">New Task</string>

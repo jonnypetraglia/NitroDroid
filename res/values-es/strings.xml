@@ -105,11 +105,11 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="days_overdue">dÃ­as tarde</string>	<!-- WORK ON THIS -->
     <string name="days_left">Faltan días</string>	<!-- WORK ON THIS -->
 
-    <string name="magic">Mágico</string>
-    <string name="hand">A mano</string>
-    <string name="title">Por título</string>
-    <string name="date">Por fecha</string>
-    <string name="priority">Por prioridad</string>
+    <string name="by_magic">Mágico</string>
+    <string name="by_hand">A mano</string>
+    <string name="by_title">Por título</string>
+    <string name="by_date">Por fecha</string>
+    <string name="by_priority">Por prioridad</string>
     
     <string name="default_list">Nuevo grupo</string>
     <string name="default_task">Nueva tarea</string>
