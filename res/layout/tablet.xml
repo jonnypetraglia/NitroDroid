@@ -74,7 +74,7 @@ Permission is granted to anyone to use this software for any purpose, including 
         <include
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-
+        android:id="@+id/tasks_fade"
         layout="@layout/tasks" />
         </FrameLayout>
 	    

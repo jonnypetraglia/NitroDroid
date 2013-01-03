@@ -49,6 +49,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:id="@+id/tasks_fade"
      >
      
     

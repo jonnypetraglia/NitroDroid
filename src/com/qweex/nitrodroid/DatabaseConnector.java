@@ -25,6 +25,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 /** A tool for communicating with the SQlite database
  *  It has 3 different tables in it: episodes, queue, and calendar
  * @author MrQweex
@@ -350,7 +354,34 @@ public class DatabaseConnector
 		return database.query(TASKS_DEL_TABLE, new String[] {"_id", "hash", "date"}, 
 				null, null, null, null, null);
 	}
-	
+
+
+    public Set<String> getTags()
+    {
+        Set<String> derp = new HashSet<String>();
+        Cursor c =  database.query(TASKS_TABLE,
+                new String[] {"_id", "tags"},
+                null, null, null, null, null);
+        System.out.println("asdf");
+        if(c.getCount()>0)
+            c.moveToFirst();
+        while(!c.isAfterLast())
+        {
+            derp.addAll(java.util.Arrays.asList(c.getString(c.getColumnIndex("tags")).split(",")));
+            c.moveToNext();
+        }
+        return derp;
+    }
+
+    public Cursor searchTags(String term, String sortby)
+    {
+        term = "tags like '%" + term + "%'";
+        //term = term + " AND logged='0'";
+        return database.query(TASKS_TABLE,
+                new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},
+                term, null, null, null, sortby);
+    }
+
 	
 	public void createThemTables(SQLiteDatabase db)
 	{

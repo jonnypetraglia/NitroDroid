@@ -208,7 +208,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
 		((EditText)row.findViewById(R.id.tags_edit)).setText(c.getString(c.getColumnIndex("tags")));
 
         LinearLayout tag_cont = (LinearLayout)row.findViewById(R.id.tag_container);
-        tag_cont.setOnLongClickListener(TasksActivity.pressTag);
+        tag_cont.setOnLongClickListener(ListsActivity.ta.longPressTag);
 
 		if(!((isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))).equals("")))
 		{
@@ -304,8 +304,8 @@ public class TaskAdapter extends BaseExpandableListAdapter
 
 		public TagView(Context context, String s) {
 			super(context);
-            create(context, s);
             setId(ID_TAG);
+            create(context, s);
 		}
         public TagView(Context context, boolean b)
         {
@@ -322,7 +322,8 @@ public class TaskAdapter extends BaseExpandableListAdapter
             setPadding((int)(10*DP), (int)(10*DP), (int)(10*DP), (int)(10*DP));
             setTextSize(20*DP);
             setTextColor(0xFF1C759C);
-            setOnLongClickListener(TasksActivity.pressTag);
+            setOnLongClickListener(ListsActivity.ta.longPressTag);
+            setOnClickListener(ListsActivity.ta.pressTag);
             setText(s);
         }
 	}

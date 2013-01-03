@@ -99,4 +99,5 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="confirm">Confirm</string>
     <string name="force_spinner">force_spinner</string>
     <string name="force_spinner_txt">Use a spinner for dates</string>
+    <string name="tag">Tag</string>
 </resources>

@@ -15,6 +15,8 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 import android.view.Gravity;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
@@ -77,8 +79,7 @@ public class TasksActivity
 	static View lastClicked = null;
 	static EditText editingTags = null;
 	public static String lastClickedID;
-	String listName;
-	public String listHash;
+	String listName, listHash, searchTag;
 	public Activity context;
 	QuickAction sortPopup;
 	Drawable selectedDrawable, normalDrawable;
@@ -87,8 +88,7 @@ public class TasksActivity
 	LinearLayout popupLayout;
 	View datePicker;
     int lastDate = 0;
-	
-	//@Overload
+
 	public void onCreate(Bundle savedInstanceState)
 	{
 		//super.onCreate(savedInstanceState)
@@ -173,14 +173,14 @@ public class TasksActivity
         
 		lv = (ExpandableListView) ((Activity) context).findViewById(R.id.tasksListView);
 		lv.setEmptyView(context.findViewById(R.id.empty2));
-		((TextView)context.findViewById(R.id.taskTitlebar)).setText(listName);
+		((TextView)context.findViewById(R.id.taskTitlebar)).setText(searchTag != null ?
+                (context.getResources().getString(R.string.tag) + ": " + searchTag) : listName);
 		lv.setOnGroupClickListener(selectTask);
-		lv.post(new Runnable(){
-			public void run()
-			{
-				createTheAdapterYouSillyGoose();
-			}
-		});
+		lv.post(new Runnable() {
+            public void run() {
+                createTheAdapterYouSillyGoose();
+            }
+        });
 		
 	}
 	
@@ -189,6 +189,14 @@ public class TasksActivity
 		Cursor r;
 		if(listHash==null)
 			return;
+        if(searchTag!=null)
+        {
+            listHash = null;
+            r = ListsActivity.syncHelper.db.searchTags(searchTag, null);
+            adapter = new TaskAdapter(context, R.layout.task_item, r);
+            lv.setAdapter(adapter);
+            return;
+        }
 		if(listHash.equals("today"))		//Today
 		{
 			listHash = null;
@@ -548,8 +556,8 @@ public class TasksActivity
     	c.set(Calendar.MILLISECOND, 0);
     	
     	((Button)context.findViewById(R.id.timeButton)).setText(
-    			TaskAdapter.sdf.format(c.getTime())
-    			);
+                TaskAdapter.sdf.format(c.getTime())
+        );
     	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "date", c.getTimeInMillis());
     	
     	((android.widget.TextView)lastClicked.findViewById(R.id.taskTime)).setText(TaskAdapter.getTimeString(c.getTimeInMillis(), context));
@@ -669,6 +677,7 @@ public class TasksActivity
             adapter.lastClicked = -1;
 	    	if(lastClicked!=null)
 	    		lastClicked.setBackgroundDrawable(normalDrawable);
+            searchTag = null;
 	    	lastClicked = null;
 	    	lastClickedID = null;
     	}
@@ -715,7 +724,25 @@ public class TasksActivity
     static int n, m;
     static android.widget.HorizontalScrollView s;
 
-	static OnLongClickListener pressTag = new OnLongClickListener()
+    OnClickListener pressTag = new OnClickListener()
+    {
+        @Override
+        public void onClick(View view)
+        {
+            searchTag = ((TextView)view).getText().toString();
+            listHash=null;
+            listName=null;
+            lastClicked=null;
+            lastClickedID=null;
+            Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.fade_out);
+            ((Activity) view.getContext()).findViewById(R.id.tasks_fade).startAnimation(hyperspaceJumpAnimation);
+            onCreate(null);
+            Animation hyperspaceJumpAnimation2 = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.fade_in);
+            ((Activity) view.getContext()).findViewById(R.id.tasks_fade).startAnimation(hyperspaceJumpAnimation2);
+        }
+    };
+
+	static OnLongClickListener longPressTag = new OnLongClickListener()
 	{
 		
 		@Override
