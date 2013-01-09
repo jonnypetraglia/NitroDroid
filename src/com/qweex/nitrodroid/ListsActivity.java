@@ -32,12 +32,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -47,7 +43,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class ListsActivity extends Activity
 {
-	
+
+    public static boolean v2 = true;
+
 	/** Static variables concerning the preferences of the program **/
 	public static int themeID;
 	public static boolean forcePhone;
@@ -74,8 +72,9 @@ public class ListsActivity extends Activity
 	private ListView mainListView;
 	public static ListAdapter listAdapter;
 	public static ImageButton syncLoading;
-	
-	/************************** Activity Lifecycle methods **************************/ 
+    static ImageView arrow;
+
+    /************************** Activity Lifecycle methods **************************/
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -96,6 +95,13 @@ public class ListsActivity extends Activity
 		//Create/set locals
 		context = this;
 		syncHelper = new SyncHelper(context);
+
+        //Create arrow view
+        arrow = new ImageView(context);
+        arrow.setImageResource(R.drawable.arrow);
+        LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ll.gravity = Gravity.CENTER;
+        arrow.setLayoutParams(ll);
 		
 		//Show Splash
 		splash = findViewById(R.id.splash);
@@ -215,7 +221,10 @@ public class ListsActivity extends Activity
 	{
 		Log.d("ListsActivity::doViewStuff", "Doing view things");
 		//Theme
-		setTheme(themeID);
+        if(v2)
+            setTheme(R.style.Version2);
+        else
+		    setTheme(themeID);
 		
 		//Force Phone
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
@@ -223,11 +232,11 @@ public class ListsActivity extends Activity
 		{
 			Log.d("ListsActivity::doViewStuff", "Setting tablet");
 		    isTablet = true;
-		    if(themeID==R.style.Wunderlist || themeID==R.style.Right)
+		    if(themeID==R.style.Wunderlist || themeID==R.style.Right || v2)
 		    	setContentView(R.layout.tablet_right);
 		    else
 		    	setContentView(R.layout.tablet);
-		    findViewById(R.id.taskTitlebar).setVisibility(View.GONE);
+		    findViewById(R.id.taskTitlebar).setVisibility(v2 ? View.INVISIBLE : View.GONE);
 		}
 		else
 		{
@@ -236,6 +245,21 @@ public class ListsActivity extends Activity
 			setContentView(R.layout.phone);
 			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
 		}
+
+        if(v2)
+        {
+            //List toolbar stuff
+            findViewById(R.id.logo).setVisibility(View.GONE);
+            findViewById(R.id.header_underline).setVisibility(View.VISIBLE);
+            findViewById(R.id.header_underline2).setVisibility(View.VISIBLE);
+            findViewById(R.id.addbutton).setVisibility(View.GONE);
+            findViewById(R.id.deletebutton).setVisibility(View.GONE);
+            //Task toolbar stuff
+            findViewById(R.id.sync).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.emailbutton).setVisibility(View.GONE);
+            findViewById(R.id.sharebutton).setVisibility(View.GONE);
+        }
 
         //Background
         if(backgroundPath!=null)
@@ -267,7 +291,12 @@ public class ListsActivity extends Activity
 			doViewStuff();
 		
 		flip = (ViewFlipper) findViewById(R.id.FLIP);
+
+        //Add the New List editbox
 		mainListView = (ListView) findViewById(android.R.id.list);
+        newList = new EditText(this);
+        newList.setHint(R.string.default_list);
+        mainListView.addHeaderView(newList);
 		syncLoading = ((ImageButton) findViewById(R.id.sync));
 		
 		//Add them onClickListeners
@@ -315,7 +344,6 @@ public class ListsActivity extends Activity
          if(r.getCount()<3)
          {
         	 syncHelper.readJSONtoSQL("", this);
-        	 System.out.println(r.getCount());
         	 listAdapter.changeCursor(syncHelper.db.getAllLists());
          }
          mainListView.setAdapter(listAdapter);
@@ -438,7 +466,7 @@ public class ListsActivity extends Activity
             } else
             {
                 Log.d("ListsActivity::createList", "Renaming a List " + newListName);
-                syncHelper.db.modifyList(((TextView) currentList.findViewById(R.id.listId)).getText().toString(), "name", newListName);
+                syncHelper.db.modifyList((String) currentList.findViewById(R.id.listId).getTag(), "name", newListName);
                }
             
             listAdapter.changeCursor(syncHelper.db.getAllLists());
@@ -465,7 +493,7 @@ public class ListsActivity extends Activity
         DialogInterface.OnClickListener reallyDelete = new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String hash = ((TextView)currentList.findViewById(R.id.listId)).getText().toString();
+                String hash = (String) currentList.findViewById(R.id.listId).getTag();
                 syncHelper.db.deleteList(hash);
                 listAdapter.changeCursor(syncHelper.db.getAllLists());
             }
@@ -478,7 +506,7 @@ public class ListsActivity extends Activity
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
         {
-            String derp = ((TextView)view.findViewById(R.id.listId)).getText().toString();
+            String derp = (String) view.findViewById(R.id.listId).getTag();
             currentList.setBackgroundResource(list_normalDrawable);
             currentList = view;
             currentList.setBackgroundResource(list_selectedDrawable);
@@ -506,7 +534,7 @@ public class ListsActivity extends Activity
     	  //Get info
     	  String hash, name;
 		  name=(String) ((TextView)view.findViewById(R.id.listName)).getText();
-		  hash=(String)((TextView)view.findViewById(R.id.listId)).getText();
+		  hash=(String) view.findViewById(R.id.listId).getTag();
 		  Log.d("ListsActivity::selectList", "List Selected is: " + name);
 		  
 		  //parent==null signifies that it is programatically selected so no need to update.
@@ -519,11 +547,20 @@ public class ListsActivity extends Activity
 		  }
     	  
 		  //Set background of last selected to normal & the current to selected
-    	  if(isTablet && currentList!=null)
+    	  if(isTablet && currentList!=null && !v2)
     		  currentList.setBackgroundResource(list_normalDrawable);
     	  currentList = view;
     	  if(isTablet)
-    		  currentList.setBackgroundResource(list_selectedDrawable);
+          {
+              if(!v2)
+                  currentList.setBackgroundResource(list_selectedDrawable);
+              else
+              {
+                  if(arrow.getParent()!=null)
+                      ((LinearLayout)arrow.getParent()).removeView(arrow);
+                  ((LinearLayout)currentList).addView(arrow, 0);
+              }
+          }
     	  
     	  //Yay update shit
     	  TasksActivity.lastClicked = null;

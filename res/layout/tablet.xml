@@ -38,12 +38,12 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:layout_height="fill_parent"
         android:layout_weight="1"
         layout="@layout/list_header" />
-	    
+
 	    <include
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         layout="@layout/task_header" />
-	    
+
     </LinearLayout>
     
 	

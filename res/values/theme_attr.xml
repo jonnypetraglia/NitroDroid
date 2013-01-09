@@ -33,4 +33,10 @@ Permission is granted to anyone to use this software for any purpose, including 
     <attr format="reference" name="addList_button" />
     <attr format="color" name="addList_border" />
     <attr format="color" name="addList_text" />
+    <attr format="color" name="header_text" />
+    <attr format="dimension" name="header_size" />
+    <attr format="dimension" name="logo" />
+
+    <attr format="reference" name="share" />
+    <attr format="reference" name="email" />
 </resources>

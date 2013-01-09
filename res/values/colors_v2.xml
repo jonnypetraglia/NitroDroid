@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
+<!-- 
 Copyright (c) 2012 Qweex
 Copyright (c) 2012 Jon Petraglia
 
@@ -13,10 +13,12 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tag"
-    android:gravity="center"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:text="@string/no_tags" />
+<resources>
+    <color name="priority_none">#77000000</color>
+    <color name="priority_low">#FF1BC1F5</color>
+    <color name="priority_medium">#FF9DD071</color>
+    <color name="priority_high">#FFE15556</color>
+    <color name="header_text_v2">#FF068DD8</color>
+    <color name="header_v2">#FFFFFFFF</color>
+    <color name="header_underline">#FF1BC1F5</color>
+</resources>

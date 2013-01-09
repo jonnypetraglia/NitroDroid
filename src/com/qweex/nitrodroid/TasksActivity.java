@@ -17,6 +17,7 @@ package com.qweex.nitrodroid;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.*;
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
@@ -55,16 +56,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ExpandableListView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.Toast;
 
 public class TasksActivity
 {
@@ -170,10 +162,11 @@ public class TasksActivity
         });
         ((ImageButton)context.findViewById(R.id.addbutton)).setOnClickListener(clickAdd);
         ((ImageButton)context.findViewById(R.id.deletebutton)).setOnClickListener(clickDelete);
-        
+
 		lv = (ExpandableListView) ((Activity) context).findViewById(R.id.tasksListView);
 		lv.setEmptyView(context.findViewById(R.id.empty2));
-		((TextView)context.findViewById(R.id.taskTitlebar)).setText(searchTag != null ?
+        if(!ListsActivity.v2)
+		    ((TextView)context.findViewById(R.id.taskTitlebar)).setText(searchTag != null ?
                 (context.getResources().getString(R.string.tag) + ": " + searchTag) : listName);
 		lv.setOnGroupClickListener(selectTask);
 		lv.post(new Runnable() {
@@ -181,7 +174,6 @@ public class TasksActivity
                 createTheAdapterYouSillyGoose();
             }
         });
-		
 	}
 	
 	void createTheAdapterYouSillyGoose()
@@ -449,11 +441,21 @@ public class TasksActivity
     		TextView priority = (TextView) v;
     		int pri = (Integer) priority.getTag();
     		pri = (pri+1) % 4;
-    		android.widget.CheckBox done = (android.widget.CheckBox)
-    				((View)((View)v.getParent()).getParent())
-    				.findViewById(R.id.taskDone); 
-    		done.setButtonDrawable(TaskAdapter.drawsC[pri]);
-    		priority.setBackgroundResource(TaskAdapter.drawsB[pri]);
+            if(ListsActivity.v2)
+            {
+                View done = (View)
+                        ((View)((View)((View)v.getParent()).getParent()).getParent())
+                                .findViewById(R.id.taskId);
+                done.setBackgroundColor(TaskAdapter.v2_clrs[pri]);
+            }
+            else
+            {
+                android.widget.CheckBox done = (android.widget.CheckBox)
+                        ((View)((View)v.getParent()).getParent())
+                        .findViewById(R.id.taskDone);
+                done.setButtonDrawable(TaskAdapter.drawsC[pri]);
+            }
+            priority.setBackgroundResource(TaskAdapter.drawsB[pri]);
     		priority.setTag(pri);
     		priority.setText(context.getString(R.string.priority) + ": " + context.getString(TaskAdapter.drawsS[pri]));
     		
@@ -623,19 +625,22 @@ public class TasksActivity
 
     	  if(lastClicked!=null && lastClicked==view)
     	  {
-       		  lastClicked.setBackgroundDrawable(normalDrawable);
-    		  //parent.expandGroup(position);
+              if(!ListsActivity.v2)
+                  lastClicked.setBackgroundDrawable(normalDrawable);
               return false;
     	  }
     	  else
     	  {
-    		  parent.collapseGroup(position);
-    		  if(lastClicked!=null)
-    			  lastClicked.setBackgroundDrawable(normalDrawable);
+              if(!ListsActivity.v2)
+              {
+                  parent.collapseGroup(position);
+                  if(lastClicked!=null)
+                      lastClicked.setBackgroundDrawable(normalDrawable);
+                  view.setBackgroundDrawable(selectedDrawable);
+              }
     		  lastClicked = view;
-    		  lastClicked.setBackgroundDrawable(selectedDrawable);
-    		  lastClickedID = (String) ((TextView)lastClicked.findViewById(R.id.taskId)).getText();
-              return true;
+    		  lastClickedID = (String) (lastClicked.findViewById(R.id.taskId).getTag());
+              return !ListsActivity.v2; //true;
     	  }
       }
     };
@@ -675,7 +680,7 @@ public class TasksActivity
     	{
             lv.collapseGroup(adapter.lastClicked);
             adapter.lastClicked = -1;
-	    	if(lastClicked!=null)
+	    	if(lastClicked!=null && !ListsActivity.v2)
 	    		lastClicked.setBackgroundDrawable(normalDrawable);
             searchTag = null;
 	    	lastClicked = null;

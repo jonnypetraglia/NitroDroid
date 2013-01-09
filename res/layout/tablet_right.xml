@@ -32,13 +32,13 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal" >
-	        
+
 	    <include
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         layout="@layout/list_header" />
-	    
+
 	    <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

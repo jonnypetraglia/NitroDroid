@@ -13,54 +13,63 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/master"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/tasks_selector"
-    android:orientation="horizontal"
-    android:padding="8dp" >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:background="?attr/tasks_selector"
+                  >
 
-        <TextView
+    <View
             android:id="@+id/taskId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <CheckBox
-            android:id="@+id/taskDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:button="?attr/checkbox"
-            android:focusable="false"
-            android:gravity="center_vertical" />
-
-        <EditText
-            android:id="@+id/taskName_edit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:textSize="25dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/taskName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="Task Name"
-            android:textSize="25dp" />
-
-        <TextView
-            android:id="@+id/taskTime"
-            android:layout_width="wrap_content"
+            android:layout_width="5dp"
             android:layout_height="fill_parent"
-            android:gravity="center_vertical"
-            android:text="when due" />
+            android:textSize="0dp"
+            android:background="#aa5af3" />
 
+
+    <LinearLayout
+        android:id="@+id/master"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="7dp"
+        android:orientation="horizontal" >
+
+
+            <CheckBox
+                android:id="@+id/taskDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:button="?attr/checkbox"
+                android:focusable="false"
+                android:gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/taskName_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:textSize="25dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/taskName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Task Name"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/taskTime"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:text="when due" />
+
+    </LinearLayout>
 </LinearLayout>

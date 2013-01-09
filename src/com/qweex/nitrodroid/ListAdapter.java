@@ -21,17 +21,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 
 public class ListAdapter extends SimpleCursorAdapter
 {
-    private Cursor c;
-    private Context context;
     int todayCount = 0;
     int totalCount = 0;
     View clickThisPlz;
+	//I do not like the existence of these two things but I cbf to work around it
+	android.os.Handler hd = new android.os.Handler();
+    Runnable rd = new Runnable()
+    {
+    	@Override
+		public void run()
+    	{
+    		ListsActivity.selectList.onItemClick(null, clickThisPlz, 0, 0);
+    	}
+    };
+    private Cursor c;
+    private Context context;
 
 	public ListAdapter(Context context, int layout, Cursor c)
 	{
@@ -62,22 +73,49 @@ public class ListAdapter extends SimpleCursorAdapter
 		}
 		this.c = getCursor();
         this.c.moveToPosition(pos);
-		
+
 		//Get the data
 		String hash = this.c.getString(this.c.getColumnIndex("hash"));
 		String name = this.c.getString(this.c.getColumnIndex("name"));
 //        String tasks_in_order = this.c.getString(this.c.getColumnIndex("tasks_in_order"));
-		
+
 		//Set that shit!
-        ((TextView)row.findViewById(R.id.listId)).setText(hash);
+        row.findViewById(R.id.listId).setTag(hash);
         ((TextView)row.findViewById(R.id.listName)).setText(name);
         if(hash.equals("all"))
+        {
         	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(totalCount));
+            if(ListsActivity.v2)
+            {
+                ((ImageView)row.findViewById(R.id.listId)).setVisibility(View.VISIBLE);
+                ((ImageView)row.findViewById(R.id.listId)).setImageResource(R.drawable.all);
+            }
+        }
+        else if(hash.equals("inbox"))
+        {
+            if(ListsActivity.v2)
+            {
+                ((ImageView)row.findViewById(R.id.listId)).setVisibility(View.VISIBLE);
+                ((ImageView)row.findViewById(R.id.listId)).setImageResource(R.drawable.inbox);
+            }
+        }
         else if(hash.equals("today")) //Today
+        {
         	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(todayCount));
+        }
         else
-        	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(hash)));
-		
+        {
+            if(hash.equals("logbook"))
+            {
+                if(ListsActivity.v2)
+                {
+                    ((ImageView)row.findViewById(R.id.listId)).setVisibility(View.VISIBLE);
+                    ((ImageView)row.findViewById(R.id.listId)).setImageResource(R.drawable.completed);
+                }
+            }
+            ((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(hash)));
+        }
+
         //Select it if it is the last used List
         if(ListsActivity.isTablet && hash.equals(ListsActivity.lastList))
 		{
@@ -85,20 +123,7 @@ public class ListAdapter extends SimpleCursorAdapter
 			clickThisPlz = row;
 			hd.post(rd);
 		}
-        
+
 		return row;
 	}
-	
-	
-	
-	//I do not like the existence of these two things but I cbf to work around it
-	android.os.Handler hd = new android.os.Handler();
-    Runnable rd = new Runnable()
-    {
-    	@Override
-		public void run()
-    	{
-    		ListsActivity.selectList.onItemClick(null, clickThisPlz, 0, 0);
-    	}
-    };
 }

@@ -14,17 +14,23 @@ Permission is granted to anyone to use this software for any purpose, including 
     3. This notice may not be removed or altered from any source distribution.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+<LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="?header" >
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/toolbar_buttons"
                 android:padding="10dp"
-                android:src="@drawable/logo" />
+                android:layout_gravity="center"
+                android:src="?logo" />
 
             <TextView
                 android:id="@+id/appTitle"
@@ -34,8 +40,9 @@ Permission is granted to anyone to use this software for any purpose, including 
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:text="NitroDroid"
-                android:textColor="@android:color/white"
-                android:textSize="20dp" />
+                android:textStyle="bold"
+                android:textColor="?header_text"
+                android:textSize="?header_size" />
 
             <ImageButton
                 android:id="@+id/sync"
@@ -52,4 +59,13 @@ Permission is granted to anyone to use this software for any purpose, including 
                 android:background="@drawable/toolbar_buttons"
                 android:padding="10dp"
                 android:src="@drawable/settings" />
+</LinearLayout>
+
+        <View
+            android:id="@+id/header_underline"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:visibility="gone"
+            android:background="@color/header_underline"/>
+
 </LinearLayout>

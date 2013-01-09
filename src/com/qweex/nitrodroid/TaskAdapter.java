@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -43,6 +44,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
     public static int[] drawsB = {R.drawable.button_none, R.drawable.button_low, R.drawable.button_med, R.drawable.button_high};
     public static int[] drawsC = {R.drawable.check_none, R.drawable.check_low, R.drawable.check_med, R.drawable.check_high};
     public static int[] drawsS = {R.string.None, R.string.Low, R.string.Medium, R.string.High};
+    public static int[] v2_clrs = {R.color.priority_none, R.color.priority_low, R.color.priority_medium, R.color.priority_high};
     //public static java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEE, MMMM d, yyyy");
     public static DateFormat sdf = DateFormat.getDateInstance(DateFormat.LONG);
 
@@ -162,7 +164,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
         else
             this.c.moveToPosition(groupPosition);
 
-        TextView id=(TextView)row.findViewById(R.id.taskId);
+        View id= row.findViewById(R.id.taskId);
         TextView name=(TextView)row.findViewById(R.id.taskName);
         EditText name_edit=(EditText)row.findViewById(R.id.taskName_edit);
         TextView time=(TextView)row.findViewById(R.id.taskTime);
@@ -174,13 +176,20 @@ public class TaskAdapter extends BaseExpandableListAdapter
 			TasksActivity.lastClicked = row;
 		}
 
-        id.setText(hash);
+        id.setTag(hash);
         //------Name & Done checkmark------
         name.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));
         name_edit.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));
         done.setChecked((isMagic ? T.logged : c.getLong(c.getColumnIndex("logged")))>0);
         int pri = (isMagic ? T.priority : c.getInt(c.getColumnIndex("priority")));
-        done.setButtonDrawable(drawsC[pri]);
+        System.out.println("HRERER " + row.findViewById(R.id.taskId).getClass() + " " + row.getContext().getResources().getColor(v2_clrs[pri]) + " | " + pri);
+        if(ListsActivity.v2)
+        {
+            row.findViewById(R.id.taskId).setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[pri]));
+        }
+        else
+            done.setButtonDrawable(drawsC[pri]);
+
         ((EditText)row.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
 
         long dat = (isMagic ? T.date : c.getLong(c.getColumnIndex("date")));
@@ -217,7 +226,9 @@ public class TaskAdapter extends BaseExpandableListAdapter
 
 		//------Priority
 		int pri = (isMagic ? T.priority : c.getInt(c.getColumnIndex("priority")));
-		priority.setBackgroundResource(drawsB[pri]);
+        View tid = parent.findViewById(R.id.taskId);
+        tid.setVisibility(View.GONE);
+        priority.setBackgroundResource(drawsB[pri]);
 		priority.setTag(pri);
 		priority.setText(context.getString(R.string.priority) + ": " + context.getString(drawsS[pri]));
         priority.setOnClickListener(ListsActivity.ta.pressPriority);

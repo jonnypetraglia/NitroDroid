@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?header" >
 
@@ -10,10 +15,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:text="Show Title"
-            android:textColor="@android:color/white"
-            android:textSize="20dp" />
+            android:text=""
+            android:textStyle="bold"
+            android:textColor="?header_text"
+            android:textSize="?header_size" />
+
 
         <ImageButton
             android:id="@+id/addbutton"
@@ -21,6 +27,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
+            android:layout_gravity="center"
             android:src="?add" />
 
         <ImageButton
@@ -29,6 +36,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
+            android:layout_gravity="center"
             android:src="?delete" />
 
         <ImageButton
@@ -37,6 +45,34 @@
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_buttons"
             android:padding="10dp"
+            android:layout_gravity="center"
             android:src="?sort" />
+
+        <ImageButton
+                android:id="@+id/emailbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/toolbar_buttons"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:src="?email" />
+
+        <ImageButton
+                android:id="@+id/sharebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/toolbar_buttons"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:src="?share" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/header_underline2"
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:visibility="gone"
+        android:background="@color/header_underline"/>
 
     </LinearLayout>
