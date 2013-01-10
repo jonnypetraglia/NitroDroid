@@ -26,6 +26,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,6 +38,8 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -73,6 +76,7 @@ public class ListsActivity extends Activity
 	public static ListAdapter listAdapter;
 	public static ImageButton syncLoading;
     static ImageView arrow;
+    public static Typeface theTypeface;
 
     /************************** Activity Lifecycle methods **************************/
 	
@@ -82,7 +86,7 @@ public class ListsActivity extends Activity
 		super.onCreate(savedInstanceState);
 		Log.d("ListsActivity::()", "Creating ListsActivity");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+
 		//Load preferences
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
@@ -129,16 +133,17 @@ public class ListsActivity extends Activity
 		{
 			Log.d("ListsActivity::onCreateOptionsMenu", "'s a tablet. Doing some shit that I forget why I did it.");
 			findViewById(R.id.frame).setVisibility(View.VISIBLE);
-			((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener(){
+			/*((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v)
 				{
 					pressCreateList();
 				}
-			});
+			});*/
 			return false;
 		}
-		menu.add(0, 42, 0, getResources().getString(R.string.add_list));
+        if(!v2)
+		    menu.add(0, 42, 0, getResources().getString(R.string.add_list));
 		return true;
     }
 	
@@ -162,7 +167,7 @@ public class ListsActivity extends Activity
 		int new_themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
-		
+
 		//If any of them have changed, rebuild the UI
 		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || !new_locale.equals(locale) || new_background==null || !new_background.equals(backgroundPath))
 		{
@@ -246,19 +251,39 @@ public class ListsActivity extends Activity
 			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
 		}
 
+        //Time to set the typeface
+        theTypeface = Typeface.createFromAsset(getAssets(), "Lato-Regular.ttf");
+        ((TextView)findViewById(R.id.sweetFlatteryWillGetYouEverywhere)).setTypeface(theTypeface);
+        ((TextView)findViewById(R.id.appTitle)).setTypeface(theTypeface);
+        ((TextView)findViewById(R.id.taskTitlebar)).setTypeface(theTypeface);
+        ((TextView)findViewById(R.id.empty2)).setTypeface(theTypeface);
+        //task_item_details: tags_edit
+        //task_item_empty_tag
+        //QuickPrefs: textView1, dropbox_button, ubuntu_button
+
+        //Make alterations for version 2
         if(v2)
         {
             //List toolbar stuff
             findViewById(R.id.logo).setVisibility(View.GONE);
-            findViewById(R.id.header_underline).setVisibility(View.VISIBLE);
-            findViewById(R.id.header_underline2).setVisibility(View.VISIBLE);
             findViewById(R.id.addbutton).setVisibility(View.GONE);
             findViewById(R.id.deletebutton).setVisibility(View.GONE);
             //Task toolbar stuff
             findViewById(R.id.sync).setVisibility(View.GONE);
-        } else {
-            findViewById(R.id.emailbutton).setVisibility(View.GONE);
-            findViewById(R.id.sharebutton).setVisibility(View.GONE);
+            findViewById(R.id.sortbutton).setVisibility(View.GONE);
+
+            ((ImageButton)findViewById(R.id.sync)).setImageResource(R.drawable.sort);
+            if(!forcePhone && isTabletDevice(this))
+                findViewById(R.id.sync).setVisibility(View.INVISIBLE);
+            else
+                findViewById(R.id.sync).setVisibility(View.GONE);
+            //findViewById(R.id.settings).setVisibility(View.GONE); //Derp
+            findViewById(R.id.settings).setPadding(0,0,10,0);
+        } else
+        {
+            findViewById(R.id.optionsbutton).setVisibility(View.GONE);
+            if(forcePhone || !isTabletDevice(this))
+                findViewById(R.id.backbutton).setVisibility(View.GONE);
         }
 
         //Background
@@ -294,20 +319,36 @@ public class ListsActivity extends Activity
 
         //Add the New List editbox
 		mainListView = (ListView) findViewById(android.R.id.list);
-        newList = new EditText(this);
-        newList.setHint(R.string.default_list);
-        mainListView.addHeaderView(newList);
+        if(v2)
+        {
+            FrameLayout fl = new FrameLayout(this);
+            newList = (EditText) findViewById(R.id.newList);
+            newList.setTypeface(theTypeface);
+            newList.setOnEditorActionListener(newListListener);
+
+            newList.setOnTouchListener(new RightDrawableOnTouchListener(newList) {
+                @Override
+                public boolean onDrawableTouch(final MotionEvent event) {
+                    Log.d("HERP", "Pressed drawable");
+                    String newListName = newList.getText().toString();
+                    reallyCreateList(newListName);
+                    return true;
+                }
+            });
+        }
+
+
 		syncLoading = ((ImageButton) findViewById(R.id.sync));
 		
 		//Add them onClickListeners
-		((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener()
+		/*((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
 				newListDialog.show();
 			}
-		});
+		});*/
 		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -459,10 +500,7 @@ public class ListsActivity extends Activity
             	return;
             if(newList.getTag().equals("create"))
             {
-                String new_id = SyncHelper.getID();
-                Log.d("ListsActivity::createList", "Creating a List " + newListName + " [" + new_id + "]");
-                syncHelper.db.insertList(new_id, newListName, null);
-                syncHelper.db.insertListTimes(new_id, (new java.util.Date()).getTime(), 0);
+                reallyCreateList(newListName);
             } else
             {
                 Log.d("ListsActivity::createList", "Renaming a List " + newListName);
@@ -472,6 +510,23 @@ public class ListsActivity extends Activity
             listAdapter.changeCursor(syncHelper.db.getAllLists());
         }
     };
+
+
+    void reallyCreateList(String newListName)
+    {
+        if("".equals(newListName))
+            return;
+        newList.setText("");
+        String new_id = SyncHelper.getID();
+        Log.d("ListsActivity::createList", "Creating a List " + newListName + " [" + new_id + "]");
+        Toast.makeText(context, "Created list: " + newListName, Toast.LENGTH_SHORT).show();
+        syncHelper.db.insertList(new_id, newListName, null);
+        syncHelper.db.insertListTimes(new_id, (new java.util.Date()).getTime(), 0);
+        Log.d("Dsadsadsa", newListName + " ");
+        listAdapter.changeCursor(syncHelper.db.getAllLists());
+        InputMethodManager imm = (InputMethodManager)newList.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(newList.getWindowToken(), 0);
+    }
 
     DialogInterface.OnClickListener renameList = new DialogInterface.OnClickListener()
     {
@@ -507,9 +562,12 @@ public class ListsActivity extends Activity
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
         {
             String derp = (String) view.findViewById(R.id.listId).getTag();
-            currentList.setBackgroundResource(list_normalDrawable);
+            if(!v2)
+            {
+                currentList.setBackgroundResource(list_normalDrawable);
+                view.setBackgroundResource(list_selectedDrawable);
+            }
             currentList = view;
-            currentList.setBackgroundResource(list_selectedDrawable);
             if(derp.equals("today") || derp.equals("next") || derp.equals("logbook") || derp.equals("all"))
                 return true;
             TextView tv = new TextView(view.getContext());
@@ -597,8 +655,22 @@ public class ListsActivity extends Activity
           }
       }
     };
-    
-   
+
+
+
+    TextView.OnEditorActionListener newListListener = new TextView.OnEditorActionListener()
+    {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL)
+            {
+                String newListName = v.getText().toString();
+                reallyCreateList(newListName);
+                return true;
+            }
+            return false;
+        }
+    };
     
     
     /************************** Utility methods **************************/

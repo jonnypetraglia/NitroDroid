@@ -13,11 +13,26 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-    android:orientation="vertical"
-     >
+        android:orientation="vertical" >
+
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5px">
+        <EditText
+                android:id="@+id/newList"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:singleLine="true"
+                android:hint="New List"
+                android:background="@drawable/textfield_default"
+                android:drawableRight="@drawable/ic_input_add"
+                android:imeOptions="actionDone" />
+    </FrameLayout>
+
 
    <ListView
 		android:id="@android:id/list"
@@ -30,23 +45,5 @@ Permission is granted to anyone to use this software for any purpose, including 
 		android:layout_above="@+id/frame"
 		android:layout_alignParentTop="true"
 		android:dividerHeight="?lists_padding"/>
-        
 
-        <FrameLayout 
-            android:id="@+id/frame"
-            android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:layout_alignParentBottom="true"
-         android:background="?addList_border"
-         android:paddingTop="1dp"
-         android:visibility="gone" >
-
-     <Button
-         android:id="@+id/add_list"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:text="@string/add_list"
-         android:textColor="?addList_text"
-         android:background="?addList_button"/>
-	</FrameLayout>
-</RelativeLayout>
+</LinearLayout>

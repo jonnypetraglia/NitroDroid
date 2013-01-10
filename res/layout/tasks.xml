@@ -17,28 +17,47 @@ Permission is granted to anyone to use this software for any purpose, including 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5px">
+
+        <EditText
+                android:id="@+id/newTask"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:singleLine="true"
+                android:hint="What do you need to do?"
+                android:background="@drawable/textfield_default"
+                android:drawableRight="@drawable/ic_input_add"
+                android:imeOptions="actionDone" />
+    </FrameLayout>
+
    <ExpandableListView
         android:id="@+id/tasksListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@android:color/transparent"
-        android:padding="?tasks_padding"
-  		android:dividerHeight="?tasks_padding"
+        android:paddingTop="?tasks_padding_vert"
+        android:paddingBottom="?tasks_padding_vert"
+        android:paddingLeft="?tasks_padding_horz"
+        android:paddingRight="?tasks_padding_horz"
+  		android:dividerHeight="?tasks_padding_vert"
         android:groupIndicator="@null"
            />
     
-		<TextView android:id="@+id/empty2"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center_horizontal"
-               android:gravity="center_horizontal"
-               android:background="?empty_background"
-               android:textSize="20dp"
-               android:text="@string/NoTasks"
-               android:layout_marginTop="50dp"
-               android:padding="30dp"
-               />
+    <TextView android:id="@+id/empty2"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center_horizontal"
+       android:gravity="center_horizontal"
+       android:background="?empty_background"
+       android:textSize="20dp"
+       android:text="@string/NoTasks"
+       android:layout_marginTop="50dp"
+       android:padding="30dp"
+       />
 
 </LinearLayout>

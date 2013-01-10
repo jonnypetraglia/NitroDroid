@@ -26,6 +26,6 @@
 		android:paddingRight="10dip"
 		android:text="Chart"
 		android:textSize="17dp"
-		android:textColor="#fff"/>
+		android:textColor="?action_item_txt"/> <!-- Changed this to use a theme -->
 									         
 </LinearLayout>

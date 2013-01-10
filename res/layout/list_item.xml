@@ -37,7 +37,7 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:padding="10dp"
         android:paddingLeft="3dp"
         android:text="List Name"
-        android:textSize="30dp" />
+        android:textSize="?list_size" />
 
     <TextView
         android:id="@+id/listNumber"

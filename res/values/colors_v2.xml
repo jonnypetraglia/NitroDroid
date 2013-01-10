@@ -14,11 +14,12 @@ Permission is granted to anyone to use this software for any purpose, including 
     3. This notice may not be removed or altered from any source distribution.
  -->
 <resources>
-    <color name="priority_none">#77000000</color>
+    <color name="priority_none">#FFCCCCCC</color>
     <color name="priority_low">#FF1BC1F5</color>
     <color name="priority_medium">#FF9DD071</color>
     <color name="priority_high">#FFE15556</color>
-    <color name="header_text_v2">#FF068DD8</color>
-    <color name="header_v2">#FFFFFFFF</color>
+    <color name="header_text_v2">#FFFFFFFF</color>
+    <color name="header_v2">#FF068DD8</color>
     <color name="header_underline">#FF1BC1F5</color>
+    <color name="tasks_bg_v2">#FFeeeeee</color>
 </resources>

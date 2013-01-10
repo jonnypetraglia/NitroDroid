@@ -129,24 +129,25 @@ public class TaskAdapter extends BaseExpandableListAdapter
             view.findViewById(R.id.taskName_edit).setVisibility(View.GONE);
             ((TextView)view.findViewById(R.id.taskName)).setText(((TextView)view.findViewById(R.id.taskName_edit)).getText());
 
-/*            View child = ((ViewGroup)view).getChildAt(((ViewGroup)view).getChildCount());
             ((EditText)view.findViewById(R.id.taskName_edit)).removeTextChangedListener(TasksActivity.writeName);
+
+            View child = ((ViewGroup)view.getParent()).getChildAt(1);   //This is the root view of task_item_details
             ((EditText)child.findViewById(R.id.notes)).removeTextChangedListener(TasksActivity.writeNotes);
             ((android.widget.Button)child.findViewById(R.id.priority)).setOnClickListener(null);
-            ((android.widget.Button)child.findViewById(R.id.timeButton)).setOnClickListener(null); */
+            ((android.widget.Button)child.findViewById(R.id.timeButton)).setOnClickListener(null); //*/
         }
     }
     @Override
     public void onGroupExpanded(int groupPosition)
     {
-        System.out.println("HERP");
         View view = TasksActivity.lastClicked;
-        if(view!=null && false)
+        if(view!=null)
         {
             view.findViewById(R.id.taskName).setVisibility(View.GONE);
             view.findViewById(R.id.taskTime).setVisibility(View.GONE);
             view.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
             ((TextView)view.findViewById(R.id.taskName_edit)).setText(((TextView)view.findViewById(R.id.taskName)).getText());
+            ((EditText)view.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
         }
     }
 
@@ -170,6 +171,12 @@ public class TaskAdapter extends BaseExpandableListAdapter
         TextView time=(TextView)row.findViewById(R.id.taskTime);
         CheckBox done=(CheckBox)row.findViewById(R.id.taskDone);
         String hash = (isMagic ? T.hash :  c.getString(c.getColumnIndex("hash")));
+
+        //Typeface
+        name.setTypeface(ListsActivity.theTypeface);
+        name_edit.setTypeface(ListsActivity.theTypeface);
+        time.setTypeface(ListsActivity.theTypeface);
+
         //------ID------
 		if(hash.equals(TasksActivity.lastClickedID))
 		{
@@ -182,15 +189,15 @@ public class TaskAdapter extends BaseExpandableListAdapter
         name_edit.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));
         done.setChecked((isMagic ? T.logged : c.getLong(c.getColumnIndex("logged")))>0);
         int pri = (isMagic ? T.priority : c.getInt(c.getColumnIndex("priority")));
-        System.out.println("HRERER " + row.findViewById(R.id.taskId).getClass() + " " + row.getContext().getResources().getColor(v2_clrs[pri]) + " | " + pri);
         if(ListsActivity.v2)
         {
             row.findViewById(R.id.taskId).setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[pri]));
+            id.setVisibility(View.VISIBLE);
         }
         else
             done.setButtonDrawable(drawsC[pri]);
 
-        ((EditText)row.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
+//        ((EditText)row.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
 
         long dat = (isMagic ? T.date : c.getLong(c.getColumnIndex("date")));
         String timeString = getTimeString(dat, name.getContext());
@@ -212,22 +219,38 @@ public class TaskAdapter extends BaseExpandableListAdapter
         Button priority=(Button)row.findViewById(R.id.priority);
         EditText notes=(EditText)row.findViewById(R.id.notes);
 
+        //Typeface
+        timeButton.setTypeface(ListsActivity.theTypeface);
+        priority.setTypeface(ListsActivity.theTypeface);
+        notes.setTypeface(ListsActivity.theTypeface);
+
 
 		//------Tags------
-		((EditText)row.findViewById(R.id.tags_edit)).setText(c.getString(c.getColumnIndex("tags")));
+        if(ListsActivity.v2)
+        {
+            row.findViewById(R.id.tag_scroller).setVisibility(View.GONE);
+        }
+        else
+        {
+		    ((EditText)row.findViewById(R.id.tags_edit)).setText(c.getString(c.getColumnIndex("tags")));
+            LinearLayout tag_cont = (LinearLayout)row.findViewById(R.id.tag_container);
+            tag_cont.setOnLongClickListener(ListsActivity.ta.longPressTag);
 
-        LinearLayout tag_cont = (LinearLayout)row.findViewById(R.id.tag_container);
-        tag_cont.setOnLongClickListener(ListsActivity.ta.longPressTag);
-
-		if(!((isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))).equals("")))
-		{
-            TasksActivity.getThemTagsSon(tag_cont, (isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))) );
-		}
+            if(!((isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))).equals("")))
+            {
+                TasksActivity.getThemTagsSon(tag_cont, (isMagic ? T.tags : c.getString(c.getColumnIndex("tags"))) );
+            }
+        }
 
 		//------Priority
 		int pri = (isMagic ? T.priority : c.getInt(c.getColumnIndex("priority")));
-        View tid = parent.findViewById(R.id.taskId);
-        tid.setVisibility(View.GONE);
+        if(ListsActivity.v2)
+        {
+            View tid = row.findViewById(R.id.taskId2);
+            tid.setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[pri]));
+            tid.setVisibility(View.VISIBLE);
+        }
+
         priority.setBackgroundResource(drawsB[pri]);
 		priority.setTag(pri);
 		priority.setText(context.getString(R.string.priority) + ": " + context.getString(drawsS[pri]));
@@ -336,6 +359,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
             setOnLongClickListener(ListsActivity.ta.longPressTag);
             setOnClickListener(ListsActivity.ta.pressTag);
             setText(s);
+            setTypeface(ListsActivity.theTypeface);
         }
 	}
 	

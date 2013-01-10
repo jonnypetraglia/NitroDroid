@@ -112,6 +112,9 @@ public class ListAdapter extends SimpleCursorAdapter
                     ((ImageView)row.findViewById(R.id.listId)).setVisibility(View.VISIBLE);
                     ((ImageView)row.findViewById(R.id.listId)).setImageResource(R.drawable.completed);
                 }
+            } else
+            {
+                ((ImageView)row.findViewById(R.id.listId)).setVisibility(View.GONE);
             }
             ((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(numberOfTags(hash)));
         }

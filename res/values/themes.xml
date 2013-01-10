@@ -27,6 +27,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 	    <item name="android:calendarViewStyle">@style/Widget.CalendarView.Custom</item>
     	<item name="header"> @drawable/header_default </item>
     	<item name="action_item_btn"> @drawable/action_item_btn </item>
+        <item name="action_item_txt"> #fff </item>
     	<item name="popup"> @drawable/popup_default </item>
     	<item name="tag_scroller"> @drawable/tag_scroller_default </item>
     	<item name="tasks_selector"> @drawable/tasks_selector_default </item>
@@ -39,7 +40,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="sort"> @drawable/sort_old </item>
     	<item name="background"> @android:color/transparent </item>
     	<item name="empty_background"> #66ffffff </item>
-    	<item name="tasks_padding"> 0dp </item>
+    	<item name="tasks_padding_vert"> 0dp </item>
+        <item name="tasks_padding_horz"> 0dp </item>
     	<item name="lists_padding"> 0dp </item>
     	<item name="addList_button"> @drawable/addlist_default </item>
     	<item name="addList_border"> @color/addlist_border_default </item>
@@ -47,9 +49,11 @@ Permission is granted to anyone to use this software for any purpose, including 
         <item name="header_text"> @android:color/white</item>
         <item name="header_size"> 20dp </item>
         <item name="logo"> @drawable/logo </item>
-
+        <item name="header_padding"> 0dp </item>
         <item name="share"> @drawable/share </item>
         <item name="email"> @drawable/email </item>
+        <item name="list_size"> 20dp </item>
+        <item name="settings"> @drawable/settings </item>
 	</style>
 	
 	<style name="Right" parent="Default"></style>
@@ -61,7 +65,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="lists_selected"> @drawable/listitem_selected_wunderlist </item>
     	<item name="tasks_selector"> @drawable/tasks_selector_wunderlist </item>
     	<!-- <item name="tasks_selected"> @drawable/low_button</item> -->
-    	<item name="tasks_padding"> 5dp </item>
+    	<item name="tasks_padding_vert"> 5dp </item>
+        <item name="tasks_padding_horz"> 5dp </item>
     	<item name="lists_padding"> 10dp </item>
     	<item name="addList_button"> @drawable/addlist_wunderlist</item>
     	<item name="addList_border"> @color/addlist_border_wunderlist </item>
@@ -69,13 +74,22 @@ Permission is granted to anyone to use this software for any purpose, including 
 	</style>
 
     <style name="Version2" parent="Default">
+        <item name="lists_selector">@drawable/tasks_selector_version2</item>
         <item name="tasks_selector">@drawable/tasks_selector_version2</item>
         <item name="header_text"> @color/header_text_v2</item>
         <item name="header"> @color/header_v2</item>
-        <item name="header_size"> 35dp </item>
+        <item name="header_size"> 20dp </item>
         <item name="sort"> @drawable/sort </item>
         <item name="share"> @drawable/share </item>
         <item name="email"> @drawable/email </item>
+        <item name="header_padding"> 10dp </item>
+        <item name="popup"> @color/header_text_v2 </item> <!-- Should really be header_v2 -->
+        <item name="action_item_txt"> @color/header_v2 </item>
+        <item name="list_size"> 18dp </item>
+        <item name="tasks_padding_vert"> 1px </item>
+        <item name="background"> @color/tasks_bg_v2 </item>
+        <item name="checkbox"> @drawable/check_v2 </item>
+        <item name="settings"> @drawable/perm_group_system_tools</item>
     </style>
 
 </resources>

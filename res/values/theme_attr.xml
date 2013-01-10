@@ -16,6 +16,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 <resources>
     <attr format="reference" name="header" />
     <attr format="reference" name="action_item_btn" />
+    <attr format="color" name="action_item_txt" />
     <attr format="reference" name="popup" />
     <attr format="reference" name="tag_scroller" />
     <attr format="reference" name="tasks_selector" />
@@ -28,15 +29,19 @@ Permission is granted to anyone to use this software for any purpose, including 
     <attr format="reference" name="sort" />
     <attr format="reference" name="background" />
     <attr format="color" name="empty_background" />
-    <attr format="dimension" name="tasks_padding" />
+    <attr format="dimension" name="tasks_padding_vert" />
+    <attr format="dimension" name="tasks_padding_horz" />
     <attr format="dimension" name="lists_padding" />
     <attr format="reference" name="addList_button" />
     <attr format="color" name="addList_border" />
     <attr format="color" name="addList_text" />
     <attr format="color" name="header_text" />
     <attr format="dimension" name="header_size" />
+    <attr format="dimension" name="header_padding" />
     <attr format="dimension" name="logo" />
+    <attr format="dimension" name="list_size" />
 
     <attr format="reference" name="share" />
     <attr format="reference" name="email" />
+    <attr format="reference" name="settings" />
 </resources>

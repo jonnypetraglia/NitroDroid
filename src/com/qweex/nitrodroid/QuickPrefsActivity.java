@@ -21,6 +21,8 @@ import java.util.List;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -125,7 +127,15 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         
         //Create AboutWindow
     	aboutWindow = new PopupWindow(this);
-    	aboutWindow.setContentView(getLayoutInflater().inflate(R.layout.about, null, false));
+        View cv = getLayoutInflater().inflate(R.layout.about, null, false);
+        LinearLayout cv2 = (LinearLayout) cv.findViewById(R.id.aboutMain);
+        for(int i=0; i<cv2.getChildCount(); i++)
+        {
+            if(cv2.getChildAt(i).getClass()!=TextView.class)
+                continue;
+            ((TextView)cv2.getChildAt(i)).setTypeface(ListsActivity.theTypeface);
+        }
+    	aboutWindow.setContentView(cv);
     	aboutWindow.setBackgroundDrawable(new BitmapDrawable());
     	aboutWindow.setAnimationStyle(android.R.style.Animation_Dialog);
     	aboutWindow.setOutsideTouchable(true);

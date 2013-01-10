@@ -13,11 +13,13 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
  -->
+<!-- LOW -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-  <item android:state_pressed="true"
-        android:drawable="@android:color/darker_gray" />
-
-  <item
-        android:drawable="@android:color/white" />
+    <!-- Checked -->
+    <item android:state_checked="true"
+        android:drawable="@drawable/btn_check_on_disabled_holo_light" />
+    
+    <!-- Unchecked -->
+    <item
+          android:drawable="@drawable/btn_check_off_disabled_holo_light" />
 </selector>

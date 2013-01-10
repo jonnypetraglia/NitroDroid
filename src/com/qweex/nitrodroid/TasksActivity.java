@@ -14,9 +14,17 @@ Permission is granted to anyone to use this software for any purpose, including 
  */
 package com.qweex.nitrodroid;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.graphics.*;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
@@ -34,17 +42,12 @@ import com.qweex.nitrodroid.TaskAdapter.Separator;
 import com.qweex.nitrodroid.TaskAdapter.TagView;
 
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -64,35 +67,44 @@ public class TasksActivity
 	private static final int ID_HAND   = 2;
 	private static final int ID_TITLE = 3;
 	private static final int ID_DATE   = 4;
-	private static final int ID_PRIORITY  = 5;	
+	private static final int ID_PRIORITY  = 5;
+
+    private static final int ID_SORT = 10, ID_DELETE = 11, ID_EMAIL = 12, ID_SHARE = 13;
 	
-	ExpandableListView lv;
+	public static ExpandableListView lv;
     TaskAdapter adapter;
 	static View lastClicked = null;
 	static EditText editingTags = null;
 	public static String lastClickedID;
 	String listName, listHash, searchTag;
 	public Activity context;
-	QuickAction sortPopup;
+	QuickAction sortPopup, optionsPopup;
 	Drawable selectedDrawable, normalDrawable;
 	AlertDialog.Builder deleteDialog;
 	PopupWindow datePickerDialog; 
 	LinearLayout popupLayout;
 	View datePicker;
     int lastDate = 0;
+    boolean isSorted = false;
+    EditText newTask;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
-		//super.onCreate(savedInstanceState)
-		//context.requestWindowFeature(Window.FEATURE_NO_TITLE);
         sortPopup = new QuickAction(context, QuickAction.VERTICAL);
-		
         sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.by_magic), context.getResources().getDrawable(R.drawable.sort_magic)));
         sortPopup.addActionItem(new ActionItem(ID_HAND, context.getResources().getString(R.string.by_hand), context.getResources().getDrawable(R.drawable.sort_hand)));
         sortPopup.addActionItem(new ActionItem(ID_TITLE, context.getResources().getString(R.string.by_title), createTitleDrawable()));
         sortPopup.addActionItem(new ActionItem(ID_DATE, context.getResources().getString(R.string.by_date), context.getResources().getDrawable(R.drawable.sort_date)));
         sortPopup.addActionItem(new ActionItem(ID_PRIORITY, context.getResources().getString(R.string.by_priority), context.getResources().getDrawable(R.drawable.sort_priority)));
         sortPopup.setOnActionItemClickListener(selectSort);
+
+        optionsPopup = new QuickAction(context, QuickAction.VERTICAL);
+        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Delete", context.getResources().getDrawable(R.drawable.delete)));
+        optionsPopup.addActionItem(new ActionItem(ID_SORT, "Toggle Sort", context.getResources().getDrawable(R.drawable.sort)));
+        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Email", context.getResources().getDrawable(R.drawable.email)));
+        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Share", context.getResources().getDrawable(R.drawable.share)));
+        optionsPopup.setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.header_v2)));
+        optionsPopup.setOnActionItemClickListener(selectOption);
         
         TypedArray a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.tasks_selector});     
         int attributeResourceId = a.getResourceId(0, 0);
@@ -151,21 +163,45 @@ public class TasksActivity
 	
 	public void doCreateStuff()
 	{
-		ImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
-        sortButton.setOnClickListener(new OnClickListener()
-    	{
-    		@Override
-    		public void onClick(View v)
-    		{
-    			sortPopup.show(v);
-    		}
+        ImageButton backButton = ((ImageButton)context.findViewById(R.id.backbutton));
+        backButton.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                ((ViewFlipper)context.findViewById(R.id.FLIP)).setInAnimation(context, android.R.anim.slide_in_left);
+                ((ViewFlipper)context.findViewById(R.id.FLIP)).setOutAnimation(context, android.R.anim.slide_out_right);
+                ListsActivity.ta = null;
+                ((ViewFlipper)context.findViewById(R.id.FLIP)).showPrevious();
+            }
         });
+        ImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
+        sortButton.setOnClickListener(pressSort);
+        ImageButton optionsButton = ((ImageButton)context.findViewById(R.id.optionsbutton));
+        optionsButton.setOnClickListener(pressOptions);
         ((ImageButton)context.findViewById(R.id.addbutton)).setOnClickListener(clickAdd);
         ((ImageButton)context.findViewById(R.id.deletebutton)).setOnClickListener(clickDelete);
 
-		lv = (ExpandableListView) ((Activity) context).findViewById(R.id.tasksListView);
+        //EditText for new tasks
+        lv = (ExpandableListView) ((Activity) context).findViewById(R.id.tasksListView);
+        if(newTask==null && ListsActivity.v2)
+        {
+            FrameLayout fl = new FrameLayout(context);
+            newTask = (EditText) context.findViewById(R.id.newTask);
+            newTask.setTypeface(ListsActivity.theTypeface);
+            newTask.setOnEditorActionListener(newTaskListener);
+            newTask.setOnTouchListener(new RightDrawableOnTouchListener(newTask) {
+                @Override
+                public boolean onDrawableTouch(final MotionEvent event) {
+                    Log.d("HERP", "Pressed drawable");
+                    String newListName = newTask.getText().toString();
+                    createTask(newListName);
+                    return true;
+                }
+            });
+        }
+
 		lv.setEmptyView(context.findViewById(R.id.empty2));
-        if(!ListsActivity.v2)
+        //if(!ListsActivity.v2)
 		    ((TextView)context.findViewById(R.id.taskTitlebar)).setText(searchTag != null ?
                 (context.getResources().getString(R.string.tag) + ": " + searchTag) : listName);
 		lv.setOnGroupClickListener(selectTask);
@@ -175,6 +211,29 @@ public class TasksActivity
             }
         });
 	}
+
+    OnClickListener pressSort = new OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            if(ListsActivity.v2)
+            {
+                toggleSort();
+            }
+            else
+                sortPopup.show(v);
+        }
+    };
+
+    OnClickListener pressOptions = new OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            optionsPopup.show(v);
+        }
+    };
 	
 	void createTheAdapterYouSillyGoose()
 	{
@@ -204,7 +263,6 @@ public class TasksActivity
 		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
         adapter = new TaskAdapter(context, R.layout.task_item, r);
         lv.setAdapter(adapter);
-        System.out.println("Dudewtf: " + adapter.getGroupCount());
         lv.setDescendantFocusability(ExpandableListView.FOCUS_AFTER_DESCENDANTS);
 	}
 	
@@ -214,36 +272,50 @@ public class TasksActivity
 		@Override
 		public void onClick(View v)
 		{
-			if(listHash==null || "logbook".equals(listHash) || "today".equals(listHash) || "next".equals(listHash))
-			{
-				Toast.makeText(v.getContext(), R.string.long_winded_reprimand, Toast.LENGTH_LONG).show();
-				return;
-			}
-			
-			lastClickedID = SyncHelper.getID();
-			
-			int order = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num").getCount();
-			ListsActivity.syncHelper.db.insertTask(lastClickedID, v.getContext().getResources().getString(R.string.default_task),
-					0, 0, "", listHash, 0, "", order);
-			ListsActivity.syncHelper.db.insertTaskTimes(lastClickedID, (new Date()).getTime(),
-					0, 0, 0, 0, 0, 0);
-			
-			createTheAdapterYouSillyGoose();
-			
-			try {
-				Method func = ExpandableListView.class.getMethod("smoothScrollToPosition", Integer.TYPE);
-				func.invoke(lv, lv.getCount() - 1);
-			}catch(Exception e)
-			{
-				lv.setSelection(lv.getCount() - 1);
-			}
-			
-			TextView currentListCount = (TextView)ListsActivity.currentList.findViewById(R.id.listNumber);
-			int i = Integer.parseInt((String) currentListCount.getText()) + 1;
-			currentListCount.setText(Integer.toString(i));
-			
+			createTask(v.getContext().getResources().getString(R.string.default_task));
 		}
     };
+
+    void createTask(String newName)
+    {
+        if(listHash==null || "logbook".equals(listHash) || "today".equals(listHash) || "next".equals(listHash))
+        {
+            Toast.makeText(context, R.string.long_winded_reprimand, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if("".equals(newName))
+            return;
+        newTask.setText("");
+
+        lastClickedID = SyncHelper.getID();
+
+        int order = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num").getCount();
+        ListsActivity.syncHelper.db.insertTask(lastClickedID, newName,
+                ListsActivity.v2 ? 1 : 0,
+                0, "", listHash, 0, "", order);
+        ListsActivity.syncHelper.db.insertTaskTimes(lastClickedID, (new Date()).getTime(),
+                0,
+                0, 0, 0, 0, 0);
+
+        createTheAdapterYouSillyGoose();
+
+        try {
+            Method func = ExpandableListView.class.getMethod("smoothScrollToPosition", Integer.TYPE);
+            func.invoke(lv, lv.getCount() - 1);
+        }catch(Exception e)
+        {
+            lv.setSelection(lv.getCount() - 1);
+        }
+
+        TextView currentListCount = (TextView)ListsActivity.currentList.findViewById(R.id.listNumber);
+        int i = Integer.parseInt((String) currentListCount.getText()) + 1;
+        currentListCount.setText(Integer.toString(i));
+        InputMethodManager imm = (InputMethodManager)newTask.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(newTask.getWindowToken(), 0);
+        Toast.makeText(context, "Created list: " + newName, Toast.LENGTH_SHORT).show();
+    }
+
     
     OnClickListener clickDelete = new OnClickListener()
 	{
@@ -286,9 +358,33 @@ public class TasksActivity
 		c.set(Calendar.MILLISECOND, 0);
 		return c.getTimeInMillis();
 	}
-	
-    
-	QuickAction.OnActionItemClickListener selectSort = new QuickAction.OnActionItemClickListener() {			
+
+
+    void toggleSort()
+    {
+        Cursor r;
+        isSorted = !isSorted;
+        r = ListsActivity.syncHelper.db.getTasksOfList(listHash, isSorted ? "priority DESC" : "order_num");
+        adapter = new TaskAdapter(context, R.layout.task_item, r);
+        lv.setAdapter(adapter);
+    }
+
+    QuickAction.OnActionItemClickListener selectOption = new QuickAction.OnActionItemClickListener() {
+        @Override
+        public void onItemClick(QuickAction source, int pos, int actionId) {
+            switch(actionId)
+            {
+                case ID_SORT:
+                    toggleSort();
+                    return;
+                case ID_DELETE:
+                case ID_EMAIL:
+                case ID_SHARE:
+            }
+        }
+    };
+
+            QuickAction.OnActionItemClickListener selectSort = new QuickAction.OnActionItemClickListener() {
 		@Override
 		public void onItemClick(QuickAction source, int pos, int actionId) {				
 			//ActionItem actionItem = sortPopup.getActionItem(pos);
@@ -348,30 +444,21 @@ public class TasksActivity
 		}
 	}
 	
-	/*
-	case "magic":
-	list.sort(function(a, b) {
 
-		var rating = {					//Get the days between now and the due date
-			a: getDateWorth(a.date),	//If it's >14 days, the value is 1
-			b: getDateWorth(b.date)		//Otherwise, it's 14 - diff + 1.
-		}								// 13 = 2, 12 = 3, 11 = 4, etc
-										// Highest possible is today: 0 = 13
-		var worth = { none: 0, low: 2, medium: 4, high: 6 }
-										// Highest possible: 19
-		rating.a += worth[a.priority]
-		rating.b += worth[b.priority]
+    TextView.OnEditorActionListener newTaskListener = new TextView.OnEditorActionListener()
+    {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == android.view.inputmethod.EditorInfo.IME_NULL)
+            {
+                String newListName = v.getText().toString();
+                createTask(newListName);
+                return true;
+            }
+            return false;
+        }
+    };
 
-		if(a.logged && !b.logged) return 1
-		else if(!a.logged && b.logged) return -1
-		else if(a.logged && b.logged) return 0
-
-		return rating.b - rating.a
-
-	})
-	break
-	 */
-	
 	class taskObject {
 		String hash, name, notes, list, tags;
 		int priority;
@@ -443,22 +530,28 @@ public class TasksActivity
     		pri = (pri+1) % 4;
             if(ListsActivity.v2)
             {
+                if(pri==0)
+                    pri=1;
                 View done = (View)
-                        ((View)((View)((View)v.getParent()).getParent()).getParent())
+                        //((View)((View)((View)v.getParent()).getParent()).getParent())
+                        lastClicked
                                 .findViewById(R.id.taskId);
-                done.setBackgroundColor(TaskAdapter.v2_clrs[pri]);
+                int c = context.getResources().getColor(TaskAdapter.v2_clrs[pri]);
+                done.setBackgroundColor(c);
+                ((View)((View)v.getParent()).getParent()).findViewById(R.id.taskId2).setBackgroundColor(c);
             }
             else
             {
                 android.widget.CheckBox done = (android.widget.CheckBox)
-                        ((View)((View)v.getParent()).getParent())
+                        //((View)((View)v.getParent()).getParent())
+                        lastClicked
                         .findViewById(R.id.taskDone);
                 done.setButtonDrawable(TaskAdapter.drawsC[pri]);
             }
             priority.setBackgroundResource(TaskAdapter.drawsB[pri]);
     		priority.setTag(pri);
     		priority.setText(context.getString(R.string.priority) + ": " + context.getString(TaskAdapter.drawsS[pri]));
-    		
+            Toast.makeText(context, "ADSADSAS: " + lastClickedID, Toast.LENGTH_SHORT).show();
     		ListsActivity.syncHelper.db.modifyTask(lastClickedID, "priority", pri);
 		}
 	};
@@ -568,14 +661,14 @@ public class TasksActivity
 	}
 	
     static String oldname, oldnotes;
-    static TextWatcher writeName = new TextWatcher() {
-
+    static TextWatcher writeName = new TextWatcher()
+    {
 		@Override
 		public void afterTextChanged(Editable arg0)
 		{
 			String s = oldname;
 			String new_val = arg0.toString(); //((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
-			System.out.println(s + "==" + new_val);
+            Log.d("writeName", "Updating tasK: " + s + "->" + new_val);
 			if(s.toString().equals(new_val))
 				return;
 	    	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "name", s.toString());
@@ -682,12 +775,16 @@ public class TasksActivity
             adapter.lastClicked = -1;
 	    	if(lastClicked!=null && !ListsActivity.v2)
 	    		lastClicked.setBackgroundDrawable(normalDrawable);
-            searchTag = null;
+            String herp = ((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
+            ((TextView)lastClicked.findViewById(R.id.taskName)).setText(herp);
 	    	lastClicked = null;
 	    	lastClickedID = null;
     	}
     	else
+        {
+            searchTag = null;
     		return true;
+        }
     		//context.finish();
     	return false;
     }

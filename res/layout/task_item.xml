@@ -24,6 +24,7 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_width="5dp"
             android:layout_height="fill_parent"
             android:textSize="0dp"
+            android:visibility="gone"
             android:background="#aa5af3" />
 
 
@@ -31,7 +32,7 @@ Permission is granted to anyone to use this software for any purpose, including 
         android:id="@+id/master"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="7dp"
+        android:padding="4dp"
         android:orientation="horizontal" >
 
 
@@ -50,6 +51,7 @@ Permission is granted to anyone to use this software for any purpose, including 
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:paddingLeft="4px"
                 android:textSize="25dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -62,7 +64,7 @@ Permission is granted to anyone to use this software for any purpose, including 
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Task Name"
-                android:textSize="25dp" />
+                android:textSize="?list_size" />
 
             <TextView
                 android:id="@+id/taskTime"

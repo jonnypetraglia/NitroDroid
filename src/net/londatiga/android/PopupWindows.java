@@ -71,9 +71,9 @@ public class PopupWindows {
 	
 		onShow();
 
-		if (mBackground == null) 
+		if (mBackground == null)
 			mWindow.setBackgroundDrawable(new BitmapDrawable());
-		else 
+		else
 			mWindow.setBackgroundDrawable(mBackground);
 
 		mWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
