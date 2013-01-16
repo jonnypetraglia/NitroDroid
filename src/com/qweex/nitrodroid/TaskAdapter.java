@@ -132,12 +132,6 @@ public class TaskAdapter extends BaseExpandableListAdapter
             ((EditText)view.findViewById(R.id.taskName_edit)).removeTextChangedListener(TasksActivity.writeName);
 
             View child = ((ViewGroup)((ViewGroup)view.getParent()).getParent()).getChildAt(1);   //This is the root view of task_item_details
-             for(int i=0; i<((ViewGroup)((ViewGroup) view.getParent())).getChildCount(); i++)
-            {
-                try {
-                    Log.d("HERP " + i, ((ViewGroup)view.getParent()).getChildAt(i).getTag().toString());
-                }catch(Exception e) {}
-            }
             ((EditText)child.findViewById(R.id.notes)).removeTextChangedListener(TasksActivity.writeNotes);
             ((android.widget.Button)child.findViewById(R.id.priority)).setOnClickListener(null);
             ((android.widget.Button)child.findViewById(R.id.timeButton)).setOnClickListener(null); //*/
@@ -178,6 +172,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
 		}
 
         id.setTag(hash);
+        id.setTag(R.id.priority, isMagic ? T.priority : c.getString(c.getColumnIndex("priority")));
         //------Name & Done checkmark------
         name.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));
         name_edit.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));
@@ -187,6 +182,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
         {
             row.findViewById(R.id.taskId).setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[pri]));
             id.setVisibility(View.VISIBLE);
+            done.setOnClickListener(TasksActivity.checkTask);
         }
         else
             done.setButtonDrawable(drawsC[pri]);

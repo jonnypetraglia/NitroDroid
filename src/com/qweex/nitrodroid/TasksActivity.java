@@ -19,8 +19,7 @@ import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
+import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
@@ -54,8 +53,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -234,7 +231,30 @@ public class TasksActivity
             optionsPopup.show(v);
         }
     };
-	
+
+    static OnClickListener checkTask = new OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            int p = 0;
+            ViewGroup parent = (ViewGroup)v.getParent().getParent();
+            View tid1 = parent.findViewById(R.id.taskId);
+            if(!((CheckBox)v).isChecked())
+            {
+                p = Integer.parseInt(tid1.getTag(R.id.priority).toString());
+                //p = Integer.parseInt(((ViewGroup)parent.getParent()).findViewById(R.id.priority).getTag().toString());
+            }
+            int clr = v.getContext().getResources().getColor(TaskAdapter.v2_clrs[p]);
+            tid1.setBackgroundColor(clr);
+            try {
+                View tid2 = ((ViewGroup)parent.getParent()).findViewById(R.id.taskId2);
+                tid2.setBackgroundColor(clr);
+            }catch(Exception e){}
+            Log.d("HERP", Integer.toString(p));
+        }
+    };
+
 	void createTheAdapterYouSillyGoose()
 	{
 		Cursor r;
@@ -313,7 +333,7 @@ public class TasksActivity
         currentListCount.setText(Integer.toString(i));
         InputMethodManager imm = (InputMethodManager)newTask.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(newTask.getWindowToken(), 0);
-        Toast.makeText(context, "Created list: " + newName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Created task: " + newName, Toast.LENGTH_SHORT).show();
     }
 
     
