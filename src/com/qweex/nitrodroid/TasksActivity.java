@@ -280,7 +280,7 @@ public class TasksActivity
 		else if(listHash.equals("all"))			//All
 			listHash = null;
 		
-		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "order_num");
+		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, (ListsActivity.v2 ? "logged, " : "") + "order_num"); //TODO: Hmm, this might need to change
         adapter = new TaskAdapter(context, R.layout.task_item, r);
         lv.setAdapter(adapter);
         lv.setDescendantFocusability(ExpandableListView.FOCUS_AFTER_DESCENDANTS);
@@ -384,7 +384,8 @@ public class TasksActivity
     {
         Cursor r;
         isSorted = !isSorted;
-        r = ListsActivity.syncHelper.db.getTasksOfList(listHash, isSorted ? "priority DESC" : "order_num");
+        Toast.makeText(context, "Toggle sort: " + (isSorted ? "sort by priority" : "no sort"), Toast.LENGTH_SHORT).show();
+        r = ListsActivity.syncHelper.db.getTasksOfList(listHash, (ListsActivity.v2 ? "logged, " : "") + (isSorted ? "priority DESC" : "order_num"));
         adapter = new TaskAdapter(context, R.layout.task_item, r);
         lv.setAdapter(adapter);
     }
