@@ -716,6 +716,9 @@ public class TasksActivity
               ListsActivity.ta.lv.collapseGroup(adapter.lastClicked);
           adapter.lastClicked = position;
 
+          lastClicked = view;
+          lastClickedID = (String) (lastClicked.findViewById(R.id.taskId).getTag());
+          Log.d("HERP", "SelectTask " + ((TextView)lastClicked.findViewById(R.id.taskName)).getText().toString());
     	  if(lastClicked!=null && lastClicked==view)
     	  {
               if(!ListsActivity.v2)
@@ -731,8 +734,6 @@ public class TasksActivity
                       lastClicked.setBackgroundDrawable(normalDrawable);
                   view.setBackgroundDrawable(selectedDrawable);
               }
-    		  lastClicked = view;
-    		  lastClickedID = (String) (lastClicked.findViewById(R.id.taskId).getTag());
               return !ListsActivity.v2; //true;
     	  }
       }

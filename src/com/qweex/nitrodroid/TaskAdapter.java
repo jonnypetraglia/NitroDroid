@@ -131,23 +131,16 @@ public class TaskAdapter extends BaseExpandableListAdapter
 
             ((EditText)view.findViewById(R.id.taskName_edit)).removeTextChangedListener(TasksActivity.writeName);
 
-            View child = ((ViewGroup)view.getParent()).getChildAt(1);   //This is the root view of task_item_details
+            View child = ((ViewGroup)((ViewGroup)view.getParent()).getParent()).getChildAt(1);   //This is the root view of task_item_details
+             for(int i=0; i<((ViewGroup)((ViewGroup) view.getParent())).getChildCount(); i++)
+            {
+                try {
+                    Log.d("HERP " + i, ((ViewGroup)view.getParent()).getChildAt(i).getTag().toString());
+                }catch(Exception e) {}
+            }
             ((EditText)child.findViewById(R.id.notes)).removeTextChangedListener(TasksActivity.writeNotes);
             ((android.widget.Button)child.findViewById(R.id.priority)).setOnClickListener(null);
             ((android.widget.Button)child.findViewById(R.id.timeButton)).setOnClickListener(null); //*/
-        }
-    }
-    @Override
-    public void onGroupExpanded(int groupPosition)
-    {
-        View view = TasksActivity.lastClicked;
-        if(view!=null)
-        {
-            view.findViewById(R.id.taskName).setVisibility(View.GONE);
-            view.findViewById(R.id.taskTime).setVisibility(View.GONE);
-            view.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
-            ((TextView)view.findViewById(R.id.taskName_edit)).setText(((TextView)view.findViewById(R.id.taskName)).getText());
-            ((EditText)view.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
         }
     }
 
@@ -155,6 +148,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View row, ViewGroup parent)
     {
+        Log.d("HERP", "Getting parent view");
         if(row==null)
         {
             LayoutInflater inflater=(LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
@@ -202,6 +196,20 @@ public class TaskAdapter extends BaseExpandableListAdapter
         long dat = (isMagic ? T.date : c.getLong(c.getColumnIndex("date")));
         String timeString = getTimeString(dat, name.getContext());
         time.setText(timeString);
+
+        //This essentially takes the place of onGroupExpanded
+        if(isExpanded && TasksActivity.lastClicked!=null)
+        {
+            TasksActivity.lastClicked.findViewById(R.id.taskName).setVisibility(View.GONE);
+            TasksActivity.lastClicked.findViewById(R.id.taskTime).setVisibility(View.GONE);
+            TasksActivity.lastClicked.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
+            ((TextView)TasksActivity.lastClicked.findViewById(R.id.taskName_edit)).setText(((TextView)TasksActivity.lastClicked.findViewById(R.id.taskName)).getText());
+            ((EditText)TasksActivity.lastClicked.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
+            onGroupExpanded(groupPosition);
+        }
+        //else
+        //    onGroupCollapsed(groupPosition);
+
         return row;
     }
     @Override
