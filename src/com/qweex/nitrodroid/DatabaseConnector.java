@@ -279,7 +279,7 @@ public class DatabaseConnector
 			if(!hash.equals(""))
 			{
 				hash = "list = '" + hash + "'";
-				if(!hash.equals("list = 'logbook'"))
+				if(!hash.equals("list = 'logbook'") && !ListsActivity.v2)
 					hash = hash + " AND logged='0'";
 			}
 		} else

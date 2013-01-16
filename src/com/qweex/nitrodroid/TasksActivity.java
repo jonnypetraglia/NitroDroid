@@ -237,21 +237,21 @@ public class TasksActivity
         @Override
         public void onClick(View v)
         {
-            int p = 0;
+            boolean done = ((CheckBox)v).isChecked();
             ViewGroup parent = (ViewGroup)v.getParent().getParent();
             View tid1 = parent.findViewById(R.id.taskId);
-            if(!((CheckBox)v).isChecked())
+
+            int pri = Integer.parseInt(tid1.getTag(R.id.priority).toString());
+            if(ListsActivity.v2)
             {
-                p = Integer.parseInt(tid1.getTag(R.id.priority).toString());
-                //p = Integer.parseInt(((ViewGroup)parent.getParent()).findViewById(R.id.priority).getTag().toString());
+                int clr = v.getContext().getResources().getColor(TaskAdapter.v2_clrs[done ? 0 : pri]);
+                tid1.setBackgroundColor(clr);
+                try {
+                    View tid2 = ((ViewGroup)parent.getParent()).findViewById(R.id.taskId2);
+                    tid2.setBackgroundColor(clr);
+                }catch(Exception e){}
             }
-            int clr = v.getContext().getResources().getColor(TaskAdapter.v2_clrs[p]);
-            tid1.setBackgroundColor(clr);
-            try {
-                View tid2 = ((ViewGroup)parent.getParent()).findViewById(R.id.taskId2);
-                tid2.setBackgroundColor(clr);
-            }catch(Exception e){}
-            Log.d("HERP", Integer.toString(p));
+            ListsActivity.syncHelper.db.modifyTask(tid1.getTag().toString(), "logged", done ? (new Date()).getTime() : 0);
         }
     };
 

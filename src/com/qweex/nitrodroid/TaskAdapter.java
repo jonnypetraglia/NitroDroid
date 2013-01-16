@@ -176,11 +176,12 @@ public class TaskAdapter extends BaseExpandableListAdapter
         //------Name & Done checkmark------
         name.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));
         name_edit.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));
-        done.setChecked((isMagic ? T.logged : c.getLong(c.getColumnIndex("logged")))>0);
+        boolean isDone = (isMagic ? T.logged : c.getLong(c.getColumnIndex("logged")))>0;
+        done.setChecked(isDone);
         int pri = (isMagic ? T.priority : c.getInt(c.getColumnIndex("priority")));
         if(ListsActivity.v2)
         {
-            row.findViewById(R.id.taskId).setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[pri]));
+            row.findViewById(R.id.taskId).setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[isDone ? 0 : pri]));
             id.setVisibility(View.VISIBLE);
             done.setOnClickListener(TasksActivity.checkTask);
         }
@@ -201,7 +202,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
             TasksActivity.lastClicked.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
             ((TextView)TasksActivity.lastClicked.findViewById(R.id.taskName_edit)).setText(((TextView)TasksActivity.lastClicked.findViewById(R.id.taskName)).getText());
             ((EditText)TasksActivity.lastClicked.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
-            onGroupExpanded(groupPosition);
+            //onGroupExpanded(groupPosition);
         }
         //else
         //    onGroupCollapsed(groupPosition);
@@ -248,10 +249,11 @@ public class TaskAdapter extends BaseExpandableListAdapter
 
 		//------Priority
 		int pri = (isMagic ? T.priority : c.getInt(c.getColumnIndex("priority")));
+        boolean isDone = (isMagic ? T.logged : c.getLong(c.getColumnIndex("logged")))>0;
         if(ListsActivity.v2)
         {
             View tid = row.findViewById(R.id.taskId2);
-            tid.setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[pri]));
+            tid.setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[isDone ? 0 : pri]));
             tid.setVisibility(View.VISIBLE);
         }
 
