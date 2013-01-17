@@ -62,6 +62,7 @@ public class ListsActivity extends Activity
 	public static TasksActivity ta;
 	public static ViewFlipper flip;
 	public static SyncHelper syncHelper;
+    public static SyncHelper_v2 syncHelper2;
 	public static float DP;
 	public static String lastList;
 	
@@ -99,6 +100,7 @@ public class ListsActivity extends Activity
 		//Create/set locals
 		context = this;
 		syncHelper = new SyncHelper(context);
+        syncHelper2 = new SyncHelper_v2(context);
 
         //Create arrow view
         arrow = new ImageView(context);

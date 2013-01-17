@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="libs/socketio.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
