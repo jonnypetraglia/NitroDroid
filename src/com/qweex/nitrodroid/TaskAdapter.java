@@ -183,10 +183,10 @@ public class TaskAdapter extends BaseExpandableListAdapter
         {
             row.findViewById(R.id.taskId).setBackgroundColor(row.getContext().getResources().getColor(v2_clrs[isDone ? 0 : pri]));
             id.setVisibility(View.VISIBLE);
-            done.setOnClickListener(TasksActivity.checkTask);
         }
         else
             done.setButtonDrawable(drawsC[pri]);
+        done.setOnClickListener(TasksActivity.checkTask);
 
 //        ((EditText)row.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
 

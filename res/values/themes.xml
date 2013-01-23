@@ -31,7 +31,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="popup"> @drawable/popup_default </item>
     	<item name="tag_scroller"> @drawable/tag_scroller_default </item>
     	<item name="tasks_selector"> @drawable/tasks_selector_default </item>
-    	<item name="tasks_selected"> @drawable/button_low</item> <!-- need this -->
     	<item name="checkbox"> @drawable/check_none </item>
     	<item name="lists_selector"> @drawable/lists_selector_default </item>
     	<item name="lists_selected"> @color/selected_list_item_default </item>

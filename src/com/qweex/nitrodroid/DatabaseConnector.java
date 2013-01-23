@@ -24,6 +24,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -168,9 +169,9 @@ public class DatabaseConnector
 			args.put(columns[i], new_vals[i]);
             if(!columns[i].equals("order_num"))
 			    args2.put(columns[i], now);
+            System.out.println("Updating Task (" + columns[i] + ") to " + new_vals[i]);
 		}
 		boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
-		System.out.println("Updating Task" + x);
         if(x)
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
@@ -182,7 +183,7 @@ public class DatabaseConnector
 	    args.put(column, new_val);
 	    args2.put(column, (new java.util.Date()).getTime());
 	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
-	    System.out.println("Updating Task" + x);
+        System.out.println("Updating Task (" + column+ ") to " + new_val + ":" + x);
 		if(x && !column.equals("order_num"))
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
@@ -194,7 +195,7 @@ public class DatabaseConnector
 	    args.put(column, new_val);
 	    args2.put(column, (new java.util.Date()).getTime());
 	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
-	    System.out.println("Updating Task" + x);
+        System.out.println("Updating Task (" + column+ ") to " + new_val + ":" + x);
         if(x && !column.equals("order_num"))
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
@@ -206,7 +207,7 @@ public class DatabaseConnector
 	    args.put(column, new_val);
 	    args2.put(column, (new java.util.Date()).getTime());
 	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
-	    System.out.println("Updating Task" + x);
+        System.out.println("Updating Task (" + column+ ") to " + new_val + ":" + x);
         if(x && !column.equals("order_num"))
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
@@ -271,19 +272,26 @@ public class DatabaseConnector
 				"BETWEEN " + (currentDay-1) + " AND "  + (currentDay+msecondsInDay-1);
 		return database.rawQuery(query, null);
 	}
-	
-	public Cursor getTasksOfList(String hash, String sort)
+
+
+    public Cursor getTasksOfList(String hash, String sort) { return getTasksOfList(hash, sort, false); }
+	public Cursor getTasksOfList(String hash, String sort, boolean doneOnly)
 	{
 		if(hash!=null)
 		{
 			if(!hash.equals(""))
 			{
 				hash = "list = '" + hash + "'";
-				if(!hash.equals("list = 'logbook'") && !ListsActivity.v2)
+                if(doneOnly && (!hash.equals("list = 'logbook'") && !ListsActivity.v2))
 					hash = hash + " AND logged='0'";
 			}
-		} else
-			hash = "logged='0'";
+            else if(doneOnly)
+                hash = "logged='0'";
+		}
+        else
+            hash = "logged='0'";
+        Log.d("HERP", hash);
+        sort = "logged, " + sort;
 		return database.query(TASKS_TABLE,
 			    new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},
 			    hash, null, null, null, sort);

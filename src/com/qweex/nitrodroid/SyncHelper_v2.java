@@ -49,7 +49,7 @@ public class SyncHelper_v2
         public String name; public JSONObject args; public long time;
         public Triple(String n, JSONObject a, long t) { name=n; args=a; time=t;}
     }
-
+    /*
     public SyncHelper_v2(Context c)
     {
 
@@ -64,9 +64,11 @@ public class SyncHelper_v2
         socket = new SocketIO(url + ":" + port);
         }catch(Exception e) {}
 
-        socket.connect(Collection);
+        collection = new Collection(this);
+        socket.connect(collection);
         socket.send("DERP");
     }
+
 
     // Send data to the server using Socket.IO
     public void emit(String name, JSONObject args, IOAcknowledge fn)
@@ -155,8 +157,15 @@ public class SyncHelper_v2
         socket.emit("login", username);
     }
 
-    IOCallback Collection = new IOCallback()
+    Collection collection;
+    class Collection implements IOCallback
     {
+        Object model;
+        public Collection(Object model)
+        {
+            this.model = model;
+        }
+
         @Override
         public void onMessage(JSONObject json, IOAcknowledge ack) {
             try {
@@ -216,43 +225,45 @@ public class SyncHelper_v2
                  goOffline();
              System.out.println("DERP: Server triggered event '" + event + "'");
         }
-    };
 
-    public void all(Object params, IOCallback callback)
-    {
-        emit("fetch", @model.className, new IOAcknowledge(){
+        public void all(Object params, IOCallback callback)
+        {
+            emit("fetch", @model.className, new IOAcknowledge(){
             @Override
             public void ack(Object... data) {
                 recordsResponse(data);
                 callback.onMessage(data, null);
             }
         });
-    }
+        }
 
-    public void fetch(Object params, Object options)
-    {
-        all(params, new IOCallback() {
-            @Override
-            public void onDisconnect() {}
-            @Override
-            public void onConnect() {}
-            @Override
-            public void onMessage(String records, IOAcknowledge ioAcknowledge) {
-                @model.refresh(records, options);
-            }
-            @Override
-            public void onMessage(JSONObject jsonObject, IOAcknowledge ioAcknowledge) {}
-            @Override
-            public void on(String s, IOAcknowledge ioAcknowledge, Object... objects) {}
-            @Override
-            public void onError(SocketIOException e) {}
-        });
-    }
+        public void fetch(Object params, Object options)
+        {
+            all(params, new IOCallback() {
+                @Override
+                public void onDisconnect() {}
+                @Override
+                public void onConnect() {}
+                @Override
+                public void onMessage(String records, IOAcknowledge ioAcknowledge)
+                {
+                    @model.refresh(records, options);
+                }
+                @Override
+                public void onMessage(JSONObject jsonObject, IOAcknowledge ioAcknowledge) {}
+                @Override
+                public void on(String s, IOAcknowledge ioAcknowledge, Object... objects) {}
+                @Override
+                public void onError(SocketIOException e) {}
+            });
+        }
 
-    public void recordsResponse(Object data)
-    {
-        @model.trigger("syncSuccess", data);
-    }
+        public void recordsResponse(Object data)
+        {
+            @model.trigger("syncSuccess", data);
+        }
+
+    };
 
 
 

@@ -14,9 +14,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     3. This notice may not be removed or altered from any source distribution.
  -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_enabled="false"
-      	android:state_focused="true"
-        android:drawable="@android:color/white" />
+  <item android:state_selected="true"
+        android:drawable="@drawable/button_low" />
   <item android:state_pressed="true"
         android:drawable="@drawable/button_high" />
   <item android:state_focused="true"

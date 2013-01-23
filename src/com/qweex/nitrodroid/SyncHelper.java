@@ -529,7 +529,8 @@ public class SyncHelper {
         
         //data w/ sites
         JSONObject stats = new JSONObject();
-        stats.put("uid", stats_uid);
+        if(!service.equals("ubuntu"))
+            stats.put("uid", stats_uid);
         stats.put("os", stats_os);
         stats.put("language", stats_language);
         stats.put("version", stats_version);
@@ -538,9 +539,14 @@ public class SyncHelper {
         nameValuePairs.add(new BasicNameValuePair("data", x));
 
         //access
-        nameValuePairs.add(new BasicNameValuePair("access[oauth_token_secret]", access_oathS));
+        if(service.equals("ubuntu"))
+            nameValuePairs.add(new BasicNameValuePair("access[oauth_secret]", access_oathS));
+        else
+        {
+            nameValuePairs.add(new BasicNameValuePair("access[oauth_token_secret]", access_oathS));
+            nameValuePairs.add(new BasicNameValuePair("access[uid]", access_uid));
+        }
         nameValuePairs.add(new BasicNameValuePair("access[oauth_token]", access_oath));
-        nameValuePairs.add(new BasicNameValuePair("access[uid]", access_uid));
         
         //service
         nameValuePairs.add(new BasicNameValuePair("service", service));

@@ -54,7 +54,7 @@ public class ListAdapter extends SimpleCursorAdapter
 	
 	private int numberOfTags(String s)
 	{
-		return ListsActivity.syncHelper.db.getTasksOfList(s, null).getCount();
+		return ListsActivity.syncHelper.db.getTasksOfList(s, null, true).getCount();
 	}
 
 	public View getView(int pos, View inView, ViewGroup parent)

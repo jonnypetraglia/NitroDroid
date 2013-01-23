@@ -47,7 +47,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 public class ListsActivity extends Activity
 {
 
-    public static boolean v2 = true;
+    public static boolean v2 = false;
 
 	/** Static variables concerning the preferences of the program **/
 	public static int themeID;
@@ -100,7 +100,7 @@ public class ListsActivity extends Activity
 		//Create/set locals
 		context = this;
 		syncHelper = new SyncHelper(context);
-        syncHelper2 = new SyncHelper_v2(context);
+        //syncHelper2 = new SyncHelper_v2(context);
 
         //Create arrow view
         arrow = new ImageView(context);
@@ -286,6 +286,8 @@ public class ListsActivity extends Activity
             findViewById(R.id.optionsbutton).setVisibility(View.GONE);
             if(forcePhone || !isTabletDevice(this))
                 findViewById(R.id.backbutton).setVisibility(View.GONE);
+            ((View)findViewById(R.id.newTask).getParent()).setVisibility(View.GONE);
+            ((View)findViewById(R.id.newList).getParent()).setVisibility(View.GONE);
         }
 
         //Background

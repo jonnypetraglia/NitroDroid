@@ -2,7 +2,7 @@
 <component inheritJdk="true">
 	<exclude-output/>
 	<contentEntry url="file://$MODULE_DIR$"/>
-	<lib name="$MODULE_DIR$/libs/socketio.jar" scope="COMPILE">
+	<lib name="socketio.jar" scope="COMPILE">
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/socketio.jar!/"/>
 	</lib>
 </component>

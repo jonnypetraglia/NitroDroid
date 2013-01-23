@@ -237,6 +237,12 @@ public class TasksActivity
         @Override
         public void onClick(View v)
         {
+            if(ListsActivity.ta!=null && ListsActivity.ta.listHash!=null && ListsActivity.ta.listHash.equals("logbook"))
+            {
+                ((CheckBox)v).setChecked(true);
+                return;
+            }
+            Toast.makeText(v.getContext(), "DERP", Toast.LENGTH_LONG).show();
             boolean done = ((CheckBox)v).isChecked();
             ViewGroup parent = (ViewGroup)v.getParent().getParent();
             View tid1 = parent.findViewById(R.id.taskId);
@@ -251,7 +257,8 @@ public class TasksActivity
                     tid2.setBackgroundColor(clr);
                 }catch(Exception e){}
             }
-            ListsActivity.syncHelper.db.modifyTask(tid1.getTag().toString(), "logged", done ? (new Date()).getTime() : 0);
+            if(!ListsActivity.syncHelper.db.modifyTask(tid1.getTag().toString(), "logged", done ? (new Date()).getTime() : 0))
+                Toast.makeText(v.getContext(), "An error occurred", Toast.LENGTH_LONG).show();
         }
     };
 
@@ -306,7 +313,8 @@ public class TasksActivity
 
         if("".equals(newName))
             return;
-        newTask.setText("");
+        if(newTask!=null)
+            newTask.setText("");
 
         lastClickedID = SyncHelper.getID();
 
@@ -331,8 +339,11 @@ public class TasksActivity
         TextView currentListCount = (TextView)ListsActivity.currentList.findViewById(R.id.listNumber);
         int i = Integer.parseInt((String) currentListCount.getText()) + 1;
         currentListCount.setText(Integer.toString(i));
-        InputMethodManager imm = (InputMethodManager)newTask.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(newTask.getWindowToken(), 0);
+        if(newTask!=null)
+        {
+            InputMethodManager imm = (InputMethodManager)newTask.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(newTask.getWindowToken(), 0);
+        }
         Toast.makeText(context, "Created task: " + newName, Toast.LENGTH_SHORT).show();
     }
 
@@ -737,13 +748,16 @@ public class TasksActivity
               ListsActivity.ta.lv.collapseGroup(adapter.lastClicked);
           adapter.lastClicked = position;
 
-          lastClicked = view;
-          lastClickedID = (String) (lastClicked.findViewById(R.id.taskId).getTag());
-          Log.d("HERP", "SelectTask " + ((TextView)lastClicked.findViewById(R.id.taskName)).getText().toString());
+
+          if(ListsActivity.v2)
+          {
+              lastClicked = view;
+              lastClickedID = (String) (lastClicked.findViewById(R.id.taskId).getTag());
+          }
     	  if(lastClicked!=null && lastClicked==view)
     	  {
-              if(!ListsActivity.v2)
-                  lastClicked.setBackgroundDrawable(normalDrawable);
+              //if(!ListsActivity.v2)
+                  //lastClicked.setBackgroundDrawable(normalDrawable);
               return false;
     	  }
     	  else
@@ -752,8 +766,12 @@ public class TasksActivity
               {
                   parent.collapseGroup(position);
                   if(lastClicked!=null)
-                      lastClicked.setBackgroundDrawable(normalDrawable);
-                  view.setBackgroundDrawable(selectedDrawable);
+                      lastClicked.setSelected(false);
+                  //    lastClicked.setBackgroundDrawable(normalDrawable);
+                  lastClicked = view;
+                  lastClickedID = (String) (lastClicked.findViewById(R.id.taskId).getTag());
+                  lastClicked.setSelected(true);
+                  //view.setBackgroundDrawable(selectedDrawable);
               }
               return !ListsActivity.v2; //true;
     	  }
@@ -796,7 +814,8 @@ public class TasksActivity
             lv.collapseGroup(adapter.lastClicked);
             adapter.lastClicked = -1;
 	    	if(lastClicked!=null && !ListsActivity.v2)
-	    		lastClicked.setBackgroundDrawable(normalDrawable);
+                lastClicked.setSelected(false);
+	    	//	lastClicked.setBackgroundDrawable(normalDrawable);
             String herp = ((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
             ((TextView)lastClicked.findViewById(R.id.taskName)).setText(herp);
 	    	lastClicked = null;

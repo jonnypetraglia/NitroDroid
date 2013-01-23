@@ -20,7 +20,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     <attr format="reference" name="popup" />
     <attr format="reference" name="tag_scroller" />
     <attr format="reference" name="tasks_selector" />
-    <attr format="color" name="tasks_selected" />
     <attr format="reference" name="checkbox" />
     <attr format="reference" name="lists_selector" />
     <attr format="reference" name="lists_selected" />
