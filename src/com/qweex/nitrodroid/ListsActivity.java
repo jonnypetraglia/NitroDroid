@@ -35,9 +35,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -403,7 +405,8 @@ public class ListsActivity extends Activity
 				public void onAnimationEnd(Animation animation)
 				{
 					//TODO: WHAT THE FUCK IS THIS SHIT 
-					flip.setInAnimation(context, R.anim.slide_in_right);
+					//flip.setInAnimation(context, R.anim.slide_in_right);
+                    flip.setInAnimation(inFromRightAnimation());
 					doCreateThingsHandler.sendEmptyMessage(1);
 				}
 				@Override
@@ -413,7 +416,8 @@ public class ListsActivity extends Activity
 			});
 			splash.startAnimation(animation);
          }
-         
+         flip.setInAnimation(inFromRightAnimation());
+         flip.setOutAnimation(outToLeftAnimation());
          loadingApp = false;
 	}
 	
@@ -430,8 +434,10 @@ public class ListsActivity extends Activity
     			finish();
     		else
     		{
-	            flip.setInAnimation(this, android.R.anim.slide_in_left);
-	            flip.setOutAnimation(this, android.R.anim.slide_out_right);
+	            //flip.setInAnimation(this, android.R.anim.slide_in_left);
+	            //flip.setOutAnimation(this, android.R.anim.slide_out_right);
+                flip.setInAnimation(inFromLeftAnimation());
+                flip.setOutAnimation(outToRightAnimation());
 	            ta = null;
 	    		flip.showPrevious();
     		}
@@ -655,8 +661,10 @@ public class ListsActivity extends Activity
     	  if(!isTablet)
           {
     		  Log.d("ListsActivity::selectList", "Flipping to that TaskActivity");
-    		  flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
-    		  flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
+    		  //flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
+    		  //flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
+              flip.setInAnimation(inFromRightAnimation());
+              flip.setOutAnimation(outToLeftAnimation());
     		  flip.showNext();
           }
       }
@@ -721,5 +729,51 @@ public class ListsActivity extends Activity
 	    }
 	    return false;
 	}
+
+    public static final int ANIMATION_DURATION = 200;
+    //http://smartandroidians.blogspot.com/2010/04/viewflipper-in-android.html
+    public static Animation inFromRightAnimation() {
+        Animation inFromRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, +1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        inFromRight.setDuration(ANIMATION_DURATION);
+        inFromRight.setInterpolator(new AccelerateInterpolator());
+        return inFromRight;
+    }
+
+    public static Animation outToLeftAnimation() {
+        Animation outtoLeft = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, -1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        outtoLeft.setDuration(ANIMATION_DURATION);
+        outtoLeft.setInterpolator(new AccelerateInterpolator());
+        return outtoLeft;
+    }
+
+    public static Animation inFromLeftAnimation() {
+        Animation inFromLeft = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, -1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        inFromLeft.setDuration(ANIMATION_DURATION);
+        inFromLeft.setInterpolator(new AccelerateInterpolator());
+        return inFromLeft;
+    }
+
+    public static Animation outToRightAnimation() {
+        Animation outtoRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, +1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        outtoRight.setDuration(ANIMATION_DURATION);
+        outtoRight.setInterpolator(new AccelerateInterpolator());
+        return outtoRight;
+    }
     
 }

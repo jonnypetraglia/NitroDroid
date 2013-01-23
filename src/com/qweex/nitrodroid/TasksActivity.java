@@ -165,8 +165,11 @@ public class TasksActivity
         {
             @Override
             public void onClick(View v) {
-                ((ViewFlipper)context.findViewById(R.id.FLIP)).setInAnimation(context, android.R.anim.slide_in_left);
-                ((ViewFlipper)context.findViewById(R.id.FLIP)).setOutAnimation(context, android.R.anim.slide_out_right);
+                //((ViewFlipper)context.findViewById(R.id.FLIP)).setInAnimation(context, android.R.anim.slide_in_left);
+                //((ViewFlipper)context.findViewById(R.id.FLIP)).setOutAnimation(context, android.R.anim.slide_out_right);
+                ViewFlipper flip = ((ViewFlipper)context.findViewById(R.id.FLIP));
+                flip.setInAnimation(ListsActivity.inFromRightAnimation());
+                flip.setOutAnimation(ListsActivity.outToLeftAnimation());
                 ListsActivity.ta = null;
                 ((ViewFlipper)context.findViewById(R.id.FLIP)).showPrevious();
             }
@@ -242,7 +245,6 @@ public class TasksActivity
                 ((CheckBox)v).setChecked(true);
                 return;
             }
-            Toast.makeText(v.getContext(), "DERP", Toast.LENGTH_LONG).show();
             boolean done = ((CheckBox)v).isChecked();
             ViewGroup parent = (ViewGroup)v.getParent().getParent();
             View tid1 = parent.findViewById(R.id.taskId);
@@ -400,7 +402,7 @@ public class TasksActivity
     {
         Cursor r;
         isSorted = !isSorted;
-        Toast.makeText(context, "Toggle sort: " + (isSorted ? "sort by priority" : "no sort"), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Toggle sort: " + (isSorted ? "sort by priority" : "no sort"), Toast.LENGTH_SHORT).show();
         r = ListsActivity.syncHelper.db.getTasksOfList(listHash, (ListsActivity.v2 ? "logged, " : "") + (isSorted ? "priority DESC" : "order_num"));
         adapter = new TaskAdapter(context, R.layout.task_item, r);
         lv.setAdapter(adapter);
@@ -588,7 +590,6 @@ public class TasksActivity
             priority.setBackgroundResource(TaskAdapter.drawsB[pri]);
     		priority.setTag(pri);
     		priority.setText(context.getString(R.string.priority) + ": " + context.getString(TaskAdapter.drawsS[pri]));
-            Toast.makeText(context, "ADSADSAS: " + lastClickedID, Toast.LENGTH_SHORT).show();
     		ListsActivity.syncHelper.db.modifyTask(lastClickedID, "priority", pri);
 		}
 	};
@@ -861,6 +862,11 @@ public class TasksActivity
     	ArrayList<String> arList = new ArrayList<String>(Arrays.asList(tgs));
     	removeDuplicateWithOrder(arList);
 
+        if(arList.size()==0)
+        {
+            LayoutInflater inflater=(LayoutInflater) ListsActivity.ta.context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            tag_cont.addView(inflater.inflate(R.layout.task_item_empty_tag, null, false));
+        }
 		for(int i=0; i<arList.size(); i++)
 		{
             if(i==0)
