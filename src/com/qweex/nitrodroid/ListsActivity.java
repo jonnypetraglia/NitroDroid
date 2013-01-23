@@ -454,7 +454,9 @@ public class ListsActivity extends Activity
 	        a = context.getTheme().obtainStyledAttributes(ListsActivity.themeID, new int[] {R.attr.lists_selected});
         	list_selectedDrawable = a.getResourceId(0, 0);
 
+            try {
             Looper.prepare();   //This is to fix a problem with HTC. FUCK HTC.
+            } catch(Exception e) {}
             newList = new EditText(context);
 	        newList.setId(42);
 	        newListDialog = new AlertDialog.Builder(context)

@@ -287,11 +287,16 @@ public class TasksActivity
 		else if(listHash.equals("all"))			//All
 			listHash = null;
 		
-		r = ListsActivity.syncHelper.db.getTasksOfList(listHash, (ListsActivity.v2 ? "logged, " : "") + "order_num"); //TODO: Hmm, this might need to change
+		r = getCursor();
         adapter = new TaskAdapter(context, R.layout.task_item, r);
         lv.setAdapter(adapter);
         lv.setDescendantFocusability(ExpandableListView.FOCUS_AFTER_DESCENDANTS);
 	}
+
+    public static Cursor getCursor()
+    {
+        return ListsActivity.syncHelper.db.getTasksOfList(ListsActivity.ta.listHash, (ListsActivity.v2 ? "logged, " : "") + "order_num"); //TODO: Hmm, this might need to change
+    }
 	
 	
 	OnClickListener clickAdd = new OnClickListener()
@@ -305,7 +310,7 @@ public class TasksActivity
 
     void createTask(String newName)
     {
-        if(listHash==null || "logbook".equals(listHash) || "today".equals(listHash) || "next".equals(listHash))
+        if(listHash==null || "logbook".equals(listHash))// || "today".equals(listHash) || "next".equals(listHash))
         {
             Toast.makeText(context, R.string.long_winded_reprimand, Toast.LENGTH_LONG).show();
             return;
@@ -786,7 +791,7 @@ public class TasksActivity
     	{
     		datePickerDialog.dismiss();
     	}
-    	//Finish editing tasks
+    	//Finish editing tags
     	else if(editingTags!=null)
     	{
     		editingTags.setVisibility(View.GONE);
@@ -817,8 +822,9 @@ public class TasksActivity
 	    	if(lastClicked!=null && !ListsActivity.v2)
                 lastClicked.setSelected(false);
 	    	//	lastClicked.setBackgroundDrawable(normalDrawable);
-            String herp = ((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
-            ((TextView)lastClicked.findViewById(R.id.taskName)).setText(herp);
+            //String herp = ((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
+            Log.d("HERP", "Finished editing: " + ((TextView)lastClicked.findViewById(R.id.taskName)).getText());
+            //((TextView)lastClicked.findViewById(R.id.taskName)).setText(herp);
 	    	lastClicked = null;
 	    	lastClickedID = null;
     	}

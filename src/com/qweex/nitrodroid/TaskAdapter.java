@@ -135,6 +135,16 @@ public class TaskAdapter extends BaseExpandableListAdapter
             ((EditText)child.findViewById(R.id.notes)).removeTextChangedListener(TasksActivity.writeNotes);
             ((android.widget.Button)child.findViewById(R.id.priority)).setOnClickListener(null);
             ((android.widget.Button)child.findViewById(R.id.timeButton)).setOnClickListener(null); //*/
+
+            // save index and top position
+            int index = ListsActivity.ta.lv.getFirstVisiblePosition();
+            View v = ListsActivity.ta.lv.getChildAt(0);
+            int top = (v == null) ? 0 : v.getTop();
+
+            //ListsActivity.ta.adapter.notifyDataSetChanged();
+            ListsActivity.ta.createTheAdapterYouSillyGoose();
+
+            ListsActivity.ta.lv.setSelectionFromTop(index, top);
         }
     }
 

@@ -56,28 +56,28 @@
     </option>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="ERROR" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="HERP" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/xml/preferences.xml" afterPath="$PROJECT_DIR$/res/xml/preferences.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings_droid.xml" afterPath="$PROJECT_DIR$/res/values/strings_droid.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="NitroDroid.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358962152918" ignored="false" />
-    <file path="/fragment.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358963142860" ignored="false" />
+    <file path="/Dummy.txt" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358963574050" ignored="false" />
+    <file path="/fragment.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358978193957" ignored="false" />
     <file path="$PROJECT_DIR$/../Callisto/gen/com/qweex/callisto/R.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356423650879" ignored="false" />
-    <file path="/TaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358955396759" ignored="false" />
-    <file path="/TasksActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358962818695" ignored="false" />
+    <file path="/TaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358979743413" ignored="false" />
+    <file path="/TasksActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358979458668" ignored="false" />
     <file path="/tasks.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358961541385" ignored="false" />
     <file path="/a.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356431487469" ignored="false" />
     <file path="/task_item_details.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358356773082" ignored="false" />
     <file path="/MagicTaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356432826531" ignored="false" />
     <file path="/DatabaseConnector.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358955260550" ignored="false" />
-    <file path="/ListsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358961603774" ignored="false" />
+    <file path="/ListsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358978400257" ignored="false" />
     <file path="/lists.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1357803509178" ignored="false" />
     <file path="/strings_droid.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356977990894" ignored="false" />
     <file path="/tablet.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1357692719363" ignored="false" />
@@ -184,75 +184,44 @@
       <file leaf-file-name="ListsActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="272" column="32" selection-start="10343" selection-end="10343" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TasksActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="339" column="62" selection-start="13727" selection-end="13727" vertical-scroll-proportion="0.28076255">
+            <state line="458" column="35" selection-start="16876" selection-end="16876" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#9830#11131#0" expanded="true" />
-                <element signature="e#11124#11125#0" expanded="true" />
-                <element signature="e#25429#25761#0" expanded="true" />
-                <element signature="e#25753#25754#0" expanded="true" />
+                <element signature="e#21834#24549#0" expanded="true" />
+                <element signature="e#24542#24543#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="strings_droid.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/strings_droid.xml">
+      <file leaf-file-name="TasksActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="80" column="19" selection-start="2487" selection-end="2487" vertical-scroll-proportion="0.0">
+            <state line="284" column="19" selection-start="11812" selection-end="11812" vertical-scroll-proportion="-10.16">
+              <folding>
+                <element signature="e#0#35763#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#9830#11131#0" expanded="true" />
+                <element signature="e#11124#11125#0" expanded="true" />
+                <element signature="e#25527#25859#0" expanded="true" />
+                <element signature="e#25851#25852#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TaskAdapter.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="132" column="0" selection-start="4384" selection-end="4384" vertical-scroll-proportion="0.54347825">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+      <file leaf-file-name="ListAdapter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="43" selection-start="1710" selection-end="1710" vertical-scroll-proportion="-14.24">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="QuickPrefsActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="97" column="29" selection-start="4153" selection-end="4163" vertical-scroll-proportion="-24.6">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="preferences.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="43" selection-start="1222" selection-end="1236" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SyncHelper.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/SyncHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="38" selection-start="2557" selection-end="2557" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DatabaseConnector.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="298" column="4" selection-start="10077" selection-end="10077" vertical-scroll-proportion="0.0">
+            <state line="64" column="9" selection-start="2174" selection-end="2174" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -301,14 +270,14 @@
         <option value="$PROJECT_DIR$/res/values/theme_attr.xml" />
         <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListAdapter.java" />
         <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java" />
-        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java" />
         <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/SyncHelper.java" />
         <option value="$PROJECT_DIR$/res/layout/tasks.xml" />
-        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
         <option value="$PROJECT_DIR$/res/xml/preferences.xml" />
-        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/res/values/strings_droid.xml" />
+        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java" />
       </list>
     </option>
   </component>
@@ -650,7 +619,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
       <option name="PREFERRED_AVD" value="" />
       <option name="COMMAND_LINE" value="" />
       <option name="WIPE_USER_DATA" value="false" />
@@ -757,7 +726,11 @@
       <created>1358962220491</created>
       <updated>1358962220491</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Fixed the &quot;day starts on&quot; for &gt;ICS.&#10;&#10;I think, haven't had a chance to test it.">
+      <created>1358963580104</created>
+      <updated>1358963580104</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -852,7 +825,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Did some work on the Classic compatibility.&#10;&#10;Finally fixed the coloring for selecting a list.&#10;&#10;Finally fixed Ubuntu One sync.&#10;&#10;Finished tasks now show up in their respective lists.&#10;&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed the &quot;day starts on&quot; for &gt;ICS.&#10;&#10;I think, haven't had a chance to test it." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -880,6 +853,7 @@
     <MESSAGE value="Fixed sorting with finished tasks&#10;&#10;Now they are always on the bottom: if you sort or if you don't." />
     <MESSAGE value="Started sync work. NOTE: BROKEN BUILD.&#10;&#10;(I realize it's not proper to make a commit where the app is broken, but I need to push my changes to save them for the night.)&#10;&#10;This is mostly the sync.coffee file ported to Java. But there are parts I don't quite understand yet, so I left those parts in Coffeescript as markers.&#10;&#10;I also left some comments at the bottom of SyncHelper_v2 about what I believe still needs to be done. A talk with George will hopefully clear it up." />
     <MESSAGE value="Did some work on the Classic compatibility.&#10;&#10;Finally fixed the coloring for selecting a list.&#10;&#10;Finally fixed Ubuntu One sync.&#10;&#10;Finished tasks now show up in their respective lists.&#10;&#10;" />
+    <MESSAGE value="Fixed the &quot;day starts on&quot; for &gt;ICS.&#10;&#10;I think, haven't had a chance to test it." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -906,34 +880,6 @@
     <entry file="file://$PROJECT_DIR$/res/drawable/tasks_selector_default.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="20" column="26" selection-start="1203" selection-end="1203" vertical-scroll-proportion="0.5319149">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="28" selection-start="1681" selection-end="1681" vertical-scroll-proportion="-9.6">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="298" column="4" selection-start="10077" selection-end="10077" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="187" column="48" selection-start="6964" selection-end="6964" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/SyncHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="38" selection-start="2557" selection-end="2557" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -968,34 +914,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="272" column="32" selection-start="10343" selection-end="10343" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="29" selection-start="4153" selection-end="4163" vertical-scroll-proportion="-24.6">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="43" selection-start="1222" selection-end="1236" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="43" selection-start="1710" selection-end="1710" vertical-scroll-proportion="-14.24">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings_droid.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="80" column="19" selection-start="2487" selection-end="2487" vertical-scroll-proportion="0.0">
@@ -1003,15 +921,76 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="298" column="4" selection-start="10077" selection-end="10077" vertical-scroll-proportion="1.0121317">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="43" selection-start="1222" selection-end="1236" vertical-scroll-proportion="0.34574467">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="97" column="29" selection-start="4153" selection-end="4163" vertical-scroll-proportion="1.1141304">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="37" selection-start="1231" selection-end="1231" vertical-scroll-proportion="-4.64">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/SyncHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="307" column="4" selection-start="9630" selection-end="9630" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="458" column="35" selection-start="16876" selection-end="16876" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#21834#24549#0" expanded="true" />
+            <element signature="e#24542#24543#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="9" selection-start="2174" selection-end="2174" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="339" column="62" selection-start="13727" selection-end="13727" vertical-scroll-proportion="0.28076255">
+        <state line="284" column="19" selection-start="11812" selection-end="11812" vertical-scroll-proportion="-10.16">
           <folding>
+            <element signature="e#0#35763#0" expanded="true" />
+            <element signature="imports" expanded="true" />
             <element signature="e#9830#11131#0" expanded="true" />
             <element signature="e#11124#11125#0" expanded="true" />
-            <element signature="e#25429#25761#0" expanded="true" />
-            <element signature="e#25753#25754#0" expanded="true" />
+            <element signature="e#25527#25859#0" expanded="true" />
+            <element signature="e#25851#25852#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="132" column="0" selection-start="4384" selection-end="4384" vertical-scroll-proportion="0.54347825">
+          <folding />
         </state>
       </provider>
     </entry>
