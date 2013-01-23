@@ -131,10 +131,12 @@ public class TaskAdapter extends BaseExpandableListAdapter
 
             ((EditText)view.findViewById(R.id.taskName_edit)).removeTextChangedListener(TasksActivity.writeName);
 
+            try {
             View child = ((ViewGroup)((ViewGroup)view.getParent()).getParent()).getChildAt(1);   //This is the root view of task_item_details
             ((EditText)child.findViewById(R.id.notes)).removeTextChangedListener(TasksActivity.writeNotes);
             ((android.widget.Button)child.findViewById(R.id.priority)).setOnClickListener(null);
             ((android.widget.Button)child.findViewById(R.id.timeButton)).setOnClickListener(null); //*/
+            } catch(NullPointerException e){} //If the last view is now offscreen
 
             // save index and top position
             int index = ListsActivity.ta.lv.getFirstVisiblePosition();
@@ -207,15 +209,20 @@ public class TaskAdapter extends BaseExpandableListAdapter
         //This essentially takes the place of onGroupExpanded
         if(isExpanded && TasksActivity.lastClicked!=null)
         {
-            TasksActivity.lastClicked.findViewById(R.id.taskName).setVisibility(View.GONE);
-            TasksActivity.lastClicked.findViewById(R.id.taskTime).setVisibility(View.GONE);
-            TasksActivity.lastClicked.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
-            ((TextView)TasksActivity.lastClicked.findViewById(R.id.taskName_edit)).setText(((TextView)TasksActivity.lastClicked.findViewById(R.id.taskName)).getText());
-            ((EditText)TasksActivity.lastClicked.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
+            row.findViewById(R.id.taskName).setVisibility(View.GONE);
+            row.findViewById(R.id.taskTime).setVisibility(View.GONE);
+            row.findViewById(R.id.taskName_edit).setVisibility(View.VISIBLE);
+            ((TextView)row.findViewById(R.id.taskName_edit)).setText(((TextView)TasksActivity.lastClicked.findViewById(R.id.taskName)).getText());
+            ((EditText)row.findViewById(R.id.taskName_edit)).addTextChangedListener(TasksActivity.writeName);
             //onGroupExpanded(groupPosition);
         }
-        //else
-        //    onGroupCollapsed(groupPosition);
+        else
+        {
+            row.findViewById(R.id.taskName).setVisibility(View.VISIBLE);
+            row.findViewById(R.id.taskTime).setVisibility(View.VISIBLE);
+            row.findViewById(R.id.taskName_edit).setVisibility(View.GONE);
+            //onGroupCollapsed(groupPosition);
+        }
 
         return row;
     }
