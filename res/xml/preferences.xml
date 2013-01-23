@@ -23,7 +23,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 		        android:key="week_starts_on"
 	            android:entries="@array/weekdays"
 	            android:entryValues="@array/weekdays_val"
-	            android:defaultValue="@string/weekday1"
+	            android:defaultValue="1"
 		        />
 	    <CheckBoxPreference 
 		        android:key="show_others_in_next"

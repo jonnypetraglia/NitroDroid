@@ -89,9 +89,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="delete">Delete</string>
     <string name="set_up">Set up</string>
 
-    <string-array name="weekdays_val">
-        <item>0</item> <item>1</item> <item>2</item> <item>3</item> <item>4</item> <item>5</item> <item>6</item>
-    </string-array>
+    <string-array name="weekdays_val"><item>1</item><item>2</item><item>3</item><item>4</item><item>5</item><item>6</item><item>7</item></string-array>
 
     <string name="no_tags">No tags</string>
     <string name="no_date_set">No Date Set</string>
