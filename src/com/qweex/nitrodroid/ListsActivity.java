@@ -286,7 +286,7 @@ public class ListsActivity extends Activity
         } else
         {
             findViewById(R.id.optionsbutton).setVisibility(View.GONE);
-            if(forcePhone || !isTabletDevice(this))
+            if(!forcePhone && isTabletDevice(this))
                 findViewById(R.id.backbutton).setVisibility(View.GONE);
             ((View)findViewById(R.id.newTask).getParent()).setVisibility(View.GONE);
             ((View)findViewById(R.id.newList).getParent()).setVisibility(View.GONE);

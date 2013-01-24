@@ -797,7 +797,7 @@ public class TasksActivity
     	{
     		editingTags.setVisibility(View.GONE);
     		HorizontalScrollView hsv = (HorizontalScrollView) ((LinearLayout)editingTags.getParent()).getChildAt(1);
-    		
+    		Log.d("HERP", "Gandalf");
     		getThemTagsSon((LinearLayout)hsv.getChildAt(0), editingTags.getText().toString());
     		
     		hsv.setVisibility(View.VISIBLE);
@@ -862,19 +862,27 @@ public class TasksActivity
     	ArrayList<String> arList = new ArrayList<String>(Arrays.asList(tgs));
     	removeDuplicateWithOrder(arList);
 
-        if(arList.size()==0)
+        Log.d("HERP", "tagsize: " + arList.size());
+        if("".equals(tags))
         {
-            LayoutInflater inflater=(LayoutInflater) ListsActivity.ta.context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            tag_cont.addView(inflater.inflate(R.layout.task_item_empty_tag, null, false));
+            if(arList.size()==0)
+            {
+                LayoutInflater inflater=(LayoutInflater) ListsActivity.ta.context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                tag_cont.addView(inflater.inflate(R.layout.task_item_empty_tag, null, false));
+            }
         }
-		for(int i=0; i<arList.size(); i++)
-		{
-            if(i==0)
-                tag_cont.removeAllViews();
-			else
-				tag_cont.addView(new Separator(tag_cont.getContext()));
-			tag_cont.addView(new TagView(tag_cont.getContext(), arList.get(i).trim()));
-		}
+        else
+        {
+            for(int i=0; i<arList.size(); i++)
+            {
+                Log.d("HERP", "tagsize: " + arList.get(i));
+                if(i==0)
+                    tag_cont.removeAllViews();
+                else
+                    tag_cont.addView(new Separator(tag_cont.getContext()));
+                tag_cont.addView(new TagView(tag_cont.getContext(), arList.get(i).trim()));
+            }
+        }
     }
 	
     static int n, m;

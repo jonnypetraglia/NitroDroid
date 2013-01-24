@@ -118,6 +118,7 @@ public class SyncHelper {
 			ListsActivity.syncLoading.setImageResource(R.drawable.loading_animation);
 			if(success) {
 				Log.d("SyncHelper::performSync", "Sync performed without errors, changing cursor");
+                Toast.makeText(context, "Sync performed without errors", Toast.LENGTH_SHORT).show();
 				ListsActivity.listAdapter.changeCursor(db.getAllLists());
 				if(ListsActivity.flip.getCurrentView() != ListsActivity.flip.getChildAt(0))
 				{
