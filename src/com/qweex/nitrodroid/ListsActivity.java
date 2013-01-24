@@ -210,6 +210,9 @@ public class ListsActivity extends Activity
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             doBackThings();
+        } else if(keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0)
+        {
+            return !isTablet && flip.getCurrentView()==flip.getChildAt(1);
         }
 
         return super.onKeyDown(keyCode, event);
