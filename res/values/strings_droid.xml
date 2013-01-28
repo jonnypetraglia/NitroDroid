@@ -17,20 +17,8 @@ Permission is granted to anyone to use this software for any purpose, including 
         -arabic.js
         -basque.js
         -bulgarian.js
-        *chinese.js
-        *dutch.js
-        *finnish.js
-        *french.js
-        *german.js
         -hungarian.js
-        *italian.js
         *pirate.js
-        *polish.js
-        *portuguese.js
-        *russian.js
-        *spanish.js
-        *turkish.js
-        *vietnamese.js
         -->
 
 <resources>
@@ -58,7 +46,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 	</string-array>
 	<string-array name="language_vals">
 	    <item>en_US</item>
-	    <item>ARRGH</item>
+	    <item>ca</item>
 	    <item>es_ES</item>
 	    <item>fr_FR</item>
 	    <item>de_DE</item>
@@ -98,4 +86,47 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="force_spinner">Force Spinner</string>
     <string name="force_spinner_txt">Use a spinner for dates instead of the calendar view</string>
     <string name="tag">Tag</string>
+
+    <string name="Settings">Settings</string>
+    <string name="donate">Donate</string>
+    <string name="donate_msg">Show some love! Support development! Get a fuzzy feeling!</string>
 </resources>
+
+
+        <!--
+Focus
+Lists
+Scheduled
+Add
+Delete
+Sort
+Add List
+MoveToLogbook
+ShowCompletedTasks
+Search
+Notes
+Tags
+due date
+schedule
+date formatS
+shortened days
+months
+delete modals
+recurring
+Review no ... review action ... cancel
+hideWarnings ... next everything
+deleteWarningsDescription
+Use the default background
+Background size
+...
+!HeadingColor
+!Sync Logged In
+
+
+
+!Logged in as
+!DEFAULT NAMES
+!Search Results
+!Change the Background
+!Remove background
+ -->

@@ -17,6 +17,7 @@ package com.qweex.nitrodroid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -77,7 +78,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     public void onCreate(Bundle savedInstanceState)
     {
     	Log.d("QuickPrefsActivity", "Creating the Prefs Activity");
-        super.onCreate(savedInstanceState);        
+        super.onCreate(savedInstanceState);
+        Locale.setDefault(new java.util.Locale(ListsActivity.locale));
         addPreferencesFromResource(R.xml.preferences);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         ((Preference) findPreference("clear")).setOnPreferenceClickListener(ClickReset);
@@ -90,6 +92,16 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         notbg.setOnPreferenceClickListener(ClickBG);
         sync.setOnPreferenceClickListener(ClickSync);
         notsync.setOnPreferenceClickListener(ClickLogout);
+        ((Preference) findPreference("donate")).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Log.d("DERP", "Donate");
+                Uri uri = Uri.parse("market://details?id=com.qweex.donation");
+                Intent intent = new Intent (Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                return true;
+            }
+        });
         updateSyncPrefs();
         
         //Force Phone preference

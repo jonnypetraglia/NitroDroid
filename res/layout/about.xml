@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/nitro_256" />
+            android:src="@drawable/nitro_256_old" />
 
         <TextView
             android:id="@+id/textView1"
@@ -63,16 +63,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:paddingLeft="5dp"
-            android:text="Donors"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:paddingLeft="30dp"
+            android:text="• The various people who e-mailed me with their bugs and concerns."
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
-            android:text="• None yet!"
+            android:text="• The 14 people who bought NitroDroid and did not uninstall. Thank you for believing and giving it the benefit of the doubt."
             android:textAppearance="?android:attr/textAppearanceSmall" />
         
     </LinearLayout>

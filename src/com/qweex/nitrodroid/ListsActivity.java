@@ -15,6 +15,8 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +24,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -55,6 +58,7 @@ public class ListsActivity extends Activity
 	public static int themeID;
 	public static boolean forcePhone;
 	public static String locale = null, backgroundPath = null;
+    public static Locale realLocale = null;
 	public static boolean isTablet = false;
 	boolean splashEnabled = false;
 	
@@ -81,25 +85,40 @@ public class ListsActivity extends Activity
     static ImageView arrow;
     public static Typeface theTypeface;
 
+
+    void changeLocale()
+    {
+        locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("locale", "en");
+        realLocale = new Locale("ca");
+        Locale.setDefault(realLocale);
+        Configuration config = new Configuration();
+        config.locale = realLocale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+    }
+
     /************************** Activity Lifecycle methods **************************/
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+        changeLocale();
 		super.onCreate(savedInstanceState);
 		Log.d("ListsActivity::()", "Creating ListsActivity");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		//Load preferences
+        boolean fixLocale = (locale==null);
 		String new_theme = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("theme", "Default");
 		themeID = getResources().getIdentifier(new_theme, "style", getApplicationContext().getPackageName());
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("locale", "en");
 		lastList = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("last_list", "today");
         backgroundPath = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("background", null);
-		doViewStuff();
+
+
+        doViewStuff();
+        changeLocale();
 		
-		//Create/set locals
 		context = this;
 		syncHelper = new SyncHelper(context);
         //syncHelper2 = new SyncHelper_v2(context);
@@ -220,6 +239,10 @@ public class ListsActivity extends Activity
 	
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        // refresh your views here
+        Locale.setDefault(realLocale);
+        config.locale = realLocale;
         super.onConfigurationChanged(newConfig);
         Log.d("ListsActivity::onConfigurationChanged", "Herp");
     }

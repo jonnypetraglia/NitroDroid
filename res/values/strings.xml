@@ -50,7 +50,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="default_background">Use the default background</string>
     <string name="sync">Sync</string>
     <string name="logout">Logout</string>
-    <string name="none">None</string>
     
     <string name="warning">Warning!</string>
     <string name="warning_msg">Are you sure you want to reset Nitro? Your data will be gone forever (a long time)</string>
@@ -77,7 +76,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="default_task">New Task</string>
     <string name="add_list">Add List</string>
     
-    <string name="Settings">Settings</string>
     <string name="lists">Lists</string>
     
 </resources>

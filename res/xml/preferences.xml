@@ -78,6 +78,11 @@ Permission is granted to anyone to use this software for any purpose, including 
 	        	android:title="@string/about" 
 	        	android:key="about"
 	        />
+        <Preference
+                android:title="@string/donate"
+                android:key="donate"
+                android:summary="@string/donate_msg"
+                />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/advanced" android:key="advanced">
        	<CheckBoxPreference 

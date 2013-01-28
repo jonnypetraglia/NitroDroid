@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/screeny"
-        android:layout_margin="40dp"
-        android:textSize="20sp"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:textSize="16sp"
         android:text="Made by the good looking folks at Qweex" />
    
     <!-- android:scaleType="fitStart"

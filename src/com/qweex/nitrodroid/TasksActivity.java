@@ -670,7 +670,12 @@ public class TasksActivity
 		}
 		android.widget.CalendarView datePicker_ = new android.widget.CalendarView(context); // = (CalendarView) datePicker;
 		datePicker = datePicker_;
+        try {
         datePicker_.setFirstDayOfWeek(   Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("week_starts_on", "1"))  );
+        } catch(Exception e)
+        {
+            datePicker_.setFirstDayOfWeek(0);
+        }
 		popupLayout.addView(datePicker_, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
 		
 		datePicker_.setBackgroundColor(0x00FFFFFF);
