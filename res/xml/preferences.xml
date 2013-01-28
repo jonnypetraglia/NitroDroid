@@ -25,10 +25,11 @@ Permission is granted to anyone to use this software for any purpose, including 
 	            android:entryValues="@array/weekdays_val"
 	            android:defaultValue="1"
 		        />
+        <!--
 	    <CheckBoxPreference 
 		        android:key="show_others_in_next"
 		        android:title="@string/show_others_in_next"
-		        />
+		        />-->
 	    <Preference
 	        	android:title="@string/clear_data"
 	        	android:key="clear"

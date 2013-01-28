@@ -170,6 +170,10 @@ public class TasksActivity
                 ViewFlipper flip = ((ViewFlipper)context.findViewById(R.id.FLIP));
                 flip.setInAnimation(ListsActivity.inFromRightAnimation());
                 flip.setOutAnimation(ListsActivity.outToLeftAnimation());
+
+                //flip.setInAnimation(null);
+                //flip.setOutAnimation(null);
+
                 ListsActivity.ta = null;
                 ((ViewFlipper)context.findViewById(R.id.FLIP)).showPrevious();
             }
@@ -475,10 +479,14 @@ public class TasksActivity
 			int ratingA = a.dateWorth, ratingB = b.dateWorth;
 			ratingA += a.priority*2;
 			ratingB += b.priority*2;
-			
+
+            Log.e("DERP", "Comparing " + a.name + " to " + b.name);
+
 			if(a.logged>0 && b.logged==0) return 1;
 			else if(a.logged==0 && b.logged>0) return -1;
 			else if(a.logged>0 && a.logged>0) return 0;
+
+            Log.e("DERP", "Result: " + (ratingB - ratingA));
 			return ratingB - ratingA;
 		}
 	}
