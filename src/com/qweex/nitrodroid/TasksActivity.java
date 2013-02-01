@@ -703,7 +703,7 @@ public class TasksActivity
     	c.set(Calendar.MILLISECOND, 0);
     	
     	((Button)context.findViewById(R.id.timeButton)).setText(
-                TaskAdapter.sdf.format(c.getTime())
+                TaskAdapter.days[c.get(Calendar.DAY_OF_WEEK)-1] + ", " + TaskAdapter.sdf.format(c.getTime())
         );
     	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "date", c.getTimeInMillis());
     	

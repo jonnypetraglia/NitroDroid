@@ -16,6 +16,7 @@ package com.qweex.nitrodroid;
 
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class TaskAdapter extends BaseExpandableListAdapter
     ArrayList<TasksActivity.taskObject> a;
     public boolean isMagic;
     protected static int ID_TAG = 11111;
-    private String days[];
+    public static String days[];
 
     //God I'm fucking lazy
     public static int[] drawsB = {R.drawable.button_none, R.drawable.button_low, R.drawable.button_med, R.drawable.button_high};
@@ -327,33 +328,35 @@ public class TaskAdapter extends BaseExpandableListAdapter
 
 	static public String getTimeString(long dat, Context context)
 	{
-		long d = (new java.util.Date()).getTime();
+		long d = TasksActivity.getBeginningOfDayInSeconds();
 		String timeString;
+
 		if(dat==0)
 			timeString = "";
-		else if(dat<d)
+		else if(dat<d)  //The due date is in the past
 		{
 			long days = (d - dat) / 1000 / 60 / 60 / 24;
+            int i = 100;
 			if(days==0)
 				timeString = context.getResources().getString(R.string.due_today);
 			else if(days==1)
 				timeString = context.getResources().getString(R.string.due_yesterday);
 			else
 				timeString = Long.toString(days) + " " + context.getResources().getString(R.string.days_overdue);
-		} else
+		} else  //The due date is in the future
 		{
 			long days = (dat - d) / 1000 / 60 / 60 / 24;
 			if(days==0)
 				timeString = context.getResources().getString(R.string.due_today);
 			else if(days==1)
-				timeString = context.getResources().getString(R.string.due_yesterday);
+				timeString = context.getResources().getString(R.string.due_tomorrow);
 			else
 				timeString = Long.toString(days) + " " + context.getResources().getString(R.string.days_left);
 		}
 		return timeString;
 	}
-	
-	
+    //1359702000000
+    //1359788400000
 	
 	static public class TagView extends TextView
     {
