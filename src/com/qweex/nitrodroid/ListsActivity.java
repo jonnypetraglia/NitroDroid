@@ -231,7 +231,10 @@ public class ListsActivity extends Activity
             doBackThings();
         } else if(keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0)
         {
-            return !isTablet && flip.getCurrentView()==flip.getChildAt(1);
+            return flip==null ||                    //To avoid a null pointer
+                   loadingApp ||       //If the splash is shown
+                   (!isTablet &&                    //Always show it if it is a tablet
+                    flip.getCurrentView()==flip.getChildAt(1));
         }
 
         return super.onKeyDown(keyCode, event);
@@ -527,6 +530,8 @@ public class ListsActivity extends Activity
 	void pressCreateList()
 	{
         newList.setTag("create");
+        if(newList.getParent()!=null)
+            ((ViewGroup)newList.getParent()).removeView(newList);
 		newListDialog.show();
 	}
 	
@@ -571,6 +576,8 @@ public class ListsActivity extends Activity
         public void onClick(DialogInterface dialog, int whichButton) {
             newList.setTag("rename");
             newList.setText(((TextView)currentList.findViewById(R.id.listName)).getText());
+            if(newList.getParent()!=null)
+                ((ViewGroup)newList.getParent()).removeView(newList);
             newListDialog.show();
         }
     };
@@ -600,9 +607,10 @@ public class ListsActivity extends Activity
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
         {
             String derp = (String) view.findViewById(R.id.listId).getTag();
-            if(!v2)
+            if(!v2 && false)
             {
-                currentList.setBackgroundResource(list_normalDrawable);
+                if(currentList!=null)
+                    currentList.setBackgroundResource(list_normalDrawable);
                 view.setBackgroundResource(list_selectedDrawable);
             }
             currentList = view;
@@ -612,6 +620,8 @@ public class ListsActivity extends Activity
             tv.setText("     '" + ((TextView)currentList.findViewById(R.id.listName)).getText() + "'");
             tv.setTextColor(0xffffffff);
             tv.setTextSize(20);
+            if(tv.getParent()!=null)
+                ((ViewGroup)tv.getParent()).removeView(tv);
             editListDialog.setView(tv);
             editListDialog.show();
             return true;

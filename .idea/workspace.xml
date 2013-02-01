@@ -25,8 +25,8 @@
       </filter>
       <filter>
         <option name="logLevel" value="verbose" />
-        <option name="logMessagePattern" value="DERP" />
-        <option name="logTagPattern" value="" />
+        <option name="logMessagePattern" value="" />
+        <option name="logTagPattern" value="DERP" />
         <option name="name" value="DERP" />
         <option name="pid" value="" />
       </filter>
@@ -57,26 +57,17 @@
     </option>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="ERROR" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="DERP" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="DERP" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+    <list default="true" id="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" name="Default" comment=" Fixed some minor issues&#10; &#10; Fixed a crash when trying to show the New List dialog more than once&#10; Fixed a crash when pressing the menu button while the splash is showing">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/about.xml" afterPath="$PROJECT_DIR$/res/layout/about.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/xml/preferences.xml" afterPath="$PROJECT_DIR$/res/xml/preferences.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project.properties" afterPath="$PROJECT_DIR$/project.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/splash.xml" afterPath="$PROJECT_DIR$/res/layout/splash.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-es/strings.xml" afterPath="$PROJECT_DIR$/res/values-es/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings_droid.xml" afterPath="$PROJECT_DIR$/res/values/strings_droid.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="NitroDroid.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359355098864" ignored="false" />
+    <file path="/Dummy.txt" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359700771275" ignored="false" />
     <file path="/fragment.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358984430595" ignored="false" />
     <file path="$PROJECT_DIR$/../Callisto/gen/com/qweex/callisto/R.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356423650879" ignored="false" />
     <file path="/TaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358980343174" ignored="false" />
@@ -86,7 +77,7 @@
     <file path="/task_item_details.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358356773082" ignored="false" />
     <file path="/MagicTaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356432826531" ignored="false" />
     <file path="/DatabaseConnector.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358955260550" ignored="false" />
-    <file path="/ListsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359375815081" ignored="false" />
+    <file path="/ListsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359700851930" ignored="false" />
     <file path="/lists.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1357803509178" ignored="false" />
     <file path="/strings_droid.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359372960820" ignored="false" />
     <file path="/tablet.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359375553801" ignored="false" />
@@ -203,46 +194,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ListsActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ListsActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="107" column="0" selection-start="4125" selection-end="4125" vertical-scroll-proportion="0.0">
+            <state line="623" column="57" selection-start="23638" selection-end="23638" vertical-scroll-proportion="0.71653545">
               <folding>
-                <element signature="docComment;method#onCreate#0;class#ListsActivity#0" expanded="true" />
-                <element signature="docComment;method#pressCreateList#0;class#ListsActivity#0" expanded="true" />
-                <element signature="e#19503#20200#0" expanded="true" />
-                <element signature="e#20193#20194#0" expanded="true" />
-                <element signature="e#21075#21369#0" expanded="true" />
-                <element signature="e#21362#21363#0" expanded="true" />
-                <element signature="e#21823#22175#0" expanded="true" />
-                <element signature="e#22164#22165#0" expanded="true" />
-                <element signature="e#22231#23174#0" expanded="true" />
-                <element signature="e#23167#23168#0" expanded="true" />
-                <element signature="e#23218#26054#0" expanded="true" />
-                <element signature="e#25429#25545#0" expanded="true" />
-                <element signature="e#25534#25535#0" expanded="true" />
-                <element signature="e#26047#26048#0" expanded="true" />
-                <element signature="e#26113#26554#0" expanded="true" />
-                <element signature="e#26547#26548#0" expanded="true" />
-                <element signature="docComment;method#isTabletDevice#0;class#ListsActivity#0" expanded="true" />
+                <element signature="e#0#31269#0" expanded="true" />
+                <element signature="docComment;field#listHash#0;class#ListsActivity#0" expanded="true" />
+                <element signature="e#22665#23756#0" expanded="true" />
+                <element signature="e#23749#23750#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="0" selection-start="1054" selection-end="1054" vertical-scroll-proportion="0.31177828">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="strings_droid.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/strings_droid.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="31" selection-start="1670" selection-end="1670" vertical-scroll-proportion="0.0">
+            <state line="9" column="0" selection-start="678" selection-end="678" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -297,8 +266,8 @@
         <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java" />
         <option value="$PROJECT_DIR$/res/values/strings_droid.xml" />
         <option value="$PROJECT_DIR$/res/layout/tablet.xml" />
-        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
       </list>
     </option>
   </component>
@@ -372,12 +341,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="SDKs" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="false" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="recentsLimit" value="5" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="ExportedApkPath" value="C:/Steampunk/Documents/Android/NitroDroid/NitroDroid_1.5.apk" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
     <property name="ExportedModule" value="NitroDroid" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../keyring" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -397,8 +366,8 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="AndroidRunProguardForReleaseBuild" value="true" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -461,19 +430,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -500,6 +456,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -711,7 +680,11 @@
       <created>1359355106513</created>
       <updated>1359355106513</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="1.5 release!&#10;&#10;Added a bunch of locales. Tweaked the splash &amp; about. Added a Donate button in the options.">
+      <created>1359377159327</created>
+      <updated>1359377159327</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -738,11 +711,8 @@
     <frame x="-7" y="23" width="1934" height="1064" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18777777" sideWeight="0.8143982" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17555556" sideWeight="0.8143982" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32964602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.670247" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20245726" sideWeight="0.8134658" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.670247" order="1" side_tool="false" content_ui="tabs" />
@@ -752,18 +722,21 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18984547" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3896247" sideWeight="0.6792956" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18874173" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38189846" sideWeight="0.6792956" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32781458" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13942307" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32912844" sideWeight="0.670247" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2353255" sideWeight="0.8101545" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18543047" sideWeight="0.9242262" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2353255" sideWeight="0.8101545" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18432671" sideWeight="0.9242262" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18777777" sideWeight="0.8143982" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17555556" sideWeight="0.8143982" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20245726" sideWeight="0.8134658" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32964602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -806,7 +779,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Preparing to finally release an update to the app store." />
+    <option name="LAST_COMMIT_MESSAGE" value="1.5 release!&#10;&#10;Added a bunch of locales. Tweaked the splash &amp; about. Added a Donate button in the options." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -841,6 +814,7 @@
     <MESSAGE value="Fixed views not always displaying right for no tags" />
     <MESSAGE value="Fixed issue 22" />
     <MESSAGE value="Preparing to finally release an update to the app store." />
+    <MESSAGE value="1.5 release!&#10;&#10;Added a bunch of locales. Tweaked the splash &amp; about. Added a Donate button in the options." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -852,86 +826,57 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="45" selection-start="3332" selection-end="3332" vertical-scroll-proportion="1.6764706">
-          <folding />
-        </state>
+        <state line="76" column="45" selection-start="3332" selection-end="3332" vertical-scroll-proportion="1.6764706" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-it/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="44" selection-start="3292" selection-end="3292" vertical-scroll-proportion="1.6764706">
-          <folding />
-        </state>
+        <state line="76" column="44" selection-start="3292" selection-end="3292" vertical-scroll-proportion="1.6764706" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-vi/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="73" selection-start="2437" selection-end="2437" vertical-scroll-proportion="0.31617647">
-          <folding />
-        </state>
+        <state line="55" column="73" selection-start="2437" selection-end="2437" vertical-scroll-proportion="0.31617647" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-de/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="4" selection-start="2560" selection-end="2560" vertical-scroll-proportion="1.3455882">
-          <folding />
-        </state>
+        <state line="61" column="4" selection-start="2560" selection-end="2560" vertical-scroll-proportion="1.3455882" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-pt/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="43" selection-start="3301" selection-end="3301" vertical-scroll-proportion="0.77862597">
-          <folding />
-        </state>
+        <state line="76" column="43" selection-start="3301" selection-end="3301" vertical-scroll-proportion="0.77862597" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-pl/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="39" selection-start="3245" selection-end="3245" vertical-scroll-proportion="1.6764706">
-          <folding />
-        </state>
+        <state line="76" column="39" selection-start="3245" selection-end="3245" vertical-scroll-proportion="1.6764706" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-zh/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="32" selection-start="2868" selection-end="2868" vertical-scroll-proportion="1.6764706">
-          <folding />
-        </state>
+        <state line="76" column="32" selection-start="2868" selection-end="2868" vertical-scroll-proportion="1.6764706" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-fr/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="49" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="49" column="49" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="3" selection-start="885" selection-end="885" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="13" column="3" selection-start="885" selection-end="885" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-tr/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="25" selection-start="1655" selection-end="1655" vertical-scroll-proportion="0.65371025">
-          <folding />
-        </state>
+        <state line="37" column="25" selection-start="1655" selection-end="1655" vertical-scroll-proportion="0.65371025" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-ca/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings_droid.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="31" selection-start="1670" selection-end="1670" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java">
@@ -942,44 +887,36 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/tablet.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="17" selection-start="1401" selection-end="1401" vertical-scroll-proportion="0.64681727" />
+      </provider>
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/strings_droid.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="17" selection-start="1401" selection-end="1401" vertical-scroll-proportion="0.64681727">
+        <state line="44" column="31" selection-start="1670" selection-end="1670" vertical-scroll-proportion="0.017026106">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="678" selection-end="678" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="0" selection-start="4125" selection-end="4125" vertical-scroll-proportion="0.0">
+        <state line="623" column="57" selection-start="23638" selection-end="23638" vertical-scroll-proportion="0.71653545">
           <folding>
-            <element signature="docComment;method#onCreate#0;class#ListsActivity#0" expanded="true" />
-            <element signature="docComment;method#pressCreateList#0;class#ListsActivity#0" expanded="true" />
-            <element signature="e#19503#20200#0" expanded="true" />
-            <element signature="e#20193#20194#0" expanded="true" />
-            <element signature="e#21075#21369#0" expanded="true" />
-            <element signature="e#21362#21363#0" expanded="true" />
-            <element signature="e#21823#22175#0" expanded="true" />
-            <element signature="e#22164#22165#0" expanded="true" />
-            <element signature="e#22231#23174#0" expanded="true" />
-            <element signature="e#23167#23168#0" expanded="true" />
-            <element signature="e#23218#26054#0" expanded="true" />
-            <element signature="e#25429#25545#0" expanded="true" />
-            <element signature="e#25534#25535#0" expanded="true" />
-            <element signature="e#26047#26048#0" expanded="true" />
-            <element signature="e#26113#26554#0" expanded="true" />
-            <element signature="e#26547#26548#0" expanded="true" />
-            <element signature="docComment;method#isTabletDevice#0;class#ListsActivity#0" expanded="true" />
+            <element signature="e#0#31269#0" expanded="true" />
+            <element signature="docComment;field#listHash#0;class#ListsActivity#0" expanded="true" />
+            <element signature="e#22665#23756#0" expanded="true" />
+            <element signature="e#23749#23750#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="0" selection-start="1054" selection-end="1054" vertical-scroll-proportion="0.31177828">
-          <folding />
         </state>
       </provider>
     </entry>
