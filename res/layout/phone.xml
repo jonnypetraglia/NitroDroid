@@ -39,8 +39,10 @@ Permission is granted to anyone to use this software for any purpose, including 
         <include
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="0.7"
+        android:layout_weight="1.0"
         layout="@layout/lists" />
+
+
         
     </LinearLayout>
     

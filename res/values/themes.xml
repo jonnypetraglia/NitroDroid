@@ -72,6 +72,20 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="addList_text"> @color/addList_text_wunderlist </item>
 	</style>
 
+
+    <style name="BlueCoffee" parent="Default">
+        <item name="header"> @drawable/header_bluecoffee </item>
+        <item name="background"> @drawable/blue </item>
+        <item name="lists_selector"> @drawable/lists_selector_bluecoffee </item>
+        <item name="tasks_selector"> @drawable/tasks_selector_bluecoffee </item>
+        <item name="tasks_padding_vert"> 7dp </item>
+        <item name="tasks_padding_horz"> 7dp </item>
+        <item name="lists_padding"> 7dp </item>
+        <item name="addList_button"> @drawable/addlist_bluecoffee</item>
+        <item name="addList_border"> @color/addlist_border_bluecoffee </item>
+        <item name="addList_text"> @color/addList_text_bluecoffee </item>
+    </style>
+
     <style name="Version2" parent="Default">
         <item name="lists_selector">@drawable/tasks_selector_version2</item>
         <item name="tasks_selector">@drawable/tasks_selector_version2</item>

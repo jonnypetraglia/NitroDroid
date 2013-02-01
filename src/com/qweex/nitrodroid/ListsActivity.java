@@ -148,23 +148,17 @@ public class ListsActivity extends Activity
 		});
 		splash.startAnimation(splashAnim);
 	}
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        hideAddButton();
+    }
 		
 	@Override
     public boolean onCreateOptionsMenu(Menu menu)
     { 
-		if(isTablet && !forcePhone && false)
-		{
-			Log.d("ListsActivity::onCreateOptionsMenu", "'s a tablet. Doing some shit that I forget why I did it.");
-			findViewById(R.id.frame).setVisibility(View.VISIBLE);
-			/*((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v)
-				{
-					pressCreateList();
-				}
-			});*/
-			return false;
-		}
         if(!v2)
 		    menu.add(0, 42, 0, getResources().getString(R.string.add_list));
 		return true;
@@ -231,13 +225,36 @@ public class ListsActivity extends Activity
             doBackThings();
         } else if(keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0)
         {
-            return flip==null ||                    //To avoid a null pointer
+            if(isTablet && !forcePhone)
+                return true;
+
+            View add = findViewById(R.id.frame);
+            if(add.getVisibility()==View.VISIBLE)
+            {
+                hideAddButton();
+            } else
+            {
+                //add.setAnimation(inFromBottomAnimation());
+                add.setVisibility(View.VISIBLE);
+                add.startAnimation(inFromBottomAnimation());
+            }
+
+
+            return true || flip==null ||                    //To avoid a null pointer
                    loadingApp ||       //If the splash is shown
                    (!isTablet &&                    //Always show it if it is a tablet
                     flip.getCurrentView()==flip.getChildAt(1));
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+    static void hideAddButton()
+    {
+        if(((Activity)ListsActivity.context).findViewById(R.id.frame).getVisibility()==View.VISIBLE)
+        {
+            ((Activity)ListsActivity.context).findViewById(R.id.frame).setVisibility(View.GONE);
+            ((Activity)ListsActivity.context).findViewById(R.id.frame).startAnimation(outToBottomAnimation());
+        }
     }
 	
     @Override
@@ -321,6 +338,18 @@ public class ListsActivity extends Activity
             ((View)findViewById(R.id.newList).getParent()).setVisibility(View.GONE);
         }
 
+        //New List button
+        if(isTablet && !forcePhone)
+            findViewById(R.id.frame).setVisibility(View.VISIBLE);
+        ((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                hideAddButton();
+                pressCreateList();
+            }
+        });
+
         //Background
         if(backgroundPath!=null)
         {
@@ -388,7 +417,8 @@ public class ListsActivity extends Activity
 		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Intent x = new Intent(ListsActivity.this, QuickPrefsActivity.class);
+                hideAddButton();
+                Intent x = new Intent(ListsActivity.this, QuickPrefsActivity.class);
 				x.putExtra("show_popup", false);
 				startActivity(x);
 			}
@@ -396,7 +426,8 @@ public class ListsActivity extends Activity
 		syncLoading.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(SyncHelper.isSyncing)
+                hideAddButton();
+                if(SyncHelper.isSyncing)
 					return;
 				if(syncHelper.SERVICE==null)
 				{
@@ -453,6 +484,11 @@ public class ListsActivity extends Activity
 	
     void doBackThings()
     {
+        if((!isTablet || forcePhone) && findViewById(R.id.frame).getVisibility()==View.VISIBLE)
+        {
+            hideAddButton();
+            return;
+        }
     	if(ta==null)
     		finish();
     	else
@@ -607,6 +643,7 @@ public class ListsActivity extends Activity
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
         {
+            hideAddButton();
             String derp = (String) view.findViewById(R.id.listId).getTag();
             if(!v2 && false)
             {
@@ -634,7 +671,8 @@ public class ListsActivity extends Activity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
-    	  if(SyncHelper.isSyncing)
+          hideAddButton();
+          if(SyncHelper.isSyncing)
     		  return;
     	  Log.d("ListsActivity::selectList", "List Selected");
     	  
@@ -811,6 +849,30 @@ public class ListsActivity extends Activity
         outtoRight.setDuration(ANIMATION_DURATION);
         outtoRight.setInterpolator(new AccelerateInterpolator());
         return outtoRight;
+    }
+
+
+
+    public static Animation inFromBottomAnimation() {
+        Animation inFromRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, +0.1f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        inFromRight.setDuration(ANIMATION_DURATION);
+        inFromRight.setInterpolator(new AccelerateInterpolator());
+        return inFromRight;
+    }
+
+    public static Animation outToBottomAnimation() {
+        Animation inFromRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, +0.1f);
+        inFromRight.setDuration(ANIMATION_DURATION);
+        inFromRight.setInterpolator(new AccelerateInterpolator());
+        return inFromRight;
     }
     
 }

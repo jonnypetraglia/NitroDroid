@@ -16,11 +16,12 @@ Permission is granted to anyone to use this software for any purpose, including 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
     <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:padding="5px">
         <EditText
                 android:id="@+id/newList"
@@ -44,6 +45,25 @@ Permission is granted to anyone to use this software for any purpose, including 
 		android:background="@android:color/transparent"
 		android:layout_above="@+id/frame"
 		android:layout_alignParentTop="true"
+        android:layout_weight="1"
 		android:dividerHeight="?lists_padding"/>
+
+
+    <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="?addList_border"
+            android:layout_weight="0"
+            android:visibility="gone"
+            android:padding="1dp" >
+        <Button
+                android:id="@+id/add_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_list"
+                android:textColor="?addList_text"
+                android:background="?addList_button"/>
+    </FrameLayout>
 
 </LinearLayout>
