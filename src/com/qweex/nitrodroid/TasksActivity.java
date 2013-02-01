@@ -347,9 +347,21 @@ public class TasksActivity
             lv.setSelection(lv.getCount() - 1);
         }
 
+        //Increment list count
         TextView currentListCount = (TextView)ListsActivity.currentList.findViewById(R.id.listNumber);
         int i = Integer.parseInt((String) currentListCount.getText()) + 1;
         currentListCount.setText(Integer.toString(i));
+
+        //Update all count, don't need to update today because a new task has no due date
+        ListsActivity.listAdapter.totalCount++;
+        try {
+            TextView totalCountView = (TextView) ((View)context.findViewById(android.R.id.list).findViewWithTag("all").getParent()).findViewById(R.id.listNumber);
+            totalCountView.setText(Integer.toString(ListsActivity.listAdapter.totalCount));
+            Log.d("DERP", "Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+        } catch(Exception e){
+            Log.d("DERP", "NOT Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+        }
+
         if(newTask!=null)
         {
             InputMethodManager imm = (InputMethodManager)newTask.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -382,10 +394,28 @@ public class TasksActivity
 	            createTheAdapterYouSillyGoose();
 	            lastClicked = null;
 	            lastClickedID = null;
-	            
+
+                //Decrement list count
 	            TextView currentListCount = (TextView)ListsActivity.currentList.findViewById(R.id.listNumber);
 				int i = Integer.parseInt((String) currentListCount.getText()) - 1;
 				currentListCount.setText(Integer.toString(i));
+
+                //Decrement all
+                ListsActivity.listAdapter.totalCount--;
+                try {
+                    TextView totalCountView = (TextView) ((View)context.findViewById(android.R.id.list).findViewWithTag("all").getParent()).findViewById(R.id.listNumber);
+                    totalCountView.setText(Integer.toString(ListsActivity.listAdapter.totalCount));
+                    Log.d("DERP", "Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+                } catch(Exception e){
+                    Log.d("DERP", "NOT Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+                }
+
+                //Update today
+                ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+                try {
+                    TextView todayCountView = (TextView) context.findViewById(android.R.id.list).findViewWithTag("today").findViewById(R.id.listNumber);
+                    todayCountView.setText(Integer.toString(ListsActivity.listAdapter.todayCount));
+                } catch(Exception e){}
 	            break;
 	        }
 	    }
@@ -708,6 +738,13 @@ public class TasksActivity
     	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "date", c.getTimeInMillis());
     	
     	((android.widget.TextView)lastClicked.findViewById(R.id.taskTime)).setText(TaskAdapter.getTimeString(c.getTimeInMillis(), context));
+
+        //Update today
+        ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+        try {
+            TextView todayCountView = (TextView) context.findViewById(android.R.id.list).findViewWithTag("today").findViewById(R.id.listNumber);
+            todayCountView.setText(Integer.toString(ListsActivity.listAdapter.todayCount));
+        } catch(Exception e){}
     	
         datePickerDialog.dismiss();
 	}

@@ -84,7 +84,7 @@ public class ListAdapter extends SimpleCursorAdapter
         ((TextView)row.findViewById(R.id.listName)).setText(name);
         if(hash.equals("all"))
         {
-        	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(totalCount));
+            ((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(totalCount));
             if(ListsActivity.v2)
             {
                 ((ImageView)row.findViewById(R.id.listId)).setVisibility(View.VISIBLE);
@@ -101,7 +101,7 @@ public class ListAdapter extends SimpleCursorAdapter
         }
         else if(hash.equals("today")) //Today
         {
-        	((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(todayCount));
+            ((TextView)row.findViewById(R.id.listNumber)).setText(Integer.toString(todayCount));
         }
         else
         {
