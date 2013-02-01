@@ -268,8 +268,12 @@ public class DatabaseConnector
 	public Cursor getTodayTasks(long currentDay)
 	{
 		long msecondsInDay = 60 * 60 * 24 * 1000;
-		String query = "SELECT * FROM " + TASKS_TABLE + " " + "WHERE date " + 
-				"BETWEEN " + (currentDay-1) + " AND "  + (currentDay+msecondsInDay-1);
+        Log.d("DERP", currentDay + "");
+		String query = "SELECT * FROM " + TASKS_TABLE + " " + "WHERE ( "
+                + " ( list = 'today' ) "
+                + " OR ( date BETWEEN " + 1 + " AND " + (currentDay+msecondsInDay-1) + " ) "
+                //+ " OR ( date < " + currentDay/1000/100 + " )"
+                + ") ";
 		return database.rawQuery(query, null);
 	}
 

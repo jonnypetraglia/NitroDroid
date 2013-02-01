@@ -168,8 +168,8 @@ public class TasksActivity
                 //((ViewFlipper)context.findViewById(R.id.FLIP)).setInAnimation(context, android.R.anim.slide_in_left);
                 //((ViewFlipper)context.findViewById(R.id.FLIP)).setOutAnimation(context, android.R.anim.slide_out_right);
                 ViewFlipper flip = ((ViewFlipper)context.findViewById(R.id.FLIP));
-                flip.setInAnimation(ListsActivity.inFromRightAnimation());
-                flip.setOutAnimation(ListsActivity.outToLeftAnimation());
+                flip.setInAnimation(ListsActivity.inFromLeftAnimation());
+                flip.setOutAnimation(ListsActivity.outToRightAnimation());
 
                 //flip.setInAnimation(null);
                 //flip.setOutAnimation(null);
@@ -283,7 +283,7 @@ public class TasksActivity
         }
 		if(listHash.equals("today"))		//Today
 		{
-			listHash = null;
+			//listHash = null;
 			System.out.println("Time: " + getBeginningOfDayInSeconds());
 			r = ListsActivity.syncHelper.db.getTodayTasks(getBeginningOfDayInSeconds());
             adapter = new TaskAdapter(context, R.layout.task_item, r);
@@ -318,6 +318,7 @@ public class TasksActivity
     {
         if(listHash==null || "logbook".equals(listHash))// || "today".equals(listHash) || "next".equals(listHash))
         {
+            Log.d("DERP", "Unable to add to list: " + listHash);
             Toast.makeText(context, R.string.long_winded_reprimand, Toast.LENGTH_LONG).show();
             return;
         }
@@ -874,7 +875,6 @@ public class TasksActivity
                 lastClicked.setSelected(false);
 	    	//	lastClicked.setBackgroundDrawable(normalDrawable);
             //String herp = ((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
-            Log.d("HERP", "Finished editing: " + ((TextView)lastClicked.findViewById(R.id.taskName)).getText());
             //((TextView)lastClicked.findViewById(R.id.taskName)).setText(herp);
 	    	lastClicked = null;
 	    	lastClickedID = null;

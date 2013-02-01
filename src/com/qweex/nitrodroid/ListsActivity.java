@@ -713,7 +713,7 @@ public class ListsActivity extends Activity
           System.out.println("Dude:::" + ta);
     	  if(ta==null)
     	  {
-    		  Log.d("ListsActivity::selectList", "Instanciating TaskActivity");
+    		  Log.d("ListsActivity::selectList", "Instanciating TaskActivity: " + hash);
     		  ta = new TasksActivity();
     		  ta.context = (Activity) view.getContext();
     		  ta.listHash = hash;
@@ -721,7 +721,7 @@ public class ListsActivity extends Activity
     		  ta.onCreate(null);	//I think I might get away with calling "doCreateThings" or even "sillygoose" but whatevs
     	  }else
     	  {
-    		  Log.d("ListsActivity::selectList", "Updating TaskActivity");
+    		  Log.d("ListsActivity::selectList", "Updating TaskActivity: " + hash);
     		  ta.listHash = hash;
     		  ta.listName = name;
     		  ((Activity) context).findViewById(R.id.tasksListView).post(new Runnable(){
