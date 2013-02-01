@@ -616,9 +616,9 @@ public class TasksActivity
 			
 			if(android.os.Build.VERSION.SDK_INT<11)
 			{
-/*				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
+				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
 																   date.get(Calendar.MONTH),
-																   date.get(Calendar.DATE));*/
+																   date.get(Calendar.DATE)); //*/
 			}else
 			{
 				((android.widget.CalendarView)datePicker).setDate(dateL);
