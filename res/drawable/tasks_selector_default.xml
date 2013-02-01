@@ -14,10 +14,52 @@ Permission is granted to anyone to use this software for any purpose, including 
     3. This notice may not be removed or altered from any source distribution.
  -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_selected="true"
+<!--  <item android:state_selected="true"
         android:drawable="@drawable/button_low" />
   <item android:state_pressed="true"
-        android:drawable="@drawable/button_high" />
-  <item android:state_focused="true"
-        android:drawable="@android:color/white" />
+        android:drawable="@drawable/button_high" />-->
+    <!-- Button Low -->
+
+    <item android:state_selected="true">
+        <shape>
+            <gradient
+                    android:startColor="#d8eef8"
+                    android:endColor="#ffffff"
+                    android:angle="90" />
+            <corners
+                    android:radius="5dp" />
+
+            <padding
+                    android:left="5dp"
+                    android:top="5dp"
+                    android:right="5dp"
+                    android:bottom="5dp" />
+        </shape>
+    </item>
+
+    <item android:state_pressed="true">
+        <shape>
+            <gradient
+                    android:startColor="#fee5e5"
+                    android:endColor="#fffefe"
+                    android:angle="90" />
+            <corners
+                    android:radius="5dp" />
+
+            <padding
+                    android:left="5dp"
+                    android:top="5dp"
+                    android:right="5dp"
+                    android:bottom="5dp" />
+        </shape>
+    </item>
+
+  <item>
+        <shape android:shape="rectangle" >
+            <solid android:color="#aaffffff" />
+
+            <corners
+                    android:radius="5dp" />
+        </shape>
+  </item>
 </selector>
