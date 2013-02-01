@@ -45,8 +45,8 @@ public class TaskAdapter extends BaseExpandableListAdapter
     public static int[] drawsC = {R.drawable.check_none, R.drawable.check_low, R.drawable.check_med, R.drawable.check_high};
     public static int[] drawsS = {R.string.None, R.string.Low, R.string.Medium, R.string.High};
     public static int[] v2_clrs = {R.color.priority_none, R.color.priority_low, R.color.priority_medium, R.color.priority_high};
-    //public static java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("EEEE, MMMM d, yyyy");
-    public static DateFormat sdf = DateFormat.getDateInstance(DateFormat.LONG);
+    public static java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMMM d, yyyy");
+    //public static DateFormat sdf = DateFormat.getDateInstance(DateFormat.LONG);
 
     @Override
     public void registerDataSetObserver(DataSetObserver observer)
