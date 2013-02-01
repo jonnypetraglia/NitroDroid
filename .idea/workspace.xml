@@ -61,15 +61,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/lists_selector_default.xml" afterPath="$PROJECT_DIR$/res/drawable/lists_selector_default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/lists_selector_wunderlist.xml" afterPath="$PROJECT_DIR$/res/drawable/lists_selector_wunderlist.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/tasks_selector_default.xml" afterPath="$PROJECT_DIR$/res/drawable/tasks_selector_default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/tasks_selector_wunderlist.xml" afterPath="$PROJECT_DIR$/res/drawable/tasks_selector_wunderlist.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="NitroDroid.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359708431628" ignored="false" />
+    <file path="/Dummy.txt" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359711603899" ignored="false" />
     <file path="/fragment.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358984430595" ignored="false" />
     <file path="$PROJECT_DIR$/../Callisto/gen/com/qweex/callisto/R.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356423650879" ignored="false" />
     <file path="/TaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359703971035" ignored="false" />
@@ -79,7 +76,7 @@
     <file path="/task_item_details.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358356773082" ignored="false" />
     <file path="/MagicTaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356432826531" ignored="false" />
     <file path="/DatabaseConnector.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358955260550" ignored="false" />
-    <file path="/ListsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359707425186" ignored="false" />
+    <file path="/ListsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359711798620" ignored="false" />
     <file path="/lists.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1357803509178" ignored="false" />
     <file path="/strings_droid.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359372960820" ignored="false" />
     <file path="/tablet.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359375553801" ignored="false" />
@@ -199,25 +196,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ListsActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ListsActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="592" column="52" selection-start="22242" selection-end="22254" vertical-scroll-proportion="-8.48">
+            <state line="329" column="54" selection-start="13055" selection-end="13055" vertical-scroll-proportion="0.51038575">
               <folding>
-                <element signature="e#0#31269#0" expanded="true" />
+                <element signature="e#0#31400#0" expanded="true" />
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;field#listHash#0;class#ListsActivity#0" expanded="true" />
-                <element signature="e#22665#23756#0" expanded="true" />
-                <element signature="e#23749#23750#0" expanded="true" />
+                <element signature="e#22796#23887#0" expanded="true" />
+                <element signature="e#23880#23881#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="themes.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="themes.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/values/themes.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="64" column="80" selection-start="3658" selection-end="3658" vertical-scroll-proportion="0.8311874">
+            <state line="17" column="6" selection-start="1011" selection-end="1011" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -264,7 +261,6 @@
         <option value="$PROJECT_DIR$/res/layout/tablet.xml" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java" />
-        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
         <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListAdapter.java" />
         <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
         <option value="$PROJECT_DIR$/res/values/colors.xml" />
@@ -274,6 +270,7 @@
         <option value="$PROJECT_DIR$/res/layout/task_item_details.xml" />
         <option value="$PROJECT_DIR$/res/drawable/tasks_selector_default.xml" />
         <option value="$PROJECT_DIR$/res/drawable/tasks_selector_wunderlist.xml" />
+        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
       </list>
     </option>
   </component>
@@ -742,7 +739,11 @@
       <created>1359708442350</created>
       <updated>1359708442350</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Fixed some shit with the themes, mostly not being readable b/c there are no transparent backgrounds behind text">
+      <created>1359711606326</created>
+      <updated>1359711606326</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -778,11 +779,11 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.670247" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18432671" sideWeight="0.25987193" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18432671" sideWeight="0.26307365" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289183" sideWeight="0.49786553" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18874173" sideWeight="0.47225186" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18874173" sideWeight="0.4701174" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4392936" sideWeight="0.6526147" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32781458" sideWeight="0.49573106" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13942307" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -790,7 +791,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19477054" sideWeight="0.8156733" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18432671" sideWeight="0.73639274" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18432671" sideWeight="0.733191" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18777777" sideWeight="0.8143982" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -837,7 +838,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Both &quot;All Tasks&quot; and &quot;Today&quot; should have their totals updated when you add/delete or edit the date, respectively" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed some shit with the themes, mostly not being readable b/c there are no transparent backgrounds behind text" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -850,7 +851,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Added list renaming." />
     <MESSAGE value="Added custom background support. Was surprisingly easy!" />
     <MESSAGE value="Am going to try to get a market-ready version." />
     <MESSAGE value="Fixed the date dialog size &amp; location" />
@@ -875,6 +875,7 @@
     <MESSAGE value="Fixed the &quot;time until&quot; not being displayed correctly." />
     <MESSAGE value="Hopefully fixed the spinner not being set to the right date when editing an existing task." />
     <MESSAGE value="Both &quot;All Tasks&quot; and &quot;Today&quot; should have their totals updated when you add/delete or edit the date, respectively" />
+    <MESSAGE value="Fixed some shit with the themes, mostly not being readable b/c there are no transparent backgrounds behind text" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -892,19 +893,6 @@
       </provider>
       <provider editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="592" column="52" selection-start="22242" selection-end="22254" vertical-scroll-proportion="-8.48">
-          <folding>
-            <element signature="e#0#31269#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;field#listHash#0;class#ListsActivity#0" expanded="true" />
-            <element signature="e#22665#23756#0" expanded="true" />
-            <element signature="e#23749#23750#0" expanded="true" />
-          </folding>
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java">
@@ -1010,8 +998,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/themes.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="80" selection-start="3658" selection-end="3658" vertical-scroll-proportion="0.8311874">
+        <state line="17" column="6" selection-start="1011" selection-end="1011" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="329" column="54" selection-start="13055" selection-end="13055" vertical-scroll-proportion="0.51038575">
+          <folding>
+            <element signature="e#0#31400#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="docComment;field#listHash#0;class#ListsActivity#0" expanded="true" />
+            <element signature="e#22796#23887#0" expanded="true" />
+            <element signature="e#23880#23881#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

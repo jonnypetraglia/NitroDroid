@@ -325,7 +325,8 @@ public class ListsActivity extends Activity
         if(backgroundPath!=null)
         {
             try {
-            android.graphics.drawable.Drawable backgroundImage = new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeFile(backgroundPath));
+            android.graphics.drawable.BitmapDrawable backgroundImage = new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeFile(backgroundPath));
+            backgroundImage.setTileModeXY(android.graphics.Shader.TileMode.REPEAT, android.graphics.Shader.TileMode.REPEAT);
             View v = (View)findViewById(R.id.background);
             if(v==null)
                 v = findViewById(R.id.FLIP);
