@@ -21,6 +21,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -78,7 +79,7 @@ public class ListsActivity extends Activity
 	private static int list_normalDrawable, list_selectedDrawable;
 	private EditText newList;
 	private Builder newListDialog, editListDialog;
-	private static Context context;
+	public static Context context;
 	private boolean loadingApp  = true, loadingOnCreate = true;
 	private View splash;
 	private ListView mainListView;
@@ -101,15 +102,86 @@ public class ListsActivity extends Activity
     @Override
     public boolean onSearchRequested()
     {
-        Log.d("DERP", "SearchRequested");
+        Log.d("DERP", "SearchRequested " + ta);
+        startSearch(null, false, null, false);
         return SyncHelper.isSyncing;
     }
+
+    static public void newSearch(String term)
+    {
+        Log.d("DERP", "SEARCHING: " + term + "\\" + ta);
+        if(ta==null)
+        {
+            Log.d("ListsActivity::selectList", "Instanciating TaskActivity: " + term);
+            ta = new TasksActivity();
+            ta.context = (Activity) ListsActivity.context;
+            ta.searchTerm = term;
+            ta.onCreate(null);
+        }else
+        {
+            Log.d("ListsActivity::selectList", "Updating TaskActivity: " + term + "\\" + ta.listHash);
+            ta.searchTerm = term;
+            ((Activity) context).findViewById(R.id.tasksListView).post(new Runnable(){
+                public void run()
+                {
+                    ta.onCreate(null);
+                    //ta.createTheAdapterYouSillyGoose();
+                }
+            });
+        }
+
+        //Show the animation & flip the flipper if it is a phone
+        if(!isTablet)
+        {
+            Log.d("ListsActivity::selectList", "Flipping to that TaskActivity");
+            if(flip.getCurrentView()!=flip.getChildAt(1))
+            {
+                flip.setInAnimation(inFromRightAnimation());
+                flip.setOutAnimation(outToLeftAnimation());
+                flip.showNext();
+            }
+            else
+            {
+                //TODO: Change this animation [1 of 3]
+                ((Activity) ListsActivity.context).findViewById(R.id.tasks_fade).startAnimation(AnimationUtils.loadAnimation(ListsActivity.context, android.R.anim.fade_out));
+                ((Activity) ListsActivity.context).findViewById(R.id.tasks_fade).startAnimation(AnimationUtils.loadAnimation(ListsActivity.context, android.R.anim.fade_in));
+            }
+        }
+    }
+
+    Handler derp = new Handler();
+    String searchTerm;
+    private void handleIntent(Intent intent) {
+        searchTerm = intent.getStringExtra(SearchManager.QUERY);
+        derp.post(new Runnable(){
+
+            @Override
+            public void run() {
+                newSearch(searchTerm);
+            }
+        });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
 
     /************************** Activity Lifecycle methods **************************/
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+        Log.d("DERP", "Oncreate");
+        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+            handleIntent(getIntent());
+            return;
+        }
+
+
+
         changeLocale();
 		super.onCreate(savedInstanceState);
 		Log.d("ListsActivity::()", "Creating ListsActivity");
@@ -184,6 +256,7 @@ public class ListsActivity extends Activity
 	public void onResume()
 	{
 		super.onResume();
+        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) return;
 		Log.d("ListsActivity::onResume", "Resuming main activity");
 		
 		//Usually resumes after visiting Preferences.

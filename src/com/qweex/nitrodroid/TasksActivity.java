@@ -74,7 +74,7 @@ public class TasksActivity
 	static View lastClicked = null;
 	static EditText editingTags = null;
 	public static String lastClickedID;
-	String listName, listHash, searchTag;
+	String listName, listHash, searchTag, searchTerm;
 	public Activity context;
 	QuickAction sortPopup, optionsPopup;
 	Drawable selectedDrawable, normalDrawable;
@@ -232,9 +232,15 @@ public class TasksActivity
         }
 
 		lv.setEmptyView(context.findViewById(R.id.empty2));
+        String theTitle;
+        if(searchTerm!=null)
+            theTitle = "\"" + searchTerm + "\"";
+        else if(searchTag!=null)
+            theTitle = (context.getResources().getString(R.string.tag) + ": " + searchTag);
+        else
+            theTitle = listName;
         //if(!ListsActivity.v2)
-		    ((TextView)context.findViewById(R.id.taskTitlebar)).setText(searchTag != null ?
-                (context.getResources().getString(R.string.tag) + ": " + searchTag) : listName);
+		    ((TextView)context.findViewById(R.id.taskTitlebar)).setText(theTitle);
 		lv.setOnGroupClickListener(selectTask);
 		lv.post(new Runnable() {
             public void run() {
@@ -298,6 +304,13 @@ public class TasksActivity
 	void createTheAdapterYouSillyGoose()
 	{
 		Cursor r;
+        if(searchTerm!=null)
+        {
+            r = ListsActivity.syncHelper.db.searchAll(searchTerm, listHash, null);
+            adapter = new TaskAdapter(context, R.layout.task_item, r);
+            lv.setAdapter(adapter);
+            return;
+        }
 		if(listHash==null)
 			return;
         if(searchTag!=null)
@@ -905,8 +918,19 @@ public class TasksActivity
 	    	lastClicked = null;
 	    	lastClickedID = null;
     	}
+        //If the user searched for a term inside of a list, just return to that list
+        else if(searchTerm!=null && listHash!=null)
+        {
+            searchTerm = null;
+            //TODO: Change this animation [2 of 3]
+            ((Activity) ListsActivity.context).findViewById(R.id.tasks_fade).startAnimation(AnimationUtils.loadAnimation(ListsActivity.context, android.R.anim.fade_out));
+            ((Activity) ListsActivity.context).findViewById(R.id.tasks_fade).startAnimation(AnimationUtils.loadAnimation(ListsActivity.context, android.R.anim.fade_in));
+            onCreate(null);
+            return false;
+        }
     	else
         {
+            searchTerm = null;
             searchTag = null;
     		return true;
         }
@@ -975,6 +999,7 @@ public class TasksActivity
             lastClicked=null;
             lastClickedID=null;
             Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.fade_out);
+            //TODO: Change this animation [3 of 3]
             ((Activity) view.getContext()).findViewById(R.id.tasks_fade).startAnimation(hyperspaceJumpAnimation);
             onCreate(null);
             Animation hyperspaceJumpAnimation2 = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.fade_in);

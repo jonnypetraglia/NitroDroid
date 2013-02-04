@@ -453,6 +453,18 @@ public class DatabaseConnector
                 term, null, null, null, sortby);
     }
 
+    public Cursor searchAll(String term, String listHash, String sortby)
+    {
+        term = "tags like '%" + term + "%' OR " +
+               "name like '%" + term + "%' OR " +
+               "notes like '%" + term + "%'";
+        if(listHash!=null)
+            term = "list='" + listHash + "' AND ( " + term + " )";
+        return database.query(TASKS_TABLE,
+                new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},
+                term, null, null, null, sortby);
+    }
+
 	
 	public void createThemTables(SQLiteDatabase db)
 	{
