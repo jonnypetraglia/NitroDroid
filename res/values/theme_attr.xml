@@ -40,6 +40,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     <attr format="dimension" name="logo" />
     <attr format="dimension" name="list_size" />
 
+    <attr format="reference" name="move_to_log" />
+
     <attr format="reference" name="share" />
     <attr format="reference" name="email" />
     <attr format="reference" name="settings" />

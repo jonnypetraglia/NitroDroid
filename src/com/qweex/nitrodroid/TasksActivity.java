@@ -67,6 +67,7 @@ public class TasksActivity
 	private static final int ID_PRIORITY  = 5;
 
     private static final int ID_SORT = 10, ID_DELETE = 11, ID_EMAIL = 12, ID_SHARE = 13;
+    private static TextView move2log;
 	
 	public static ExpandableListView lv;
     TaskAdapter adapter;
@@ -84,9 +85,11 @@ public class TasksActivity
     int lastDate = 0;
     boolean isSorted = false;
     EditText newTask;
+    private String moveLogString;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
+        moveLogString = context.getResources().getString(R.string.move2logbook);
         sortPopup = new QuickAction(context, QuickAction.VERTICAL);
         sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.by_magic), context.getResources().getDrawable(R.drawable.sort_magic)));
         sortPopup.addActionItem(new ActionItem(ID_HAND, context.getResources().getString(R.string.by_hand), context.getResources().getDrawable(R.drawable.sort_hand)));
@@ -128,9 +131,19 @@ public class TasksActivity
 		datePickerDialog.setAnimationStyle(R.style.CalendarShow);
 		createCalendar();
 
+        if(move2log==null)
+        {
+            LayoutInflater inflater=(LayoutInflater) ListsActivity.ta.context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            move2log = (TextView) inflater.inflate(R.layout.move2log, null, false);
+            LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            ll.gravity = Gravity.CENTER;
+            ll.setMargins(10, 10, 10, 10);
+            move2log.setLayoutParams(ll);
+            move2log.setOnClickListener(moveFinishedToLog);
+        }
+
         doCreateStuff();
 	}
-
 
 	public Drawable createTitleDrawable()
 	{
@@ -202,6 +215,20 @@ public class TasksActivity
                     return true;
                 }
             });
+        }
+
+        if(move2log.getParent()!=null)
+            ((ViewGroup) move2log.getParent()).removeView(move2log);
+        Log.d("DERP", "ListHash: " + listHash);
+        if("logbook".equals(listHash))
+        {
+            int i= ListsActivity.syncHelper.db.getUnloggedDone().getCount();
+            if(i>0)
+            {
+                Log.d("DERP", "YUP" + i);
+                move2log.setText(moveLogString.replace("$$", Integer.toString(i)));
+                ((LinearLayout)context.findViewById(R.id.tasksMaster)).addView(move2log, 1);
+            }
         }
 
 		lv.setEmptyView(context.findViewById(R.id.empty2));
@@ -406,9 +433,9 @@ public class TasksActivity
                 try {
                     TextView totalCountView = (TextView) ((View)context.findViewById(android.R.id.list).findViewWithTag("all").getParent()).findViewById(R.id.listNumber);
                     totalCountView.setText(Integer.toString(ListsActivity.listAdapter.totalCount));
-                    Log.d("DERP", "Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+                    Log.d("TaskActivity::confirmDelete", "Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
                 } catch(Exception e){
-                    Log.d("DERP", "NOT Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+                    Log.d("TaskActivity::confirmDelete", "NOT Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
                 }
 
                 //Update today
@@ -758,7 +785,7 @@ public class TasksActivity
 		{
 			String s = oldname;
 			String new_val = arg0.toString(); //((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
-            Log.d("writeName", "Updating tasK: " + s + "->" + new_val);
+            Log.d("TasksActivity::writeName", "Updating tasK: " + s + "->" + new_val);
 			if(s.toString().equals(new_val))
 				return;
 	    	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "name", s.toString());
@@ -848,7 +875,6 @@ public class TasksActivity
     	{
     		editingTags.setVisibility(View.GONE);
     		HorizontalScrollView hsv = (HorizontalScrollView) ((LinearLayout)editingTags.getParent()).getChildAt(1);
-    		Log.d("HERP", "Gandalf");
     		getThemTagsSon((LinearLayout)hsv.getChildAt(0), editingTags.getText().toString());
     		
     		hsv.setVisibility(View.VISIBLE);
@@ -912,7 +938,7 @@ public class TasksActivity
     	ArrayList<String> arList = new ArrayList<String>(Arrays.asList(tgs));
     	removeDuplicateWithOrder(arList);
 
-        Log.d("HERP", "tagsize: " + arList.size());
+        Log.d("TasksActivity::getThemTagsSon", "Tag#: " + arList.size());
         if("".equals(tags))
         {
             if(arList.size()==0)
@@ -1027,4 +1053,33 @@ public class TasksActivity
 		}
 		
 	};
+
+    OnClickListener moveFinishedToLog = new OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            Cursor c = ListsActivity.syncHelper.db.getUnloggedDone();
+            if(c.getCount()>0)
+                c.moveToFirst();
+            while(!c.isAfterLast())
+            {
+                ListsActivity.syncHelper.db.moveTask(c.getString(c.getColumnIndex("hash")), "logbook");
+                c.moveToNext();
+            }
+            Cursor r = getCursor();
+            adapter = new TaskAdapter(context, R.layout.task_item, r);
+            lv.setAdapter(adapter);
+
+            //Hide the message
+            //TODO: Animate hiding this
+            ((ViewGroup)move2log.getParent()).removeView(move2log);
+
+            //Update today
+            ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+            try {
+                TextView todayCountView = (TextView) context.findViewById(android.R.id.list).findViewWithTag("today").findViewById(R.id.listNumber);
+                todayCountView.setText(Integer.toString(ListsActivity.listAdapter.todayCount));
+            } catch(Exception e){}
+        }
+    };
 }

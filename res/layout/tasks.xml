@@ -16,6 +16,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:id="@+id/tasksMaster"
     android:orientation="vertical" >
 
     <FrameLayout
@@ -33,6 +34,7 @@ Permission is granted to anyone to use this software for any purpose, including 
                 android:drawableRight="@drawable/ic_input_add"
                 android:imeOptions="actionDone" />
     </FrameLayout>
+
 
    <ExpandableListView
         android:id="@+id/tasksListView"

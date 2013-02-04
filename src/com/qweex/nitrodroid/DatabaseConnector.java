@@ -300,7 +300,66 @@ public class DatabaseConnector
 			    new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},
 			    hash, null, null, null, sort);
 	}
-	
+
+    public Cursor getUnloggedDone()
+    {
+        return database.query(TASKS_TABLE,
+                new String[] {"_id", "hash", "logged", "list"},
+                "logged>0 AND list!='logbook'", null, null, null, null);
+    }
+
+    public void moveTask(String hash, String target_list)
+    {
+        long new_timestamp = new java.util.Date().getTime();
+        String old_list, tasks_in_order;
+        Cursor tempCursor, tempCursor2;
+        tempCursor = database.query(TASKS_TABLE, new String[] {"_id", "hash", "list"},
+                "hash='" + hash + "'", null, null, null, null);
+        tempCursor.moveToFirst();
+        old_list = tempCursor.getString(tempCursor.getColumnIndex("list"));
+
+        Log.d("DERP", "old_list: " + old_list);
+        //1. Update the "list" field of TASKS
+        //2. Update the "list" field of TASKS_TIME
+        modifyTask(hash, "list", target_list);
+
+        //3. Remove from old "tasks_in_order" field of LISTS
+        //4. Update the old "tasks_in_order" field of LISTS_TIME
+        Log.d("DERP", "hash: " + hash);
+        tempCursor = database.query(LISTS_TABLE, new String[] {"_id", "hash", "tasks_in_order", "name"},
+                "hash='" + old_list + "'", null, null, null, null);
+        tempCursor.moveToFirst();
+        tasks_in_order = tempCursor.getString(tempCursor.getColumnIndex("tasks_in_order"));
+        Log.d("DERP", "BEFORE: Tasksinorder: " + tasks_in_order + " [ " + tempCursor.getString(tempCursor.getColumnIndex("name")) + " ]");
+        tasks_in_order = tasks_in_order.replace(hash,"");
+        //3.1. Take care of fixing the formatting...
+        if(tasks_in_order.startsWith(","))                   // (a) if it's at the beginning (leading ',')
+            tasks_in_order = tasks_in_order.substring(1);
+        else if(tasks_in_order.endsWith(","))                // (b) if it's at the end (trailing ',')
+            tasks_in_order = tasks_in_order.substring(0,tasks_in_order.length()-2);
+        else                                                 // (c) if it's in the middle (a ',,' somewhere)
+            tasks_in_order = tasks_in_order.replace(",,", ",");
+        //3.2 The actual updating
+        modifyList(old_list, "tasks_in_order", tasks_in_order);
+
+        Log.d("DERP", "AFTER: Tasksinorder: " + tasks_in_order);
+        //5. Update the "tasks_in_order" field of LISTS
+        //6. Update the "tasks_in_order" field of LISTS_TIME
+        tempCursor2 = database.query(LISTS_TABLE, new String[] {"_id", "hash", "tasks_in_order", "name"},
+                "hash='" + target_list + "'", null, null, null, null);
+        tempCursor2.moveToFirst();
+        String tasks_in_order2 = tempCursor2.getString(tempCursor2.getColumnIndex("tasks_in_order"));
+        Log.d("DERP", "NEW: Tasksinorder: " + tasks_in_order2 + " [ " + tempCursor2.getString(tempCursor2.getColumnIndex("name")) + " ]");
+        if(tasks_in_order2==null)
+            tasks_in_order2 = new String();
+        else if(tasks_in_order2.equals(""))
+            tasks_in_order2 = hash;
+        else
+            tasks_in_order2 = hash + "," + tasks_in_order2;
+        modifyList(target_list, "tasks_in_order", tasks_in_order2);
+        Log.d("DERP", "NEWEST: Tasksinorder: " + tasks_in_order2);
+    }
+
 	
 	public void clearEverything(Context context)
 	{

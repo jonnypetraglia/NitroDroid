@@ -77,5 +77,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="add_list">Add List</string>
     
     <string name="lists">Lists</string>
-    
+    <string name="move2logbook">Move $$ completed tasks to Logbook</string>
+
 </resources>

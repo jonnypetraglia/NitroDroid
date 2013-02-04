@@ -78,5 +78,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     <string name="add_list">Nuevo grupo</string>
 
     <string name="lists">Grupos de tareas</string>
+<string name="move2logbook">Move $$ completed tasks to Logbook</string>
     
 </resources>

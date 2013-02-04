@@ -49,6 +49,8 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
+//TODO: Sometimes the counts for today and total are spotty
+
 public class ListsActivity extends Activity
 {
 
@@ -197,6 +199,7 @@ public class ListsActivity extends Activity
 			locale = new_locale;
 			themeID = new_themeID;
 			forcePhone = new_force;
+            isTablet = isTabletDevice(this) && !forcePhone;
             backgroundPath = new_background;
 			doCreateStuff();
 		}
@@ -225,7 +228,7 @@ public class ListsActivity extends Activity
             doBackThings();
         } else if(keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0)
         {
-            if(isTablet && !forcePhone)
+            if(isTablet)
                 return true;
 
             View add = findViewById(R.id.frame);
@@ -323,7 +326,7 @@ public class ListsActivity extends Activity
             findViewById(R.id.sortbutton).setVisibility(View.GONE);
 
             ((ImageButton)findViewById(R.id.sync)).setImageResource(R.drawable.sort);
-            if(!forcePhone && isTabletDevice(this))
+            if(isTablet)
                 findViewById(R.id.sync).setVisibility(View.INVISIBLE);
             else
                 findViewById(R.id.sync).setVisibility(View.GONE);
@@ -332,15 +335,17 @@ public class ListsActivity extends Activity
         } else
         {
             findViewById(R.id.optionsbutton).setVisibility(View.GONE);
-            if(!forcePhone && isTabletDevice(this))
+            //New List button
+            if(isTablet)
+            {
+                Log.d("DERP", "View.VISIBLE");
                 findViewById(R.id.backbutton).setVisibility(View.GONE);
+                findViewById(R.id.frame).setVisibility(View.VISIBLE);
+            }
             ((View)findViewById(R.id.newTask).getParent()).setVisibility(View.GONE);
             ((View)findViewById(R.id.newList).getParent()).setVisibility(View.GONE);
         }
 
-        //New List button
-        if(isTablet && !forcePhone)
-            findViewById(R.id.frame).setVisibility(View.VISIBLE);
         ((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View v)
@@ -448,6 +453,7 @@ public class ListsActivity extends Activity
          listAdapter = new ListAdapter(context, R.layout.list_item, r);
          listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
          listAdapter.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
+            Log.d("DERP", "Total count=" + listAdapter.totalCount);
          
          if(r.getCount()<3)
          {
@@ -484,7 +490,7 @@ public class ListsActivity extends Activity
 	
     void doBackThings()
     {
-        if((!isTablet || forcePhone) && findViewById(R.id.frame).getVisibility()==View.VISIBLE)
+        if(!isTablet && findViewById(R.id.frame).getVisibility()==View.VISIBLE)
         {
             hideAddButton();
             return;
