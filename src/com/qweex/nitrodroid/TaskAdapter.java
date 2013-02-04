@@ -206,6 +206,12 @@ public class TaskAdapter extends BaseExpandableListAdapter
         long dat = (isMagic ? T.date : c.getLong(c.getColumnIndex("date")));
         String timeString = getTimeString(dat, name.getContext());
         time.setText(timeString);
+        if(isDone)
+            time.setTextColor(android.graphics.Color.GRAY);
+        else if(dat<(new java.util.Date().getTime()))
+            time.setTextColor(android.graphics.Color.RED);
+        else
+            time.setTextColor(android.graphics.Color.BLACK);
 
         //This essentially takes the place of onGroupExpanded
         if(isExpanded && TasksActivity.lastClicked!=null)
@@ -339,10 +345,13 @@ public class TaskAdapter extends BaseExpandableListAdapter
             int i = 100;
 			if(days==0)
 				timeString = context.getResources().getString(R.string.due_today);
-			else if(days==1)
-				timeString = context.getResources().getString(R.string.due_yesterday);
 			else
-				timeString = Long.toString(days) + " " + context.getResources().getString(R.string.days_overdue);
+            {
+                if(days==1)
+                    timeString = context.getResources().getString(R.string.due_yesterday);
+                else
+                    timeString = Long.toString(days) + " " + context.getResources().getString(R.string.days_overdue);
+            }
 		} else  //The due date is in the future
 		{
 			long days = (dat - d) / 1000 / 60 / 60 / 24;
