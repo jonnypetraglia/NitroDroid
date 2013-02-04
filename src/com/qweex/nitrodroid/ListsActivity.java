@@ -98,6 +98,13 @@ public class ListsActivity extends Activity
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
+    @Override
+    public boolean onSearchRequested()
+    {
+        Log.d("DERP", "SearchRequested");
+        return SyncHelper.isSyncing;
+    }
+
     /************************** Activity Lifecycle methods **************************/
 
 	@Override

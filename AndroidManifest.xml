@@ -32,9 +32,15 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:configChanges="keyboard|keyboardHidden|orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable"/>
+
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".ListsActivity" />
         </activity>
         <activity android:name=".QuickPrefsActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"></activity>
