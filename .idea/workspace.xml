@@ -43,39 +43,20 @@
     </option>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="ERROR" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="keydown" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Nitro" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/qweex/utils/QweexUtils.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/wood.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-ldpi/logo.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-ldpi/settings.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-ldpi/sort.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-mdpi/add.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-mdpi/delete.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/.directory" afterPath="$PROJECT_DIR$/res/drawable/.directory" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/AuthorizeActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/AuthorizeActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListAdapter.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/NitroDroid.iml" afterPath="$PROJECT_DIR$/NitroDroid.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/SyncHelper.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/SyncHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TaskAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/about.xml" afterPath="$PROJECT_DIR$/res/layout/about.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ant.xml" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/auth.xml" afterPath="$PROJECT_DIR$/res/layout/auth.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/list_item.xml" afterPath="$PROJECT_DIR$/res/layout/list_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/lists.xml" afterPath="$PROJECT_DIR$/res/layout/lists.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/phone.xml" afterPath="$PROJECT_DIR$/res/layout/phone.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/splash.xml" afterPath="$PROJECT_DIR$/res/layout/splash.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/task_header.xml" afterPath="$PROJECT_DIR$/res/layout/task_header.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/task_item.xml" afterPath="$PROJECT_DIR$/res/layout/task_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/theme_attr.xml" afterPath="$PROJECT_DIR$/res/values/theme_attr.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/themes.xml" afterPath="$PROJECT_DIR$/res/values/themes.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -91,13 +72,13 @@
     <file path="/task_item_details.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358356773082" ignored="false" />
     <file path="/MagicTaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356432826531" ignored="false" />
     <file path="/DatabaseConnector.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377899708931" ignored="false" />
-    <file path="/ListsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377918996927" ignored="false" />
+    <file path="/ListsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377929231048" ignored="false" />
     <file path="/lists.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377925161298" ignored="false" />
     <file path="/strings_droid.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359713081445" ignored="false" />
     <file path="/tablet.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359375553801" ignored="false" />
     <file path="/tablet_right.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1357690249863" ignored="false" />
     <file path="/preferences.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359360171785" ignored="false" />
-    <file path="/QuickPrefsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377920411089" ignored="false" />
+    <file path="/QuickPrefsActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377926410268" ignored="false" />
     <file path="/strings.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359785036777" ignored="false" />
     <file path="/task_item_empty_Tag.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356869560915" ignored="false" />
     <file path="/task_item_empty_tag.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356877717463" ignored="false" />
@@ -238,40 +219,40 @@
       <file leaf-file-name="TasksActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="64" selection-start="4981" selection-end="4981" vertical-scroll-proportion="0.0">
+            <state line="197" column="49" selection-start="8931" selection-end="8931" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#0#45413#0" expanded="true" />
+                <element signature="e#0#45395#0" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#11234#11355#0" expanded="true" />
-                <element signature="e#11344#11345#0" expanded="true" />
-                <element signature="e#11394#11644#0" expanded="true" />
-                <element signature="e#11637#11638#0" expanded="true" />
-                <element signature="e#11682#11823#0" expanded="true" />
-                <element signature="e#11816#11817#0" expanded="true" />
-                <element signature="e#11865#13148#0" expanded="true" />
-                <element signature="e#13141#13142#0" expanded="true" />
-                <element signature="e#14622#14781#0" expanded="true" />
-                <element signature="e#14774#14775#0" expanded="true" />
-                <element signature="e#17336#17505#0" expanded="true" />
-                <element signature="e#17501#17502#0" expanded="true" />
-                <element signature="e#17558#19488#0" expanded="true" />
-                <element signature="e#19484#19485#0" expanded="true" />
-                <element signature="e#20298#20697#0" expanded="true" />
-                <element signature="e#20690#20691#0" expanded="true" />
-                <element signature="e#20763#22167#0" expanded="true" />
-                <element signature="e#21071#21083#0" expanded="true" />
-                <element signature="e#22163#22164#0" expanded="true" />
-                <element signature="e#22808#23268#0" expanded="true" />
-                <element signature="e#23261#23262#0" expanded="true" />
-                <element signature="e#24935#26324#0" expanded="true" />
-                <element signature="e#26320#26321#0" expanded="true" />
-                <element signature="e#26357#27502#0" expanded="true" />
-                <element signature="e#27498#27499#0" expanded="true" />
-                <element signature="e#28308#28734#0" expanded="true" />
-                <element signature="e#28719#28720#0" expanded="true" />
-                <element signature="e#35269#36633#0" expanded="true" />
-                <element signature="e#36626#36627#0" expanded="true" />
-                <element signature="e#37261#37269#0" expanded="true" />
+                <element signature="e#11216#11337#0" expanded="true" />
+                <element signature="e#11326#11327#0" expanded="true" />
+                <element signature="e#11376#11626#0" expanded="true" />
+                <element signature="e#11619#11620#0" expanded="true" />
+                <element signature="e#11664#11805#0" expanded="true" />
+                <element signature="e#11798#11799#0" expanded="true" />
+                <element signature="e#11847#13130#0" expanded="true" />
+                <element signature="e#13123#13124#0" expanded="true" />
+                <element signature="e#14604#14763#0" expanded="true" />
+                <element signature="e#14756#14757#0" expanded="true" />
+                <element signature="e#17318#17487#0" expanded="true" />
+                <element signature="e#17483#17484#0" expanded="true" />
+                <element signature="e#17540#19470#0" expanded="true" />
+                <element signature="e#19466#19467#0" expanded="true" />
+                <element signature="e#20280#20679#0" expanded="true" />
+                <element signature="e#20672#20673#0" expanded="true" />
+                <element signature="e#20745#22149#0" expanded="true" />
+                <element signature="e#21053#21065#0" expanded="true" />
+                <element signature="e#22145#22146#0" expanded="true" />
+                <element signature="e#22790#23250#0" expanded="true" />
+                <element signature="e#23243#23244#0" expanded="true" />
+                <element signature="e#24917#26306#0" expanded="true" />
+                <element signature="e#26302#26303#0" expanded="true" />
+                <element signature="e#26339#27484#0" expanded="true" />
+                <element signature="e#27480#27481#0" expanded="true" />
+                <element signature="e#28290#28716#0" expanded="true" />
+                <element signature="e#28701#28702#0" expanded="true" />
+                <element signature="e#35251#36615#0" expanded="true" />
+                <element signature="e#36608#36609#0" expanded="true" />
+                <element signature="e#37243#37251#0" expanded="true" />
                 <element signature="docComment;method#removeDuplicateWithOrder#0;class#TasksActivity#0" expanded="true" />
               </folding>
             </state>
@@ -290,52 +271,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QuickPrefsActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="459" column="40" selection-start="18918" selection-end="18918" vertical-scroll-proportion="1.8636364">
-              <folding>
-                <element signature="e#0#20420#0" expanded="true" />
-                <element signature="docComment;class#QuickPrefsActivity#0" expanded="true" />
-                <element signature="docComment;method#onCreate#0;class#QuickPrefsActivity#0" expanded="true" />
-                <element signature="docComment;method#onSharedPreferenceChanged#0;class#QuickPrefsActivity#0" expanded="true" />
-                <element signature="docComment;method#packageExists#0;class#QuickPrefsActivity#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ListsActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ListsActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="819" column="0" selection-start="30004" selection-end="30004" vertical-scroll-proportion="0.0">
+            <state line="316" column="33" selection-start="11506" selection-end="11506" vertical-scroll-proportion="0.3582343">
               <folding>
                 <element signature="docComment;method#doViewStuff#0;class#ListsActivity#0" expanded="true" />
-                <element signature="e#16141#16331#0" expanded="true" />
-                <element signature="e#16320#16321#0" expanded="true" />
-                <element signature="e#18428#18537#0" expanded="true" />
-                <element signature="e#18532#18533#0" expanded="true" />
-                <element signature="e#18605#18866#0" expanded="true" />
-                <element signature="e#18854#18855#0" expanded="true" />
-                <element signature="e#18902#19404#0" expanded="true" />
-                <element signature="e#19399#19400#0" expanded="true" />
-                <element signature="e#21854#23404#0" expanded="true" />
-                <element signature="e#23398#23399#0" expanded="true" />
+                <element signature="e#16450#16640#0" expanded="true" />
+                <element signature="e#16629#16630#0" expanded="true" />
+                <element signature="e#18737#18846#0" expanded="true" />
+                <element signature="e#18841#18842#0" expanded="true" />
+                <element signature="e#18914#19175#0" expanded="true" />
+                <element signature="e#19163#19164#0" expanded="true" />
+                <element signature="e#19211#19713#0" expanded="true" />
+                <element signature="e#19708#19709#0" expanded="true" />
+                <element signature="e#22243#23793#0" expanded="true" />
+                <element signature="e#23787#23788#0" expanded="true" />
                 <element signature="docComment;method#pressCreateList#0;class#ListsActivity#0" expanded="true" />
-                <element signature="e#24095#24810#0" expanded="true" />
-                <element signature="e#24803#24804#0" expanded="true" />
-                <element signature="e#25700#26106#0" expanded="true" />
-                <element signature="e#26099#26100#0" expanded="true" />
-                <element signature="e#26569#26921#0" expanded="true" />
-                <element signature="e#26910#26911#0" expanded="true" />
-                <element signature="e#26977#28097#0" expanded="true" />
-                <element signature="e#28090#28091#0" expanded="true" />
-                <element signature="e#28141#30921#0" expanded="true" />
-                <element signature="e#30320#30436#0" expanded="true" />
-                <element signature="e#30425#30426#0" expanded="true" />
-                <element signature="e#30914#30915#0" expanded="true" />
-                <element signature="e#30980#31421#0" expanded="true" />
-                <element signature="e#31414#31415#0" expanded="true" />
+                <element signature="e#24484#25199#0" expanded="true" />
+                <element signature="e#25192#25193#0" expanded="true" />
+                <element signature="e#26089#26495#0" expanded="true" />
+                <element signature="e#26488#26489#0" expanded="true" />
+                <element signature="e#26958#27310#0" expanded="true" />
+                <element signature="e#27299#27300#0" expanded="true" />
+                <element signature="e#27366#28486#0" expanded="true" />
+                <element signature="e#28479#28480#0" expanded="true" />
+                <element signature="e#28530#31264#0" expanded="true" />
+                <element signature="e#30663#30779#0" expanded="true" />
+                <element signature="e#30768#30769#0" expanded="true" />
+                <element signature="e#31257#31258#0" expanded="true" />
+                <element signature="e#31323#31764#0" expanded="true" />
+                <element signature="e#31757#31758#0" expanded="true" />
                 <element signature="docComment;field#ANIMATION_DURATION#0;class#ListsActivity#0" expanded="true" />
               </folding>
             </state>
@@ -381,18 +347,18 @@
         <option value="$PROJECT_DIR$/src/com/qweex/utils/QweexUtils.java" />
         <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/AuthorizeActivity.java" />
         <option value="$PROJECT_DIR$/res/layout/splash.xml" />
-        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
         <option value="$PROJECT_DIR$/res/layout/task_header.xml" />
-        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java" />
         <option value="$PROJECT_DIR$/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/res/layout/about.xml" />
         <option value="$PROJECT_DIR$/res/layout/phone.xml" />
         <option value="$PROJECT_DIR$/res/layout/lists.xml" />
         <option value="$PROJECT_DIR$/res/layout/list_item.xml" />
-        <option value="$PROJECT_DIR$/res/values/themes.xml" />
         <option value="$PROJECT_DIR$/res/values/theme_attr.xml" />
         <option value="$PROJECT_DIR$/res/layout/task_item.xml" />
+        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java" />
+        <option value="$PROJECT_DIR$/res/values/themes.xml" />
+        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
       </list>
     </option>
   </component>
@@ -523,6 +489,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NitroDroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NitroDroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -980,14 +964,14 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289183" sideWeight="0.49786553" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22556391" sideWeight="0.6157951" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31256714" sideWeight="0.64461046" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31256714" sideWeight="0.64461046" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32760474" sideWeight="0.49573106" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17545748" sideWeight="0.81214845" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32849464" sideWeight="0.69205296" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19156884" sideWeight="0.8216971" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1783029" sideWeight="0.7203842" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19156884" sideWeight="0.6874329" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1783029" sideWeight="0.7203842" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18763441" sideWeight="0.81664795" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1113,82 +1097,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="819" column="0" selection-start="30004" selection-end="30004" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="docComment;method#doViewStuff#0;class#ListsActivity#0" expanded="true" />
-            <element signature="e#16141#16331#0" expanded="true" />
-            <element signature="e#16320#16321#0" expanded="true" />
-            <element signature="e#18428#18537#0" expanded="true" />
-            <element signature="e#18532#18533#0" expanded="true" />
-            <element signature="e#18605#18866#0" expanded="true" />
-            <element signature="e#18854#18855#0" expanded="true" />
-            <element signature="e#18902#19404#0" expanded="true" />
-            <element signature="e#19399#19400#0" expanded="true" />
-            <element signature="e#21854#23404#0" expanded="true" />
-            <element signature="e#23398#23399#0" expanded="true" />
-            <element signature="docComment;method#pressCreateList#0;class#ListsActivity#0" expanded="true" />
-            <element signature="e#24095#24810#0" expanded="true" />
-            <element signature="e#24803#24804#0" expanded="true" />
-            <element signature="e#25700#26106#0" expanded="true" />
-            <element signature="e#26099#26100#0" expanded="true" />
-            <element signature="e#26569#26921#0" expanded="true" />
-            <element signature="e#26910#26911#0" expanded="true" />
-            <element signature="e#26977#28097#0" expanded="true" />
-            <element signature="e#28090#28091#0" expanded="true" />
-            <element signature="e#28141#30921#0" expanded="true" />
-            <element signature="e#30320#30436#0" expanded="true" />
-            <element signature="e#30425#30426#0" expanded="true" />
-            <element signature="e#30914#30915#0" expanded="true" />
-            <element signature="e#30980#31421#0" expanded="true" />
-            <element signature="e#31414#31415#0" expanded="true" />
-            <element signature="docComment;field#ANIMATION_DURATION#0;class#ListsActivity#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="64" selection-start="4981" selection-end="4981" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#45413#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#11234#11355#0" expanded="true" />
-            <element signature="e#11344#11345#0" expanded="true" />
-            <element signature="e#11394#11644#0" expanded="true" />
-            <element signature="e#11637#11638#0" expanded="true" />
-            <element signature="e#11682#11823#0" expanded="true" />
-            <element signature="e#11816#11817#0" expanded="true" />
-            <element signature="e#11865#13148#0" expanded="true" />
-            <element signature="e#13141#13142#0" expanded="true" />
-            <element signature="e#14622#14781#0" expanded="true" />
-            <element signature="e#14774#14775#0" expanded="true" />
-            <element signature="e#17336#17505#0" expanded="true" />
-            <element signature="e#17501#17502#0" expanded="true" />
-            <element signature="e#17558#19488#0" expanded="true" />
-            <element signature="e#19484#19485#0" expanded="true" />
-            <element signature="e#20298#20697#0" expanded="true" />
-            <element signature="e#20690#20691#0" expanded="true" />
-            <element signature="e#20763#22167#0" expanded="true" />
-            <element signature="e#21071#21083#0" expanded="true" />
-            <element signature="e#22163#22164#0" expanded="true" />
-            <element signature="e#22808#23268#0" expanded="true" />
-            <element signature="e#23261#23262#0" expanded="true" />
-            <element signature="e#24935#26324#0" expanded="true" />
-            <element signature="e#26320#26321#0" expanded="true" />
-            <element signature="e#26357#27502#0" expanded="true" />
-            <element signature="e#27498#27499#0" expanded="true" />
-            <element signature="e#28308#28734#0" expanded="true" />
-            <element signature="e#28719#28720#0" expanded="true" />
-            <element signature="e#35269#36633#0" expanded="true" />
-            <element signature="e#36626#36627#0" expanded="true" />
-            <element signature="e#37261#37269#0" expanded="true" />
-            <element signature="docComment;method#removeDuplicateWithOrder#0;class#TasksActivity#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/phone.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="44" column="19" selection-start="1804" selection-end="1804" vertical-scroll-proportion="-26.4">
@@ -1247,13 +1155,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/themes.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="20" selection-start="2793" selection-end="2793" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/task_header.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="61" column="40" selection-start="2721" selection-end="2721" vertical-scroll-proportion="0.6362339">
@@ -1262,6 +1163,30 @@
       </provider>
       <provider editor-type-id="android-designer">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="21" selection-start="4547" selection-end="4547" vertical-scroll-proportion="-4.8">
+          <folding>
+            <element signature="e#0#20575#0" expanded="true" />
+            <element signature="docComment;class#QuickPrefsActivity#0" expanded="true" />
+            <element signature="docComment;method#onCreate#0;class#QuickPrefsActivity#0" expanded="true" />
+            <element signature="e#4167#4862#0" expanded="true" />
+            <element signature="e#4851#4852#0" expanded="true" />
+            <element signature="e#8043#8153#0" expanded="true" />
+            <element signature="e#8151#8152#0" expanded="true" />
+            <element signature="docComment;method#onSharedPreferenceChanged#0;class#QuickPrefsActivity#0" expanded="true" />
+            <element signature="docComment;method#packageExists#0;class#QuickPrefsActivity#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/themes.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="1443" selection-end="1446" vertical-scroll-proportion="0.4648094">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/task_item.xml">
@@ -1274,15 +1199,78 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/QuickPrefsActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="459" column="40" selection-start="18918" selection-end="18918" vertical-scroll-proportion="1.8636364">
+        <state line="197" column="49" selection-start="8931" selection-end="8931" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#0#20420#0" expanded="true" />
-            <element signature="docComment;class#QuickPrefsActivity#0" expanded="true" />
-            <element signature="docComment;method#onCreate#0;class#QuickPrefsActivity#0" expanded="true" />
-            <element signature="docComment;method#onSharedPreferenceChanged#0;class#QuickPrefsActivity#0" expanded="true" />
-            <element signature="docComment;method#packageExists#0;class#QuickPrefsActivity#0" expanded="true" />
+            <element signature="e#0#45395#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#11216#11337#0" expanded="true" />
+            <element signature="e#11326#11327#0" expanded="true" />
+            <element signature="e#11376#11626#0" expanded="true" />
+            <element signature="e#11619#11620#0" expanded="true" />
+            <element signature="e#11664#11805#0" expanded="true" />
+            <element signature="e#11798#11799#0" expanded="true" />
+            <element signature="e#11847#13130#0" expanded="true" />
+            <element signature="e#13123#13124#0" expanded="true" />
+            <element signature="e#14604#14763#0" expanded="true" />
+            <element signature="e#14756#14757#0" expanded="true" />
+            <element signature="e#17318#17487#0" expanded="true" />
+            <element signature="e#17483#17484#0" expanded="true" />
+            <element signature="e#17540#19470#0" expanded="true" />
+            <element signature="e#19466#19467#0" expanded="true" />
+            <element signature="e#20280#20679#0" expanded="true" />
+            <element signature="e#20672#20673#0" expanded="true" />
+            <element signature="e#20745#22149#0" expanded="true" />
+            <element signature="e#21053#21065#0" expanded="true" />
+            <element signature="e#22145#22146#0" expanded="true" />
+            <element signature="e#22790#23250#0" expanded="true" />
+            <element signature="e#23243#23244#0" expanded="true" />
+            <element signature="e#24917#26306#0" expanded="true" />
+            <element signature="e#26302#26303#0" expanded="true" />
+            <element signature="e#26339#27484#0" expanded="true" />
+            <element signature="e#27480#27481#0" expanded="true" />
+            <element signature="e#28290#28716#0" expanded="true" />
+            <element signature="e#28701#28702#0" expanded="true" />
+            <element signature="e#35251#36615#0" expanded="true" />
+            <element signature="e#36608#36609#0" expanded="true" />
+            <element signature="e#37243#37251#0" expanded="true" />
+            <element signature="docComment;method#removeDuplicateWithOrder#0;class#TasksActivity#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="316" column="33" selection-start="11506" selection-end="11506" vertical-scroll-proportion="0.3582343">
+          <folding>
+            <element signature="docComment;method#doViewStuff#0;class#ListsActivity#0" expanded="true" />
+            <element signature="e#16450#16640#0" expanded="true" />
+            <element signature="e#16629#16630#0" expanded="true" />
+            <element signature="e#18737#18846#0" expanded="true" />
+            <element signature="e#18841#18842#0" expanded="true" />
+            <element signature="e#18914#19175#0" expanded="true" />
+            <element signature="e#19163#19164#0" expanded="true" />
+            <element signature="e#19211#19713#0" expanded="true" />
+            <element signature="e#19708#19709#0" expanded="true" />
+            <element signature="e#22243#23793#0" expanded="true" />
+            <element signature="e#23787#23788#0" expanded="true" />
+            <element signature="docComment;method#pressCreateList#0;class#ListsActivity#0" expanded="true" />
+            <element signature="e#24484#25199#0" expanded="true" />
+            <element signature="e#25192#25193#0" expanded="true" />
+            <element signature="e#26089#26495#0" expanded="true" />
+            <element signature="e#26488#26489#0" expanded="true" />
+            <element signature="e#26958#27310#0" expanded="true" />
+            <element signature="e#27299#27300#0" expanded="true" />
+            <element signature="e#27366#28486#0" expanded="true" />
+            <element signature="e#28479#28480#0" expanded="true" />
+            <element signature="e#28530#31264#0" expanded="true" />
+            <element signature="e#30663#30779#0" expanded="true" />
+            <element signature="e#30768#30769#0" expanded="true" />
+            <element signature="e#31257#31258#0" expanded="true" />
+            <element signature="e#31323#31764#0" expanded="true" />
+            <element signature="e#31757#31758#0" expanded="true" />
+            <element signature="docComment;field#ANIMATION_DURATION#0;class#ListsActivity#0" expanded="true" />
           </folding>
         </state>
       </provider>

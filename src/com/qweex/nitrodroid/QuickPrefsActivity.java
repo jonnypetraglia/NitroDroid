@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.*;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.qweex.utils.QweexUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -51,10 +53,6 @@ import android.view.View.OnClickListener;
 import android.widget.PopupWindow;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -102,7 +100,12 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
                 Log.d(TAG, "Donate");
                 Uri uri = Uri.parse("market://details?id=com.qweex.donation");
                 Intent intent = new Intent (Intent.ACTION_VIEW, uri);
+                try {
                 startActivity(intent);
+                } catch(ActivityNotFoundException e)
+                {
+                    Toast.makeText(QuickPrefsActivity.this, "Unable to open Android Play Store", Toast.LENGTH_SHORT).show(); //Locale
+                }
                 return true;
             }
         });

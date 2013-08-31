@@ -194,13 +194,13 @@ public class TasksActivity
                 ((ViewFlipper)context.findViewById(R.id.FLIP)).showPrevious();
             }
         });
-        /*DEBUGImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
+        ImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
         sortButton.setOnClickListener(pressSort);
         ImageButton optionsButton = ((ImageButton)context.findViewById(R.id.optionsbutton));
         optionsButton.setOnClickListener(pressOptions);
         ((ImageButton)context.findViewById(R.id.addbutton)).setOnClickListener(clickAdd);
         ((ImageButton)context.findViewById(R.id.deletebutton)).setOnClickListener(clickDelete);
-*/
+
         //EditText for new tasks
         lv = (ExpandableListView) ((Activity) context).findViewById(R.id.tasksListView);
         if(newTask==null && ListsActivity.v2)
@@ -244,7 +244,7 @@ public class TasksActivity
         else
             theTitle = listName;
         //if(!ListsActivity.v2)
-		    /*DEBUG((TextView)context.findViewById(R.id.taskTitlebar)).setText(theTitle);*/
+		    ((TextView)context.findViewById(R.id.taskTitlebar)).setText(theTitle);
 		lv.setOnGroupClickListener(selectTask);
 		lv.post(new Runnable() {
             public void run() {

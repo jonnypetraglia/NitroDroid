@@ -307,10 +307,18 @@ public class ListsActivity extends Activity
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
-        if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
+        String TAG=QweexUtils.TAG();
+        if (!QweexUtils.androidAPIover(5)
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             doBackThings();
+            Log.i(TAG, "keydown " + flip + " " + loadingApp + "   " + isTablet + " " + flip.getCurrentView() + "==" + flip.getChildAt(1));
+            return flip!=null &&
+                   !loadingApp &&
+                   !isTablet &&
+                   flip.getCurrentView()==flip.getChildAt(1);
+
+
         } else if(keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0)
         {
             if(isTablet)
@@ -327,8 +335,7 @@ public class ListsActivity extends Activity
                 add.startAnimation(inFromBottomAnimation());
             }
 
-
-            return true || flip==null ||                    //To avoid a null pointer
+            return flip==null ||                    //To avoid a null pointer
                    loadingApp ||       //If the splash is shown
                    (!isTablet &&                    //Always show it if it is a tablet
                     flip.getCurrentView()==flip.getChildAt(1));
@@ -579,6 +586,8 @@ public class ListsActivity extends Activity
 	
     void doBackThings()
     {
+        String TAG = QweexUtils.TAG();
+        Log.i(TAG, "doing back things");
         if(!isTablet && findViewById(R.id.frame).getVisibility()==View.VISIBLE)
         {
             hideAddButton();
@@ -809,7 +818,6 @@ public class ListsActivity extends Activity
     	  //Yay update shit
     	  TasksActivity.lastClicked = null;
 		  TasksActivity.lastClickedID = null;
-          System.out.println("Dude:::" + ta);
     	  if(ta==null)
     	  {
     		  Log.d(TAG, "Instanciating TaskActivity: " + hash);
