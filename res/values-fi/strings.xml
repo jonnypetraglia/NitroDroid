@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Tämänpäiväiset</string>
+    <string name="Next">Seuraavat</string>
+    <string name="Logbook">Lokikirja</string>
+    <string name="AllTasks">Kaikki tehtävät</string>
+    
+    <string name="Low">Matala</string>
+    <string name="Medium">Keski</string>
+    <string name="High">Tärkeä</string>
+    <string name="None">Ei mitään</string>
+    <string name="NoTasks">Ei tehtäviä listassa Tämä lista</string>
+    
+    <string name="General">Yleiset</string>
+    <string name="WeekStartsOn">Viikko alkaa</string>
+    
+    <string-array name="weekdays">
+	    <item>Sunnuntai</item>
+	    <item>Maanantai</item>
+	    <item>Tiistai</item>
+	    <item>Keskiviikko</item>
+	    <item>Torstai</item>
+	    <item>Perjantai</item>
+	    <item>Lauantai</item>
+	</string-array>
+	<string name="weekday1">Sunnuntai</string>
+	<string name="show_others_in_next">Näytä muut listat seuraavissa</string>
+	<string name="clear_data">Tyhjennä tiedot</string>
+	<string name="language">Kieli</string>
+	
+	
+
+	<string name="theme">Teema</string>
+    <string name="background">Vaihda tausta</string>
+    <string name="default_background">Käytä oletustaustaa</string>
+    <string name="sync">Synkronointi</string>
+    <string name="logout">Kirjaudu ulos</string>
+
+    <string name="warning">Varoitus!</string>
+    <string name="warning_msg">Haluatko varmasti palauttaa Nitron? Tietosi kadotetaan lopullisesti (pitkä aika)</string>
+    <string name="delete_task">Haluatko varmasti poistaa tämän tehtävän?</string>
+    <string name="delete_list">Haluatko varmasti poistaa tämän listan?</string>
+    <string name="no">Ei, säilytä se</string>
+    <string name="yes">Kyllä, poista se</string>
+    <string name="about">Tietoa</string>
+    
+    
+    <string name="due_yesterday">erääntyi eilen</string>
+    <string name="due_today">erääntyy tänään</string>
+    <string name="due_tomorrow">erääntyy huomenna</string>
+    <string name="days_overdue">päivää sitten</string>
+    <string name="days_left">päivää jäljellä</string>
+
+    <string name="by_magic">Taikuudella</string>
+    <string name="by_hand">Käsin</string>
+    <string name="by_title">Otsikko</string>
+    <string name="by_date">Päiväys</string>
+    <string name="by_priority">Tärkeys</string>
+    
+    <string name="default_list">Uusi lista</string>
+    <string name="default_task">Uusi tehtävä</string>
+    <string name="add_list">Lisää lista</string>
+    
+    <string name="lists">Listat</string>
+    <string name="move2logbook">Siirrä $$ suoritettua tehtävää lokikirjaan</string>
+    
+</resources>

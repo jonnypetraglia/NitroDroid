@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Na dziś</string>
+    <string name="Next">Następne</string>
+    <string name="Logbook">Dziennik</string>
+    <string name="AllTasks">Wszystkie</string>
+    
+    <string name="Low">Niski</string>
+    <string name="Medium">Średni</string>
+    <string name="High">Wysoki</string>
+    <string name="None">Brak</string>
+    <string name="NoTasks">Brak zadań dla tej listy</string>
+    
+    <string name="General">Ogólne</string>
+    <string name="WeekStartsOn">Początek tygodnia</string>
+    
+    <string-array name="weekdays">
+	    <item>Niedziela</item>
+	    <item>Poniedziałek</item>
+	    <item>Wtorek</item>
+	    <item>Środa</item>
+	    <item>Czwartek</item>
+	    <item>Piątek</item>
+	    <item>Sobota</item>
+	</string-array>
+	<string name="weekday1">Niedziela</string>
+	<string name="show_others_in_next">Pokaż inne listy na liście Następne</string>
+	<string name="clear_data">Usuń dane</string>
+	<string name="language">Język</string>
+	
+	
+
+	<string name="theme">Motyw</string>
+    <string name="background">Użyj własnego tła</string>
+    <string name="default_background">Domyślne tło</string>
+    <string name="sync">Synchronizacja</string>
+    <string name="logout">Wyloguj</string>
+    
+    <string name="warning">Ostrzeżenie!</string>
+    <string name="warning_msg">Na pewno zresetować Nitro? Wszystkie dane znikną na zawsze (naprawdę długi czas)</string>
+    <string name="delete_task">Na pewno chcesz usunąć to zadanie?</string>
+    <string name="delete_list">Na pewno chcesz usunąć tę listę?</string>
+    <string name="no">Nie</string>
+    <string name="yes">Usuń</string>
+    <string name="about">O aplikacji</string>
+    
+    
+    <string name="due_yesterday">na wczoraj</string>
+    <string name="due_today">na dziś</string>
+    <string name="due_tomorrow">na jutro</string>
+    <string name="days_overdue">dni po terminie</string>
+    <string name="days_left">pozostało dni</string>
+
+    <string name="by_magic">Magicznie</string>
+    <string name="by_hand">Ręcznie</string>
+    <string name="by_title">Alfabetycznie</string>
+    <string name="by_date">Data</string>
+    <string name="by_priority">Priorytet</string>
+    
+    <string name="default_list">Nowa lista</string>
+    <string name="default_task">Nowe zadanie</string>
+    <string name="add_list">Dodaj listę</string>
+    
+    <string name="lists">Listy</string>
+<string name="move2logbook">Move $$ completed tasks to Logbook</string>
+    
+</resources>

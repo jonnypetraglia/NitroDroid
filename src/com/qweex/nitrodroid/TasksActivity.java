@@ -16,6 +16,7 @@ package com.qweex.nitrodroid;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -25,10 +26,11 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import com.qweex.utils.QweexUtils;
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -99,10 +101,10 @@ public class TasksActivity
         sortPopup.setOnActionItemClickListener(selectSort);
 
         optionsPopup = new QuickAction(context, QuickAction.VERTICAL);
-        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Delete", context.getResources().getDrawable(R.drawable.delete)));
-        optionsPopup.addActionItem(new ActionItem(ID_SORT, "Toggle Sort", context.getResources().getDrawable(R.drawable.sort)));
-        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Email", context.getResources().getDrawable(R.drawable.email)));
-        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Share", context.getResources().getDrawable(R.drawable.share)));
+        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Delete", context.getResources().getDrawable(R.drawable.delete))); //Locale
+        optionsPopup.addActionItem(new ActionItem(ID_SORT, "Toggle Sort", context.getResources().getDrawable(R.drawable.sort)));    //Locale
+        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Email", context.getResources().getDrawable(R.drawable.email)));   //Locale
+        optionsPopup.addActionItem(new ActionItem(ID_DELETE, "Share", context.getResources().getDrawable(R.drawable.share)));   //Locale
         optionsPopup.setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.header_v2)));
         optionsPopup.setOnActionItemClickListener(selectOption);
         
@@ -173,6 +175,7 @@ public class TasksActivity
 	
 	public void doCreateStuff()
 	{
+        String TAG= QweexUtils.TAG();
         ImageButton backButton = ((ImageButton)context.findViewById(R.id.backbutton));
         backButton.setOnClickListener(new OnClickListener()
         {
@@ -191,13 +194,13 @@ public class TasksActivity
                 ((ViewFlipper)context.findViewById(R.id.FLIP)).showPrevious();
             }
         });
-        ImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
+        /*DEBUGImageButton sortButton = ((ImageButton)context.findViewById(R.id.sortbutton));
         sortButton.setOnClickListener(pressSort);
         ImageButton optionsButton = ((ImageButton)context.findViewById(R.id.optionsbutton));
         optionsButton.setOnClickListener(pressOptions);
         ((ImageButton)context.findViewById(R.id.addbutton)).setOnClickListener(clickAdd);
         ((ImageButton)context.findViewById(R.id.deletebutton)).setOnClickListener(clickDelete);
-
+*/
         //EditText for new tasks
         lv = (ExpandableListView) ((Activity) context).findViewById(R.id.tasksListView);
         if(newTask==null && ListsActivity.v2)
@@ -209,7 +212,8 @@ public class TasksActivity
             newTask.setOnTouchListener(new RightDrawableOnTouchListener(newTask) {
                 @Override
                 public boolean onDrawableTouch(final MotionEvent event) {
-                    Log.d("HERP", "Pressed drawable");
+                    String TAG= QweexUtils.TAG();
+                    Log.d(TAG, "Pressed drawable");
                     String newListName = newTask.getText().toString();
                     createTask(newListName);
                     return true;
@@ -219,13 +223,13 @@ public class TasksActivity
 
         if(move2log.getParent()!=null)
             ((ViewGroup) move2log.getParent()).removeView(move2log);
-        Log.d("DERP", "ListHash: " + listHash);
+        Log.d(TAG, "ListHash: " + listHash);
         if("logbook".equals(listHash))
         {
             int i= ListsActivity.syncHelper.db.getUnloggedDone().getCount();
             if(i>0)
             {
-                Log.d("DERP", "YUP" + i);
+                Log.d(TAG, "YUP" + i);
                 move2log.setText(moveLogString.replace("$$", Integer.toString(i)));
                 ((LinearLayout)context.findViewById(R.id.tasksMaster)).addView(move2log, 1);
             }
@@ -240,7 +244,7 @@ public class TasksActivity
         else
             theTitle = listName;
         //if(!ListsActivity.v2)
-		    ((TextView)context.findViewById(R.id.taskTitlebar)).setText(theTitle);
+		    /*DEBUG((TextView)context.findViewById(R.id.taskTitlebar)).setText(theTitle);*/
 		lv.setOnGroupClickListener(selectTask);
 		lv.post(new Runnable() {
             public void run() {
@@ -285,8 +289,9 @@ public class TasksActivity
             boolean done = ((CheckBox)v).isChecked();
             ViewGroup parent = (ViewGroup)v.getParent().getParent();
             View tid1 = parent.findViewById(R.id.taskId);
+            View tdone1 = parent.findViewById(R.id.taskDone);
 
-            int pri = Integer.parseInt(tid1.getTag(R.id.priority).toString());
+            int pri = Integer.parseInt(tdone1.getTag().toString());
             if(ListsActivity.v2)
             {
                 int clr = v.getContext().getResources().getColor(TaskAdapter.v2_clrs[done ? 0 : pri]);
@@ -297,7 +302,7 @@ public class TasksActivity
                 }catch(Exception e){}
             }
             if(!ListsActivity.syncHelper.db.modifyTask(tid1.getTag().toString(), "logged", done ? (new Date()).getTime() : 0))
-                Toast.makeText(v.getContext(), "An error occurred", Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "An error occurred", Toast.LENGTH_LONG).show(); //Locale
         }
     };
 
@@ -356,9 +361,10 @@ public class TasksActivity
 
     void createTask(String newName)
     {
+        String TAG= QweexUtils.TAG();
         if(listHash==null || "logbook".equals(listHash))// || "today".equals(listHash) || "next".equals(listHash))
         {
-            Log.d("DERP", "Unable to add to list: " + listHash);
+            Log.d(TAG, "Unable to add to list: " + listHash);
             Toast.makeText(context, R.string.long_winded_reprimand, Toast.LENGTH_LONG).show();
             return;
         }
@@ -398,9 +404,9 @@ public class TasksActivity
         try {
             TextView totalCountView = (TextView) ((View)context.findViewById(android.R.id.list).findViewWithTag("all").getParent()).findViewById(R.id.listNumber);
             totalCountView.setText(Integer.toString(ListsActivity.listAdapter.totalCount));
-            Log.d("DERP", "Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+            Log.d(TAG, "Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
         } catch(Exception e){
-            Log.d("DERP", "NOT Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+            Log.d(TAG, "NOT Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
         }
 
         if(newTask!=null)
@@ -408,7 +414,7 @@ public class TasksActivity
             InputMethodManager imm = (InputMethodManager)newTask.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(newTask.getWindowToken(), 0);
         }
-        Toast.makeText(context, "Created task: " + newName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Created task: " + newName, Toast.LENGTH_SHORT).show(); //Locale
     }
 
     
@@ -426,6 +432,7 @@ public class TasksActivity
 	DialogInterface.OnClickListener confirmDelete = new DialogInterface.OnClickListener() {
 	    @Override
 	    public void onClick(DialogInterface dialog, int which) {
+            String TAG= QweexUtils.TAG();
 	        switch (which){
 	        case DialogInterface.BUTTON_POSITIVE:
 	            if(!ListsActivity.syncHelper.db.deleteTask(lastClickedID))
@@ -446,9 +453,9 @@ public class TasksActivity
                 try {
                     TextView totalCountView = (TextView) ((View)context.findViewById(android.R.id.list).findViewWithTag("all").getParent()).findViewById(R.id.listNumber);
                     totalCountView.setText(Integer.toString(ListsActivity.listAdapter.totalCount));
-                    Log.d("TaskActivity::confirmDelete", "Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+                    Log.d(TAG, "Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
                 } catch(Exception e){
-                    Log.d("TaskActivity::confirmDelete", "NOT Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
+                    Log.d(TAG, "NOT Found totalCountView, updating " + ListsActivity.listAdapter.totalCount);
                 }
 
                 //Update today
@@ -522,7 +529,7 @@ public class TasksActivity
 				adapter.notifyDataSetChanged();
 				return;
 			case ID_HAND:
-                Toast.makeText(context, "Sorting by hand is not yet supported", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Sorting by hand is not yet supported", Toast.LENGTH_SHORT).show(); //Locale
 				return;
 			case ID_TITLE:
 				r = ListsActivity.syncHelper.db.getTasksOfList(listHash, "name");
@@ -547,17 +554,18 @@ public class TasksActivity
 	public class MagicComparator implements Comparator<taskObject> {
 		@Override
 		public int compare(taskObject a, taskObject b) {
+            String TAG= QweexUtils.TAG();
 			int ratingA = a.dateWorth, ratingB = b.dateWorth;
 			ratingA += a.priority*2;
 			ratingB += b.priority*2;
 
-            Log.e("DERP", "Comparing " + a.name + " to " + b.name);
+            Log.e(TAG, "Comparing " + a.name + " to " + b.name);
 
 			if(a.logged>0 && b.logged==0) return 1;
 			else if(a.logged==0 && b.logged>0) return -1;
 			else if(a.logged>0 && a.logged>0) return 0;
 
-            Log.e("DERP", "Result: " + (ratingB - ratingA));
+            Log.e(TAG, "Result: " + (ratingB - ratingA));
 			return ratingB - ratingA;
 		}
 	}
@@ -685,20 +693,20 @@ public class TasksActivity
 			    date.setTimeInMillis(dateL);
             lastDate = date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+date.get(Calendar.DAY_OF_MONTH);
 			
-			if(android.os.Build.VERSION.SDK_INT<11)
+			if(QweexUtils.androidAPIover(11))
 			{
 				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
 																   date.get(Calendar.MONTH),
 																   date.get(Calendar.DATE)); //*/
 			}else
 			{
-				((android.widget.CalendarView)datePicker).setDate(dateL);
+				//((android.widget.CalendarView)datePicker).setDate(dateL);
                 int ix = 1;
                 try {
                     ix = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("week_starts_on", "3"));
                 }catch(Exception e) {}
 
-				((android.widget.CalendarView)datePicker).setFirstDayOfWeek(ix);
+				//((android.widget.CalendarView)datePicker).setFirstDayOfWeek(ix);
 			}
 
 			datePickerDialog.showAtLocation(context.findViewById(R.id.FLIP), android.view.Gravity.CENTER, 0, 0);
@@ -709,7 +717,7 @@ public class TasksActivity
 
 	void createCalendar()
 	{
-		if(android.os.Build.VERSION.SDK_INT<11
+        if(QweexUtils.androidAPIover(11)
                 || PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean("force_spinner", false))
 		{
 			android.widget.DatePicker datePicker_ = new android.widget.DatePicker(context);
@@ -739,7 +747,67 @@ public class TasksActivity
 			datePickerDialog.setOutsideTouchable(true);
 			return;
 		}
-		android.widget.CalendarView datePicker_ = new android.widget.CalendarView(context); // = (CalendarView) datePicker;
+
+        //Time for some fucking reflection
+
+        try {
+            Class<?> c = null;
+            c = Class.forName("android.widget.CalendarView");
+            Constructor<?> ctor = c.getConstructor(Intent.class);
+            View o = (View) ctor.newInstance(new Object[] {context});
+
+            int x;
+            try {
+                x = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("week_starts_on", "1"));
+            } catch(Exception e) {
+                x = 0;
+            }
+            o.getClass().getMethod("setFirstDayOfWeek", int.class).invoke(o, x);
+
+            o.getClass().getMethod("setBackgroundColor", int.class).invoke(o, 0x00ffffff);
+            o.getClass().getMethod("setShowWeekNumber", boolean.class).invoke(o, false);
+
+
+            String interfaceName = "android.widget.CalendarView.OnDateChangeListener";
+            ClassLoader classLoader = Class.forName(interfaceName).getClassLoader();
+            Class<?>[] interfaces = new Class<?>[] { Class.forName(interfaceName) };
+            InvocationHandler handler = new AnyInvocationHandler();
+            Proxy.newProxyInstance(classLoader, interfaces, handler);
+
+            //Constructor<?> ctor2 = c2.getConstructor();
+            //Object o2 = ctor2.newInstance();
+            //o.getClass().getMethod("setOnDateChangeListener", c2);
+
+
+            o.getClass().getMethod("setOnDateChangeListener", boolean.class).invoke(o, false);
+
+            popupLayout.addView(o, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
+        } catch(ClassNotFoundException e) {
+
+        } catch(InstantiationException e) {
+
+        } catch(IllegalAccessException e) {
+
+        } catch(NoSuchMethodException e) {
+
+        } catch (InvocationTargetException e) {
+
+        }
+    }
+
+    public class AnyInvocationHandler implements InvocationHandler {
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+            System.out.println("AnyInvocationHandler " + method.toString());
+
+            return method.invoke(proxy, args);
+        }
+    }
+
+        /*
+        android.widget.CalendarView datePicker_ = new android.widget.CalendarView(context); // = (CalendarView) datePicker;
 		datePicker = datePicker_;
         try {
         datePicker_.setFirstDayOfWeek(   Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("week_starts_on", "1"))  );
@@ -765,7 +833,12 @@ public class TasksActivity
 		datePickerDialog.setWidth(datePicker.getMeasuredWidth());
 		datePickerDialog.setHeight((datePicker.getMeasuredHeight()));
 		datePickerDialog.setOutsideTouchable(true);
-	}
+
+	}*/
+
+
+
+
 	
 	void updateDate(int year, int month, int dayOfMonth)
 	{
@@ -796,10 +869,11 @@ public class TasksActivity
 		@Override
 		public void afterTextChanged(Editable arg0)
 		{
+            String TAG= QweexUtils.TAG();
 			String s = oldname;
 			String new_val = arg0.toString(); //((EditText)lastClicked.findViewById(R.id.taskName_edit)).getText().toString();
-            Log.d("TasksActivity::writeName", "Updating tasK: " + s + "->" + new_val);
-			if(s.toString().equals(new_val))
+            Log.d(TAG, "Updating tasK: " + s + "->" + new_val);
+			if(s.equals(new_val))
 				return;
 	    	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "name", s.toString());
 		}
@@ -821,7 +895,7 @@ public class TasksActivity
 				return;
 			String new_val = arg0.toString();
 			String s = oldnotes;
-			if(s.toString().equals(new_val))
+			if(s.equals(new_val))
 				return;
 	    	ListsActivity.syncHelper.db.modifyTask(lastClickedID, "notes", s.toString());
 		}
@@ -956,13 +1030,14 @@ public class TasksActivity
     
     static void getThemTagsSon(LinearLayout tag_cont, String tags)
     {
+        String TAG= QweexUtils.TAG();
     	String[] tgs = tags.split(",");
     	for(int i=0; i<tgs.length; i++)
     		tgs[i] = tgs[i].trim();
     	ArrayList<String> arList = new ArrayList<String>(Arrays.asList(tgs));
     	removeDuplicateWithOrder(arList);
 
-        Log.d("TasksActivity::getThemTagsSon", "Tag#: " + arList.size());
+        Log.d(TAG, "Tag#: " + arList.size());
         if("".equals(tags))
         {
             if(arList.size()==0)
@@ -975,7 +1050,7 @@ public class TasksActivity
         {
             for(int i=0; i<arList.size(); i++)
             {
-                Log.d("HERP", "tagsize: " + arList.get(i));
+                Log.d(TAG, "tagsize: " + arList.get(i));
                 if(i==0)
                     tag_cont.removeAllViews();
                 else
@@ -1009,10 +1084,10 @@ public class TasksActivity
 
 	static OnLongClickListener longPressTag = new OnLongClickListener()
 	{
-		
 		@Override
 		public boolean onLongClick(View v)
 		{
+            String TAG= QweexUtils.TAG();
             LinearLayout tagparent;
             if(v.getId()!=R.id.tag_container)
             {
@@ -1062,7 +1137,7 @@ public class TasksActivity
                 if(v.getId()!=TaskAdapter.ID_TAG)
                     throw new Exception();
                 String xyz = (String) ((TextView)v).getText();
-                System.out.println("Derpy: " + xyz + " - " + editingTags.getText());
+                Log.i(TAG,"Derpy: " + xyz + " - " + editingTags.getText());
 				n = editingTags.getText().toString().indexOf(xyz);
 				m = ((TextView)v).getText().length();
 			} catch(Exception e) {

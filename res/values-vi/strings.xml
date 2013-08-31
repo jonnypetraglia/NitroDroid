@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Hôm nay</string>
+    <string name="Next">Sắp làm</string>
+    <string name="Logbook">Việc đã xong</string>
+    <string name="AllTasks">Tất cả các việc</string>
+    
+    <string name="Low">Thấp</string>
+    <string name="Medium">Bình thường</string>
+    <string name="High">Quan trọng</string>
+    <string name="None">Không</string>
+    <string name="NoTasks">Không có việc gì trong Danh sách này</string>
+    
+    <string name="General">Chung</string>
+    <string name="WeekStartsOn">Bắt đầu tuần từ</string>
+    
+    <string-array name="weekdays">
+	    <item>Chủ nhật</item>
+	    <item>Thứ hai</item>
+	    <item>Thứ ba</item>
+	    <item>Thứ tư</item>
+	    <item>Thứ năm</item>
+	    <item>Thứ sáu</item>
+	    <item>Thứ bảy</item>
+	</string-array>
+	<string name="weekday1">Chủ nhật</string>
+	<string name="show_others_in_next">Hiện danh sách việc Tiếp theo</string>
+	<string name="clear_data">Xóa toàn bộ dữ liệu</string>
+	<string name="language">Ngôn ngữ</string>
+	
+	
+
+	<string name="theme">Giao diện</string>
+    <string name="background">Thay đổi hình nền</string>
+    <string name="default_background">Đặt làm hình nền mặc đinh</string>
+    <string name="sync">Đồng bộ</string>
+    <string name="logout">Thoát ra</string>
+    
+    <string name="warning">CẢNH BÁO!</string>
+    <string name="warning_msg">Bạn có muốn khôi phục các thiết lập mặc định của? Toàn bộ dữ liệu cũng sẽ bị xóa</string>
+    <string name="delete_task">Bạn có chắc là muốn xóa việc này?</string>
+    <string name="delete_list">Bạn có chắc là muốn xóa danh sách này?</string>
+    <string name="no">Không, hãy để lại</string>
+    <string name="yes">Đúng vậy, hãy xóa nó</string>
+    <string name="about">Thông tin</string>
+    
+    
+    <string name="due_yesterday">từ hôm qua</string>
+    <string name="due_today">ngày hôm nay</string>
+    <string name="due_tomorrow">tới ngày mai</string>
+    <string name="days_overdue">ngày trước</string>
+    <string name="days_left">còn ngày</string>
+
+    <string name="by_magic">Tự động</string>
+    <string name="by_hand">Tự xếp</string>
+    <string name="by_title">Theo tiêu đề</string>
+    <string name="by_date">Ngày tháng</string>
+    <string name="by_priority">Mức độ</string>
+    
+    <string name="default_list">Danh sách mới</string>
+    <string name="default_task">Việc mới</string>
+    <string name="add_list">Thêm danh sách</string>
+    
+    <string name="lists">Danh sách</string>
+    <string name="move2logbook">Chuyển $$ việc đã xong vào Việc đã xong</string>
+    
+</resources>

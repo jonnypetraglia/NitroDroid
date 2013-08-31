@@ -30,6 +30,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import com.qweex.utils.QweexUtils;
 import org.json.JSONObject;
 
 public class AuthorizeActivity extends Activity {
@@ -44,7 +45,8 @@ public class AuthorizeActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		Log.d("AuthorizeActivity", "Creating web browser thingamabob");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Creating web browser thingamabob");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.auth);
 		serv = getIntent().getExtras().getString("service");
@@ -58,7 +60,8 @@ public class AuthorizeActivity extends Activity {
         @Override
         protected Void doInBackground(Void... params)
         {
-            Log.d("AuthorizeActivity::loadPageAsync", "Launching asyncronously");
+            String TAG= QweexUtils.TAG();
+            Log.d(TAG, "Launching asyncronously");
 
             try {
 
@@ -66,7 +69,7 @@ public class AuthorizeActivity extends Activity {
                 String arg2[] = {"app", "android"};
 
                 JSONObject result = new JSONObject(QuickPrefsActivity.postData(REQUEST_URL, arg1, arg2));
-                Log.d("QuickPrefsActivity::getAuth", result.toString());
+                Log.d(TAG, "getAuth " + result.toString());
                 authorize_url = result.getString("authorize_url");
                 QuickPrefsActivity.oauth_token = result.getString("oauth_token");
                 if("dropbox".equals(serv))
@@ -76,7 +79,7 @@ public class AuthorizeActivity extends Activity {
 
             }catch(Exception e)
             {
-                Log.e("QuickPrefsActivity::getAuth", "An error occurred in getting the auth: " + e.getClass());
+                Log.e(TAG, "An error occurred in getting the auth: " + e.getClass());
                 e.printStackTrace();
                 doBackThings();
             }
@@ -103,15 +106,16 @@ public class AuthorizeActivity extends Activity {
             });
             wv.setWebViewClient(new WebViewClient() {
 
-                @TargetApi(8)
+                /*@TargetApi(8)
                 public void onReceivedSslError (WebView view, android.webkit.SslErrorHandler handler, android.net.http.SslError error) {
                     handler.proceed() ;
-                }
+                }*/
 
                 @Override
                 public void onReceivedError(WebView view, int errorCode,
                                             String description, String failingUrl) {
-                    Log.d("AuthorizeActivity:onReceivedError", "FAIL: " + failingUrl);
+                    String TAG= QweexUtils.TAG();
+                    Log.d(TAG, "FAIL: " + failingUrl);
                 }
 
                 @Override

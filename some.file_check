@@ -1,0 +1,11 @@
+Array
+(
+    [data] => {\"b\":{},\"stats\":{\"os\":\"android\",\"version\":\"0.99\",\"language\":\"english\"},\"x\":\"1.4.7\",\"i\":{\"n\":[],\"k\":0,\"r\":{\"s\":{\"n\":[],\"k\":{\"n\":0}},\"f\":{\"n\":[],\"k\":{\"n\":0}},\"v\":{\"n\":[\"kc3i-jtpt-14g6\",\"fpt0-ml8v-8iu8\",\"mwpe-9erm-opdm\"],\"k\":{\"n\":0}}}}}
+    [access] => Array
+        (
+            [oauth_secret] => S2g9Q4nsDxmRbvXNNF6vmG3w40VZbFlpNqKjZWbBWgF23vDjBrw5XJbsx1X6TzVD93SXn4vTNDMPTtxQ
+            [oauth_token] => rLgTQmJgMTBkpdl4Xl4Z
+        )
+
+    [service] => ubuntu
+)

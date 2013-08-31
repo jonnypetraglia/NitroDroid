@@ -64,7 +64,8 @@ Permission is granted to anyone to use this software for any purpose, including 
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Task Name"
-                android:textSize="?list_size" />
+                android:textSize="?list_size"
+                android:textColor="?tasks_color"/>
 
             <TextView
                 android:id="@+id/taskTime"

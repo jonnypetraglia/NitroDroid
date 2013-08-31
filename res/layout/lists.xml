@@ -35,19 +35,18 @@ Permission is granted to anyone to use this software for any purpose, including 
     </FrameLayout>
 
 
-   <ListView
-		android:id="@android:id/list"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:cacheColorHint="@android:color/transparent"
-		android:divider="@android:color/transparent"
-		android:padding="?lists_padding"
-		android:background="@android:color/transparent"
-		android:layout_above="@+id/frame"
-		android:layout_alignParentTop="true"
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@color/transparent"
+        android:divider="@color/transparent"
+        android:padding="?lists_padding"
+        android:background="@color/transparent"
+        android:layout_above="@+id/frame"
+        android:layout_alignParentTop="true"
         android:layout_weight="1"
-		android:dividerHeight="?lists_padding"/>
-
+        android:dividerHeight="?lists_padding"/>
 
     <FrameLayout
             android:id="@+id/frame"

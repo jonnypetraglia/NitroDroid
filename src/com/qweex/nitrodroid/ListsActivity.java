@@ -49,6 +49,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import com.qweex.utils.QweexUtils;
 
 //TODO: Sometimes the counts for today and total are spotty
 
@@ -102,24 +103,26 @@ public class ListsActivity extends Activity
     @Override
     public boolean onSearchRequested()
     {
-        Log.d("DERP", "SearchRequested " + ta);
+        String TAG= QweexUtils.TAG();
+        Log.d(TAG, "SearchRequested " + ta);
         startSearch(null, false, null, false);
         return SyncHelper.isSyncing;
     }
 
     static public void newSearch(String term)
     {
-        Log.d("DERP", "SEARCHING: " + term + "\\" + ta);
+        String TAG= QweexUtils.TAG();
+        Log.d(TAG, "SEARCHING: " + term + "\\" + ta);
         if(ta==null)
         {
-            Log.d("ListsActivity::selectList", "Instanciating TaskActivity: " + term);
+            Log.d(TAG, "Instanciating TaskActivity: " + term);
             ta = new TasksActivity();
             ta.context = (Activity) ListsActivity.context;
             ta.searchTerm = term;
             ta.onCreate(null);
         }else
         {
-            Log.d("ListsActivity::selectList", "Updating TaskActivity: " + term + "\\" + ta.listHash);
+            Log.d(TAG, "Updating TaskActivity: " + term + "\\" + ta.listHash);
             ta.searchTerm = term;
             ((Activity) context).findViewById(R.id.tasksListView).post(new Runnable(){
                 public void run()
@@ -133,7 +136,7 @@ public class ListsActivity extends Activity
         //Show the animation & flip the flipper if it is a phone
         if(!isTablet)
         {
-            Log.d("ListsActivity::selectList", "Flipping to that TaskActivity");
+            Log.d(TAG, "Flipping to that TaskActivity");
             if(flip.getCurrentView()!=flip.getChildAt(1))
             {
                 flip.setInAnimation(inFromRightAnimation());
@@ -174,7 +177,8 @@ public class ListsActivity extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-        Log.d("DERP", "Oncreate");
+        String TAG= QweexUtils.TAG();
+        Log.d(TAG, "Oncreate");
         if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
             handleIntent(getIntent());
             return;
@@ -184,7 +188,7 @@ public class ListsActivity extends Activity
 
         changeLocale();
 		super.onCreate(savedInstanceState);
-		Log.d("ListsActivity::()", "Creating ListsActivity");
+		Log.d(TAG, "Creating ListsActivity");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		//Load preferences
@@ -255,9 +259,10 @@ public class ListsActivity extends Activity
 	@Override
 	public void onResume()
 	{
+        String TAG= QweexUtils.TAG();
 		super.onResume();
         if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) return;
-		Log.d("ListsActivity::onResume", "Resuming main activity");
+		Log.d(TAG, "Resuming main activity");
 		
 		//Usually resumes after visiting Preferences.
 		//Re-read preferences
@@ -279,7 +284,7 @@ public class ListsActivity extends Activity
 			locale = new_locale;
 			themeID = new_themeID;
 			forcePhone = new_force;
-            isTablet = isTabletDevice(this) && !forcePhone;
+            isTablet = QweexUtils.isTabletDevice(this) && !forcePhone;
             backgroundPath = new_background;
 			doCreateStuff();
 		}
@@ -342,12 +347,13 @@ public class ListsActivity extends Activity
 	
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        String TAG= QweexUtils.TAG();
         Configuration config = getBaseContext().getResources().getConfiguration();
         // refresh your views here
         Locale.setDefault(realLocale);
         config.locale = realLocale;
         super.onConfigurationChanged(newConfig);
-        Log.d("ListsActivity::onConfigurationChanged", "Herp");
+        Log.d(TAG, "Herp");
     }
 	
    /************************** Yoda methods **************************/
@@ -357,7 +363,8 @@ public class ListsActivity extends Activity
 	
 	public void doViewStuff()
 	{
-		Log.d("ListsActivity::doViewStuff", "Doing view things");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Doing view things");
 		//Theme
         if(v2)
             setTheme(R.style.Version2);
@@ -366,9 +373,9 @@ public class ListsActivity extends Activity
 		
 		//Force Phone
 		forcePhone = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
-		if(!forcePhone && isTabletDevice(this))
+		if(!forcePhone && QweexUtils.isTabletDevice(this))
 		{
-			Log.d("ListsActivity::doViewStuff", "Setting tablet");
+			Log.d(TAG, "Setting tablet");
 		    isTablet = true;
 		    if(themeID==R.style.Wunderlist || themeID==R.style.Right || v2)
 		    	setContentView(R.layout.tablet_right);
@@ -378,7 +385,7 @@ public class ListsActivity extends Activity
 		}
 		else
 		{
-			Log.d("ListsActivity::doViewStuff", "Setting phone");
+			Log.d(TAG, "Setting phone");
 			isTablet = false;
 			setContentView(R.layout.phone);
 			findViewById(R.id.taskTitlebar).setVisibility(View.VISIBLE);
@@ -386,7 +393,7 @@ public class ListsActivity extends Activity
 
         //Time to set the typeface
         theTypeface = Typeface.createFromAsset(getAssets(), "Lato-Regular.ttf");
-        ((TextView)findViewById(R.id.sweetFlatteryWillGetYouEverywhere)).setTypeface(theTypeface);
+        //((TextView)findViewById(R.id.sweetFlatteryWillGetYouEverywhere)).setTypeface(theTypeface);
         ((TextView)findViewById(R.id.appTitle)).setTypeface(theTypeface);
         ((TextView)findViewById(R.id.taskTitlebar)).setTypeface(theTypeface);
         ((TextView)findViewById(R.id.empty2)).setTypeface(theTypeface);
@@ -418,7 +425,7 @@ public class ListsActivity extends Activity
             //New List button
             if(isTablet)
             {
-                Log.d("DERP", "View.VISIBLE");
+                Log.d(TAG, "View.VISIBLE");
                 findViewById(R.id.backbutton).setVisibility(View.GONE);
                 findViewById(R.id.frame).setVisibility(View.VISIBLE);
             }
@@ -458,7 +465,8 @@ public class ListsActivity extends Activity
 	public void doCreateStuff() { doCreateStuff(false); }
 	public void doCreateStuff(boolean noSetMainView)
 	{
-		Log.d("ListsActivity::doCreateStuff", "Doing create things");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Doing create things");
         ta = null;
 		if(loadingOnCreate)
 			return;
@@ -468,7 +476,7 @@ public class ListsActivity extends Activity
 		flip = (ViewFlipper) findViewById(R.id.FLIP);
 
         //Add the New List editbox
-		mainListView = (ListView) findViewById(android.R.id.list);
+		mainListView = (ListView) findViewById(R.id.list);
         if(v2)
         {
             FrameLayout fl = new FrameLayout(this);
@@ -479,7 +487,8 @@ public class ListsActivity extends Activity
             newList.setOnTouchListener(new RightDrawableOnTouchListener(newList) {
                 @Override
                 public boolean onDrawableTouch(final MotionEvent event) {
-                    Log.d("HERP", "Pressed drawable");
+                    String TAG= QweexUtils.TAG();
+                    Log.d(TAG, "Pressed drawable");
                     String newListName = newList.getText().toString();
                     reallyCreateList(newListName);
                     return true;
@@ -491,14 +500,14 @@ public class ListsActivity extends Activity
 		syncLoading = ((ImageButton) findViewById(R.id.sync));
 		
 		//Add them onClickListeners
-		/*((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener()
+		((android.widget.Button)findViewById(R.id.add_list)).setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
 				newListDialog.show();
 			}
-		});*/
+		});
 		((ImageButton) findViewById(R.id.settings)).setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -533,7 +542,7 @@ public class ListsActivity extends Activity
          listAdapter = new ListAdapter(context, R.layout.list_item, r);
          listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
          listAdapter.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
-            Log.d("DERP", "Total count=" + listAdapter.totalCount);
+            Log.d(TAG, "Total count=" + listAdapter.totalCount);
          
          if(r.getCount()<3)
          {
@@ -601,7 +610,8 @@ public class ListsActivity extends Activity
 
 		@Override
 	    protected Void doInBackground(Void... params) {
-			Log.d("ListsActivity::doCreateThingsAsyncronously", "Launching asyncronously");
+            String TAG= QweexUtils.TAG();
+			Log.d(TAG, "Launching asyncronously");
 			syncHelper.db.open();
 			DP = context.getResources().getDisplayMetrics().density;
 
@@ -627,7 +637,7 @@ public class ListsActivity extends Activity
 
 	        //Done creating
 	        loadingOnCreate = false;
-	        Log.d("ListsActivity::doCreateThingsAsyncronously", "Done with the async stuff");
+	        Log.d(TAG, "Done with the async stuff");
 	        doCreateThingsHandler.sendEmptyMessage(0);
 	        return null;
         }
@@ -638,12 +648,12 @@ public class ListsActivity extends Activity
  	   @Override
  		public void handleMessage(android.os.Message msg) 
  		{
- 		   if(msg.what==0)
- 			   doCreateStuff(true);
- 		   else
- 		   {
- 			  flip.removeView(splash);
- 		   }
+            String TAG = QweexUtils.TAG();
+            Log.d(TAG, "Handling message: " + msg.what);
+            if(msg.what==0)
+               doCreateStuff(true);
+            else
+              flip.removeView(splash);
  		}
     };;
     
@@ -661,6 +671,7 @@ public class ListsActivity extends Activity
 	DialogInterface.OnClickListener createList = new DialogInterface.OnClickListener()
 	{
         public void onClick(DialogInterface dialog, int whichButton) {
+            String TAG= QweexUtils.TAG();
             String newListName = newList.getText().toString();
             if("".equals(newListName))
             	return;
@@ -669,7 +680,7 @@ public class ListsActivity extends Activity
                 reallyCreateList(newListName);
             } else
             {
-                Log.d("ListsActivity::createList", "Renaming a List " + newListName);
+                Log.d(TAG, "Renaming a List " + newListName);
                 syncHelper.db.modifyList((String) currentList.findViewById(R.id.listId).getTag(), "name", newListName);
                }
             
@@ -680,15 +691,16 @@ public class ListsActivity extends Activity
 
     void reallyCreateList(String newListName)
     {
+        String TAG= QweexUtils.TAG();
         if("".equals(newListName))
             return;
         newList.setText("");
         String new_id = SyncHelper.getID();
-        Log.d("ListsActivity::createList", "Creating a List " + newListName + " [" + new_id + "]");
-        Toast.makeText(context, "Created list: " + newListName, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Creating a List " + newListName + " [" + new_id + "]");
+        Toast.makeText(context, "Created list: " + newListName, Toast.LENGTH_SHORT).show(); //Locale
         syncHelper.db.insertList(new_id, newListName, null);
         syncHelper.db.insertListTimes(new_id, (new java.util.Date()).getTime(), 0);
-        Log.d("Dsadsadsa", newListName + " ");
+        Log.d(TAG, newListName + " ");
         listAdapter.changeCursor(syncHelper.db.getAllLists());
         InputMethodManager imm = (InputMethodManager)newList.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(newList.getWindowToken(), 0);
@@ -709,7 +721,7 @@ public class ListsActivity extends Activity
     {
         public void onClick(DialogInterface dialog, int whichButton) {
             new AlertDialog.Builder(context)
-                    .setTitle("Really delete?")
+                    .setTitle("Really delete?") //Locale
                     .setPositiveButton(android.R.string.yes, reallyDelete).setNegativeButton(android.R.string.no, null).show();
 
         }
@@ -757,21 +769,22 @@ public class ListsActivity extends Activity
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
       {
+          String TAG= QweexUtils.TAG();
           hideAddButton();
           if(SyncHelper.isSyncing)
     		  return;
-    	  Log.d("ListsActivity::selectList", "List Selected");
+    	  Log.d(TAG, "List Selected");
     	  
     	  //Get info
     	  String hash, name;
 		  name=(String) ((TextView)view.findViewById(R.id.listName)).getText();
 		  hash=(String) view.findViewById(R.id.listId).getTag();
-		  Log.d("ListsActivity::selectList", "List Selected is: " + name);
+		  Log.d(TAG, "List Selected is: " + name);
 		  
 		  //parent==null signifies that it is programatically selected so no need to update.
 		  if(parent!=null)
 		  {
-			  Log.d("ListsActivity::selectList", "Updating LastList to " + hash);
+			  Log.d(TAG, "Updating LastList to " + hash);
     		  Editor e = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         	  e.putString("last_list", hash);
         	  e.commit();
@@ -799,7 +812,7 @@ public class ListsActivity extends Activity
           System.out.println("Dude:::" + ta);
     	  if(ta==null)
     	  {
-    		  Log.d("ListsActivity::selectList", "Instanciating TaskActivity: " + hash);
+    		  Log.d(TAG, "Instanciating TaskActivity: " + hash);
     		  ta = new TasksActivity();
     		  ta.context = (Activity) view.getContext();
     		  ta.listHash = hash;
@@ -807,7 +820,7 @@ public class ListsActivity extends Activity
     		  ta.onCreate(null);	//I think I might get away with calling "doCreateThings" or even "sillygoose" but whatevs
     	  }else
     	  {
-    		  Log.d("ListsActivity::selectList", "Updating TaskActivity: " + hash);
+    		  Log.d(TAG, "Updating TaskActivity: " + hash);
     		  ta.listHash = hash;
     		  ta.listName = name;
     		  ((Activity) context).findViewById(R.id.tasksListView).post(new Runnable(){
@@ -821,7 +834,7 @@ public class ListsActivity extends Activity
     	  //Show the animation & flip the flipper if it is a phone
     	  if(!isTablet)
           {
-    		  Log.d("ListsActivity::selectList", "Flipping to that TaskActivity");
+    		  Log.d(TAG, "Flipping to that TaskActivity");
     		  //flip.setInAnimation(view.getContext(), R.anim.slide_in_right);
     		  //flip.setOutAnimation(view.getContext(), R.anim.slide_out_left);
               flip.setInAnimation(inFromRightAnimation());
@@ -850,47 +863,6 @@ public class ListsActivity extends Activity
     
     /************************** Utility methods **************************/
     
-	//http://stackoverflow.com/a/9624844/1526210
-	@TargetApi(4)
-	public static boolean isTabletDevice(android.content.Context activityContext) {
-	    // Verifies if the Generalized Size of the device is XLARGE to be
-	    // considered a Tablet
-	    boolean xlarge = ((activityContext.getResources().getConfiguration().screenLayout & 
-	                        Configuration.SCREENLAYOUT_SIZE_MASK) >=	//Changed this from == to >= because my tablet was returning 8 instead of 4. 
-	                        Configuration.SCREENLAYOUT_SIZE_LARGE);
-	    
-	    
-	    // If XLarge, checks if the Generalized Density is at least MDPI (160dpi)
-	    if (xlarge) {
-	        android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
-	        Activity activity = (Activity) activityContext;
-	        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-	        
-	        //This next block lets us get constants that are not available in lower APIs.
-	        // If they aren't available, it's safe to assume that the device is not a tablet.
-	        // If you have a tablet or TV running Android 1.5, what the fuck is wrong with you.
-	        int xhigh = -1, tv = -1;
-	        try {
-	        	Field f = android.util.DisplayMetrics.class.getDeclaredField("DENSITY_XHIGH");
-	        	xhigh = (Integer) f.get(null);
-	        	f = android.util.DisplayMetrics.class.getDeclaredField("DENSITY_TV");
-	        	xhigh = (Integer) f.get(null);
-	        }catch(Exception e){}
-	        
-	        // MDPI=160, DEFAULT=160, DENSITY_HIGH=240, DENSITY_MEDIUM=160, DENSITY_TV=213, DENSITY_XHIGH=320
-	        if (metrics.densityDpi == android.util.DisplayMetrics.DENSITY_DEFAULT
-	                || metrics.densityDpi == android.util.DisplayMetrics.DENSITY_HIGH
-	                || metrics.densityDpi == android.util.DisplayMetrics.DENSITY_MEDIUM
-	                || metrics.densityDpi == tv 
-	                || metrics.densityDpi == xhigh
-	                ) {
-
-	            return true;
-	        }
-	    }
-	    return false;
-	}
-
     public static final int ANIMATION_DURATION = 200;
     //http://smartandroidians.blogspot.com/2010/04/viewflipper-in-android.html
     public static Animation inFromRightAnimation() {

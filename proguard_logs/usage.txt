@@ -1,0 +1,239 @@
+com.qweex.nitrodroid.AuthorizeActivity:
+    static final java.lang.String REQUEST_URL
+    static final java.lang.String AUTH_URL
+com.qweex.nitrodroid.BuildConfig
+com.qweex.nitrodroid.DatabaseConnector:
+    private static final java.lang.String DATABASE_NAME
+    private static final java.lang.String TASKS_TABLE
+    private static final java.lang.String TASKS_TIME_TABLE
+    private static final java.lang.String LISTS_TABLE
+    private static final java.lang.String LISTS_TIME_TABLE
+    private static final java.lang.String TASKS_DEL_TABLE
+    165:177:public boolean modifyTask(java.lang.String,java.lang.String[],java.lang.String[])
+    349:357:public long getDelete(java.lang.String)
+    369:381:public java.util.Set getTags()
+com.qweex.nitrodroid.ListsActivity:
+    public static java.lang.String listHash
+    public static com.qweex.nitrodroid.SyncHelper_v2 syncHelper2
+    public static final int ANIMATION_DURATION
+com.qweex.nitrodroid.QuickPrefsActivity:
+    public static final java.lang.String DONATION_APP
+    460:466:public static boolean packageExists(java.lang.String,android.content.Context)
+com.qweex.nitrodroid.R
+com.qweex.nitrodroid.R$anim
+com.qweex.nitrodroid.R$array
+com.qweex.nitrodroid.R$attr
+com.qweex.nitrodroid.R$color
+com.qweex.nitrodroid.R$drawable
+com.qweex.nitrodroid.R$id
+com.qweex.nitrodroid.R$layout
+com.qweex.nitrodroid.R$string
+com.qweex.nitrodroid.R$style
+com.qweex.nitrodroid.R$xml
+com.qweex.nitrodroid.SyncHelper:
+    144:163:public void testRead()
+    312:320:static void debugPrint(java.lang.String)
+com.qweex.nitrodroid.SyncHelper_v2
+com.qweex.nitrodroid.SyncHelper_v2$Triple
+com.qweex.nitrodroid.TaskAdapter$TagView:
+    369:373:public TaskAdapter$TagView(android.content.Context,boolean)
+com.qweex.nitrodroid.TasksActivity:
+    private static final int ID_MAGIC
+    private static final int ID_HAND
+    private static final int ID_TITLE
+    private static final int ID_DATE
+    private static final int ID_PRIORITY
+    private static final int ID_SORT
+    private static final int ID_DELETE
+    private static final int ID_EMAIL
+    private static final int ID_SHARE
+com.qweex.nitrodroid.procUtils:
+    17:17:public procUtils()
+io.socket.IOAcknowledge
+io.socket.IOCallback
+io.socket.IOConnection
+io.socket.IOConnection$1
+io.socket.IOConnection$ConnectThread
+io.socket.IOConnection$HearbeatTimeoutTask
+io.socket.IOConnection$ReconnectTask
+io.socket.IOMessage
+io.socket.IOTransport
+io.socket.SocketIO
+io.socket.SocketIOException
+io.socket.WebsocketTransport
+io.socket.XhrTransport
+io.socket.XhrTransport$PollThread
+net.londatiga.android.ActionItem:
+    private android.graphics.Bitmap thumb
+    private boolean selected
+    50:51:public ActionItem(int,java.lang.String)
+    59:60:public ActionItem(android.graphics.drawable.Drawable)
+    69:70:public ActionItem(int,android.graphics.drawable.Drawable)
+    78:79:public void setTitle(java.lang.String)
+    96:97:public void setIcon(android.graphics.drawable.Drawable)
+    113:114:public void setActionId(int)
+    129:130:public void setSticky(boolean)
+    145:146:public void setSelected(boolean)
+    154:154:public boolean isSelected()
+    163:164:public void setThumb(android.graphics.Bitmap)
+    172:172:public android.graphics.Bitmap getThumb()
+net.londatiga.android.PopupWindows:
+    114:117:public void setContentView(int)
+    125:126:public void setOnDismissListener(android.widget.PopupWindow$OnDismissListener)
+net.londatiga.android.QuickAction:
+    public static final int HORIZONTAL
+    public static final int VERTICAL
+    public static final int ANIM_GROW_FROM_LEFT
+    public static final int ANIM_GROW_FROM_RIGHT
+    public static final int ANIM_GROW_FROM_CENTER
+    public static final int ANIM_REFLECT
+    public static final int ANIM_AUTO
+    70:71:public QuickAction(android.content.Context)
+    135:136:public void setAnimStyle(int)
+    346:358:private void showArrow(int,int)
+    365:368:public void setOnDismissListener(net.londatiga.android.QuickAction$OnDismissListener)
+org.java_websocket.SSLSocketChannel
+org.java_websocket.SSLSocketChannel2
+org.java_websocket.SocketChannelIOHelper
+org.java_websocket.WebSocket
+org.java_websocket.WebSocket$Role
+org.java_websocket.WebSocketAdapter
+org.java_websocket.WebSocketFactory
+org.java_websocket.WebSocketImpl
+org.java_websocket.WebSocketListener
+org.java_websocket.WrappedByteChannel
+org.java_websocket.client.DefaultSSLWebSocketClientFactory
+org.java_websocket.client.WebSocketClient
+org.java_websocket.client.WebSocketClient$1
+org.java_websocket.client.WebSocketClient$WebSocketClientFactory
+org.java_websocket.drafts.Draft
+org.java_websocket.drafts.Draft$CloseHandshakeType
+org.java_websocket.drafts.Draft$HandshakeState
+org.java_websocket.drafts.Draft_10
+org.java_websocket.drafts.Draft_10$IncompleteException
+org.java_websocket.drafts.Draft_17
+org.java_websocket.drafts.Draft_75
+org.java_websocket.drafts.Draft_76
+org.java_websocket.exceptions.IncompleteHandshakeException
+org.java_websocket.exceptions.InvalidDataException
+org.java_websocket.exceptions.InvalidFrameException
+org.java_websocket.exceptions.InvalidHandshakeException
+org.java_websocket.exceptions.LimitExedeedException
+org.java_websocket.exceptions.NotSendableException
+org.java_websocket.framing.CloseFrame
+org.java_websocket.framing.CloseFrameBuilder
+org.java_websocket.framing.FrameBuilder
+org.java_websocket.framing.Framedata
+org.java_websocket.framing.Framedata$Opcode
+org.java_websocket.framing.FramedataImpl1
+org.java_websocket.handshake.ClientHandshake
+org.java_websocket.handshake.ClientHandshakeBuilder
+org.java_websocket.handshake.HandshakeBuilder
+org.java_websocket.handshake.HandshakeImpl1Client
+org.java_websocket.handshake.HandshakeImpl1Server
+org.java_websocket.handshake.Handshakedata
+org.java_websocket.handshake.HandshakedataImpl1
+org.java_websocket.handshake.ServerHandshake
+org.java_websocket.handshake.ServerHandshakeBuilder
+org.java_websocket.server.WebSocketServer
+org.java_websocket.server.WebSocketServer$1
+org.java_websocket.server.WebSocketServer$WebSocketServerFactory
+org.java_websocket.server.WebSocketServer$WebSocketWorker
+org.java_websocket.server.WebSocketServer$WebSocketWorker$1
+org.java_websocket.util.Base64
+org.java_websocket.util.Base64$1
+org.java_websocket.util.Base64$InputStream
+org.java_websocket.util.Base64$OutputStream
+org.java_websocket.util.Charsetfunctions
+org.json.CDL
+org.json.Cookie
+org.json.CookieList
+org.json.HTTP
+org.json.HTTPTokener
+org.json.JSONArray:
+    147:148:public JSONArray(java.lang.String)
+    205:215:public boolean getBoolean(int)
+    228:234:public double getDouble(int)
+    250:251:public int getInt(int)
+    264:268:public org.json.JSONArray getJSONArray(int)
+    281:285:public org.json.JSONObject getJSONObject(int)
+    299:300:public long getLong(int)
+    322:322:public boolean isNull(int)
+    379:379:public boolean optBoolean(int)
+    394:396:public boolean optBoolean(int,boolean)
+    410:410:public double optDouble(int)
+    425:427:public double optDouble(int,double)
+    441:441:public int optInt(int)
+    455:457:public int optInt(int,int)
+    469:470:public org.json.JSONArray optJSONArray(int)
+    483:484:public org.json.JSONObject optJSONObject(int)
+    497:497:public long optLong(int)
+    511:513:public long optLong(int,long)
+    527:527:public java.lang.String optString(int)
+    540:541:public java.lang.String optString(int,java.lang.String)
+    552:553:public org.json.JSONArray put(boolean)
+    564:565:public org.json.JSONArray put(java.util.Collection)
+    577:580:public org.json.JSONArray put(double)
+    591:592:public org.json.JSONArray put(int)
+    603:604:public org.json.JSONArray put(long)
+    615:616:public org.json.JSONArray put(java.util.Map)
+    643:644:public org.json.JSONArray put(int,boolean)
+    658:659:public org.json.JSONArray put(int,java.util.Collection)
+    674:675:public org.json.JSONArray put(int,double)
+    689:690:public org.json.JSONArray put(int,int)
+    704:705:public org.json.JSONArray put(int,long)
+    719:720:public org.json.JSONArray put(int,java.util.Map)
+    737:749:public org.json.JSONArray put(int,java.lang.Object)
+    763:770:public org.json.JSONObject toJSONObject(org.json.JSONArray)
+    806:806:public java.lang.String toString(int)
+    821:849:java.lang.String toString(int,int)
+    864:886:public java.io.Writer write(java.io.Writer)
+org.json.JSONObject:
+    161:165:public JSONObject(org.json.JSONObject,java.lang.String[])
+    260:288:public JSONObject(java.lang.Object)
+    302:314:public JSONObject(java.lang.Object,java.lang.String[])
+    344:355:public org.json.JSONObject accumulate(java.lang.String,java.lang.Object)
+    372:382:public org.json.JSONObject append(java.lang.String,java.lang.Object)
+    393:408:public static java.lang.String doubleToString(double)
+    438:448:public boolean getBoolean(java.lang.String)
+    483:484:public int getInt(java.lang.String)
+    547:558:public static java.lang.String[] getNames(org.json.JSONObject)
+    568:581:public static java.lang.String[] getNames(java.lang.Object)
+    603:603:public boolean has(java.lang.String)
+    615:615:public boolean isNull(java.lang.String)
+    635:635:public int length()
+    701:701:public boolean optBoolean(java.lang.String)
+    716:718:public boolean optBoolean(java.lang.String,boolean)
+    732:733:public org.json.JSONObject put(java.lang.String,java.util.Collection)
+    747:747:public double optDouble(java.lang.String)
+    763:767:public double optDouble(java.lang.String,double)
+    782:782:public int optInt(java.lang.String)
+    798:800:public int optInt(java.lang.String,int)
+    814:815:public org.json.JSONArray optJSONArray(java.lang.String)
+    828:829:public org.json.JSONObject optJSONObject(java.lang.String)
+    843:843:public long optLong(java.lang.String)
+    859:861:public long optLong(java.lang.String,long)
+    875:875:public java.lang.String optString(java.lang.String)
+    888:889:public java.lang.String optString(java.lang.String,java.lang.String)
+    916:917:public org.json.JSONObject put(java.lang.String,double)
+    930:931:public org.json.JSONObject put(java.lang.String,int)
+    958:959:public org.json.JSONObject put(java.lang.String,java.util.Map)
+    999:1002:public org.json.JSONObject putOpt(java.lang.String,java.lang.Object)
+    1113:1120:public org.json.JSONArray toJSONArray(org.json.JSONArray)
+    1170:1170:public java.lang.String toString(int)
+    1189:1227:java.lang.String toString(int,int)
+    1304:1338:static java.lang.String valueToString(java.lang.Object,int,int)
+    1353:1377:public java.io.Writer write(java.io.Writer)
+org.json.JSONStringer
+org.json.JSONTokener:
+    79:88:public static int dehexchar(char)
+    125:130:public char next(char)
+    265:275:public java.lang.String nextTo(char)
+    287:298:public java.lang.String nextTo(java.lang.String)
+    413:422:public char skipTo(char)
+    432:438:public boolean skipPast(java.lang.String)
+org.json.JSONWriter
+org.json.Test
+org.json.Test$1Obj
+org.json.XML
+org.json.XMLTokener

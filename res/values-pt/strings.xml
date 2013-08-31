@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Hoje</string>
+    <string name="Next">Próximas</string>
+    <string name="Logbook">Diário de Bordo</string>
+    <string name="AllTasks">Todas</string>
+    
+    <string name="Low">Baixa</string>
+    <string name="Medium">Média</string>
+    <string name="High">Alta</string>
+    <string name="None">Prioridade</string>
+    <string name="NoTasks">Nenhuma Tarefa em Esta Lista</string>
+    
+    <string name="General">Geral</string>
+    <string name="WeekStartsOn">Semana começa em</string>
+    
+    <string-array name="weekdays">
+	    <item>Domingo</item>
+	    <item>Segunda-feira</item>
+	    <item>Terça-feira</item>
+	    <item>Quarta-feira</item>
+	    <item>Quinta-feira</item>
+	    <item>Sexta-feira</item>
+	    <item>Sábado</item>
+	</string-array>
+	<string name="weekday1">Domingo</string>
+	<string name="show_others_in_next">Mostrar outras litas em Próximas</string>
+	<string name="clear_data">Limpar Informações</string>
+	<string name="language">Idioma</string>
+	
+	
+
+	<string name="theme">Tema</string>
+    <string name="background">Mudar imagem de fundo</string>
+    <string name="default_background">Usar fundo padrão</string>
+    <string name="sync">Sincronizar</string>
+    <string name="logout">Sair</string>
+    
+    <string name="warning">Atenção!</string>
+    <string name="warning_msg">Você tem certeza disso? Suas informações serão perdidas para sempre (e isso é muito tempo!)</string>
+    <string name="delete_task">Você realmente deseja excluir esta tarefa?</string>
+    <string name="delete_list">Você realemnte deseja excluir esta lista?</string>
+    <string name="no">Não</string>
+    <string name="yes">Sim</string>
+    <string name="about">Sobre</string>
+    
+    
+    <string name="due_yesterday">Atrasada em 1 dia</string>
+    <string name="due_today">Para hoje</string>
+    <string name="due_tomorrow">Resta 1 dia</string>
+    <string name="days_overdue">dias em atraso</string>
+    <string name="days_left">dias deixaram</string>
+
+    <string name="by_magic">Aleatório</string>
+    <string name="by_hand">Manual</string>
+    <string name="by_title">Título</string>
+    <string name="by_date">Data</string>
+    <string name="by_priority">Prioridade</string>
+    
+    <string name="default_list">Nova Lista</string>
+    <string name="default_task">Nova Tarefa</string>
+    <string name="add_list">Adicionar Lista</string>
+    
+    <string name="lists">Listas</string>
+    <string name="move2logbook">Mover $$ tarefas completadas para o Diário de Bordo</string>
+    
+</resources>

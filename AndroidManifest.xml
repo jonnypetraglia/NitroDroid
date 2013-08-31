@@ -19,7 +19,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     <uses-sdk
         android:minSdkVersion="3"
-        android:targetSdkVersion="5" />
+        />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application

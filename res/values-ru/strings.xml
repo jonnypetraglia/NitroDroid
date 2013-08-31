@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Сегодня</string>
+    <string name="Next">Предстоящие</string>
+    <string name="Logbook">Журнал</string>
+    <string name="AllTasks">Все задачи</string>
+    
+    <string name="Low">Низкая</string>
+    <string name="Medium">Средняя</string>
+    <string name="High">Высокая</string>
+    <string name="None">Важность</string>
+    <string name="NoTasks">Нет задач в Этот список</string>
+    
+    <string name="General">Общее</string>
+    <string name="WeekStartsOn">Неделя начинается</string>
+    
+    <string-array name="weekdays">
+	    <item>Воскресенье</item>
+	    <item>Понедельник</item>
+	    <item>Вторник</item>
+	    <item>Среда</item>
+	    <item>Четверг</item>
+	    <item>Пятница</item>
+	    <item>Суббота</item>
+	</string-array>
+	<string name="weekday1">Воскресенье</string>
+	<string name="show_others_in_next">Отображать остальные списки в Предстоящих</string>
+	<string name="clear_data">Очистка данных</string>
+	<string name="language">Русский</string>
+	
+	
+
+	<string name="theme">Темы</string>
+    <string name="background">Изменить фон</string>
+    <string name="default_background">Использовать фон по умолчанию</string>
+    <string name="sync">Синхронизировать</string>
+    <string name="logout">Выйти</string>
+
+    <string name="warning">Предупреждение!</string>
+    <string name="warning_msg">Вы уверены, что хотите сбросить Nitro? Ваши данные будут потеряны навсегда (за всё время)</string>
+    <string name="delete_task">Вы действительно хотите удалить эту задачу?</string>
+    <string name="delete_list">Вы действительно хотите удалить этот список?</string>
+    <string name="no">Нет, оставить</string>
+    <string name="yes">Да, удалить</string>
+    <string name="about">О программе</string>
+    
+    
+    <string name="due_yesterday">вчера</string>
+    <string name="due_today">сегодня</string>
+    <string name="due_tomorrow">завтра</string>
+    <string name="days_overdue">дней просрочено</string>
+    <string name="days_left">дней осталось</string>
+
+    <string name="by_magic">Магическим образом</string>
+    <string name="by_hand">Ручной режим</string>
+    <string name="by_title">По заголовку</string>
+    <string name="by_date">По дате</string>
+    <string name="by_priority">По важности</string>
+    
+    <string name="default_list">Новый список</string>
+    <string name="default_task">Новая задача</string>
+    <string name="add_list">Добавить список</string>
+    
+    <string name="lists">Списки</string>
+<string name="move2logbook">Move $$ completed tasks to Logbook</string>
+    
+</resources>

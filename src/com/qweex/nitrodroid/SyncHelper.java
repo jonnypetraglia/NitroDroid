@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.qweex.utils.QweexUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -57,7 +58,8 @@ public class SyncHelper {
 	
 	public SyncHelper(Context c)
 	{
-		Log.d("SyncHelper::()", "Creating a new SyncHelper object");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Creating a new SyncHelper object");
 		if(localeToLanguage==null)
 		{
 			 localeToLanguage = new HashMap<String, String>();
@@ -76,7 +78,7 @@ public class SyncHelper {
 		UID 			  = sp.getString("uid", null);
 		STATS__EMAIL 	  = sp.getString("stats_email", null);
 		STATS__LANGUAGE   = localeToLanguage.get(ListsActivity.locale);
-		Log.d("SyncHelper::()", "Retrieved sync service info: " + SERVICE);
+		Log.d(TAG, "Retrieved sync service info: " + SERVICE);
 	}
 	
 	
@@ -85,8 +87,9 @@ public class SyncHelper {
 
 		@Override
 	    protected Boolean doInBackground(Void... params) {
+            String TAG= QweexUtils.TAG();
 			isSyncing = true;
-			Log.d("SyncHelper::performSync", "Starting Sync...");
+			Log.d(TAG, "Starting Sync...");
 			try {
 				JSONObject local = writeSQLtoJSON();
 				String result = postData(local,
@@ -99,12 +102,12 @@ public class SyncHelper {
 						STATS__LANGUAGE,
 						STATS__VERSION);
 //				debugPrint(result);
-				Log.d("SyncHelper::performSync", "Sync has completed. Clearing old DB.");
+				Log.d(TAG, "Sync has completed. Clearing old DB.");
 				db.clearEverything(context);
 				readJSONtoSQL(result, context);
 			} catch(Exception e)
 			{
-				Log.e("SyncHelper::performSync", "Error in sync occurred");
+				Log.e(TAG, "Error in sync occurred");
 				e.printStackTrace();
 				return false;
 			}
@@ -114,15 +117,16 @@ public class SyncHelper {
 		@Override
 		protected void onPostExecute(Boolean success)
 		{
+            String TAG= QweexUtils.TAG();
 			((android.graphics.drawable.AnimationDrawable) ListsActivity.syncLoading.getDrawable()).stop();
 			ListsActivity.syncLoading.setImageResource(R.drawable.loading_animation);
 			if(success) {
-				Log.d("SyncHelper::performSync", "Sync performed without errors, changing cursor");
+				Log.d(TAG, "Sync performed without errors, changing cursor");
                 Toast.makeText(context, "Sync performed without errors", Toast.LENGTH_SHORT).show();
 				ListsActivity.listAdapter.changeCursor(db.getAllLists());
 				if(ListsActivity.flip.getCurrentView() != ListsActivity.flip.getChildAt(0))
 				{
-					Log.d("SyncHelper::performSync", "User is on a List page....somehow. Flipping back.");
+					Log.d(TAG, "User is on a List page....somehow. Flipping back.");
 					ListsActivity.flip.setInAnimation(context, android.R.anim.slide_in_left);
 					ListsActivity.flip.setOutAnimation(context, android.R.anim.slide_out_right);
 					ListsActivity.ta = null;
@@ -130,10 +134,10 @@ public class SyncHelper {
 				}
 			}
 			else {
-				Log.e("SyncHelper::performSync", "And error doth occurred. Check thineself before thy wreck thyself.");
+				Log.e(TAG, "And error doth occurred. Check thineself before thy wreck thyself.");
 				Toast.makeText(context, R.string.sync_error, Toast.LENGTH_LONG).show();
 			}
-			Log.d("SyncHelper::performSync", "Finished syncing.");
+			Log.d(TAG, "Finished syncing.");
 			isSyncing = false;
 		}
 		
@@ -141,8 +145,9 @@ public class SyncHelper {
 	
 	public void testRead()
 	{
-		Log.d("SyncHelper::testRead", "You're performing a test read, you little cunt!");
-		Log.d("SyncHelper::testRead", "I'm sorry, I didn't mean that.");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "You're performing a test read, you little cunt!");
+		Log.d(TAG, "I'm sorry, I didn't mean that.");
         try {
          	InputStream input = context.getAssets().open("nitro_data.json");
              
@@ -165,7 +170,8 @@ public class SyncHelper {
 	
 	public JSONObject writeSQLtoJSON()
 	{
-		Log.d("SyncHelper::writeSQLtoJSON", "Converting SQL db to JSON");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Converting SQL db to JSON");
 		try {
 		jObject = new JSONObject();
 		jTasks = new JSONObject();
@@ -229,7 +235,7 @@ public class SyncHelper {
 		jLists.put("r", jListDetails);
 		} catch(Exception e)
 		{
-			Log.e("SyncHelper::writeSQLtoJSON", "No Lists Found");
+			Log.e(TAG + "::Exception", "No Lists Found");
 		}
 		
 		//------TASKS------
@@ -277,7 +283,7 @@ public class SyncHelper {
 		}
 		} catch(Exception e)
 		{
-			Log.e("SyncHelper::writeSQLtoJSON", "No Tasks Found");
+			Log.e(TAG + "::Exception", "No Tasks Found");
 		}
 		//------DELETED------
 		try {
@@ -293,7 +299,7 @@ public class SyncHelper {
 		}
 		} catch(Exception e)
 		{
-			Log.e("SyncHelper::writeSQLtoJSON", "No Deleted Found");
+			Log.e(TAG + "::Exception", "No Deleted Found");
 		}
 
 		jLists.put("k", (long)0);				//TODO FUCK MUFFINS
@@ -301,27 +307,16 @@ public class SyncHelper {
 		jObject.put("b", jTasks);
 		jObject.put("x", context.getResources().getString(R.string.version_for_JSON));
 		} catch(Exception e) {
-			Log.e("SyncHelper::writeSQLtoJSON", "A error occurred somewhere it certainly shouldn't have. You are fucked.");
+			Log.e(TAG + "::Exception", "A error occurred somewhere it certainly shouldn't have. You are fucked.");
 			e.printStackTrace();
 		}		
 		return jObject;
 	}
-	
-	static void debugPrint(String butts)
-	{
-		int x = 900;
-		for(int i=0; ; i = i+x)
-		{
-			if(i>butts.length())
-				break;
-			int j = (i+x) >= butts.length() ? butts.length() : (i+x);
-			System.out.println(butts.substring(i, j));
-		}
-	}
-	
+
 	public void readJSONtoSQL(String JSONstring, Context c)
 	{
-		Log.d("SyncHelper::readJSONtoSQL", "Parsing the JSON to the SQL db");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Parsing the JSON to the SQL db");
 	    try {
 	         
 	    	 JSONArray listIDs = null;
@@ -333,7 +328,7 @@ public class SyncHelper {
 	         jListDetails = jLists.getJSONObject("r");
 	         } catch(Exception e)
 	         {
-	        	 Log.w("SyncHelper::readJSONtoSQL", "No JSON found. Proceeding.");
+	        	 Log.w(TAG + "::Exception", "No JSON found. Proceeding.");
 	         }
 	         
 	         String hash, name;
@@ -351,7 +346,7 @@ public class SyncHelper {
 	        	 x = times.getLong("n");
         	 } catch(Exception e)
         	 {
-        		 Log.w("SyncHelper::readJSONtoSQL", "No JSON Today found. Proceeding.");
+        		 Log.w(TAG + "::Exception", "No JSON Today found. Proceeding.");
         	 }
         	 hash = "today";
         	 db.insertListTimes(hash, 0, x);
@@ -369,7 +364,7 @@ public class SyncHelper {
 	        	 x = times.getLong("n");
         	 }catch(Exception e)
         	 {
-        		 Log.w("SyncHelper::readJSONtoSQL", "No JSON Next found. Proceeding.");
+        		 Log.w(TAG + "::Exception", "No JSON Next found. Proceeding.");
         	 }
         	 hash = "next";
         	 db.insertListTimes(hash, 0, x);
@@ -387,7 +382,7 @@ public class SyncHelper {
 	        	 x = times.getLong("n");
         	 }catch(Exception e)
         	 {
-        		 Log.w("SyncHelper::readJSONtoSQL", "No JSON Logbook found. Proceeding.");
+        		 Log.w(TAG + "::Exception", "No JSON Logbook found. Proceeding.");
         	 }
         	 
         	 hash = "logbook";
@@ -418,7 +413,7 @@ public class SyncHelper {
 		        	 JSONObject times = item.getJSONObject("k");
 		        	 db.insertListTimes(hash, times.getLong("a"), times.getLong("n"));
 		         } catch(Exception e) {
-		        	 Log.e("SyncHelper::readJSONtoSQL", "Error in Misc: " + e.getClass());
+		        	 Log.e(TAG + "::Exception", "Error in Misc: " + e.getClass());
 		         }
 	         }
 	         
@@ -429,13 +424,13 @@ public class SyncHelper {
         		 try {
         			 readAndInsertTask(jTasks.names().getString(i), 0);	//FIX: Derp. Fucked up order
 		    	 } catch(Exception e) {
-		    		 Log.e("SyncHelper::readJSONtoSQL", "Error in Tasks: " + e.getClass());
+		    		 Log.e(TAG + "::Exception", "Error in Tasks: " + e.getClass());
 		    	 }
 	         }
 	         
 	         
 	    } catch (Exception e) {
-	    	Log.e("SyncHelper::readJSONtoSQL", "An horrible error occurred and you are fucked.");
+	    	Log.e(TAG + "::Exception", "An horrible error occurred and you are fucked.");
 	        e.printStackTrace();
 	    }
 	}
@@ -454,7 +449,8 @@ public class SyncHelper {
 	
 	void readAndInsertTask(String hash, int order) throws org.json.JSONException
 	{
-		Log.d("SyncHelper::readAndInsertTask", "Reading task: " + hash);
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Reading task: " + hash);
 		JSONObject item = jTasks.getJSONObject(hash);
 		String name, notes, list, tags, priority_;
 		int priority;
@@ -463,7 +459,7 @@ public class SyncHelper {
 		try {
 			long delorted = item.getLong("u");
 			db.insertDeleted(hash, delorted);
-			Log.d("SyncHelper::readAndInsertTask", "Task is a deleted");
+			Log.d(TAG, "Task is a deleted");
 			return;
 		}catch(Exception e) {}
 		
@@ -497,7 +493,7 @@ public class SyncHelper {
 			tags = tags.concat(tags_.getString(i)).concat(",");
 		}
 		
-		Log.d("SyncHelper::readAndInsertTask", "Inserting task: " + name);
+		Log.d(TAG, "Inserting task: " + name);
 		db.insertTask(hash, name, priority, date, notes, list, logged, tags, order);
 		
 		JSONObject times = item.getJSONObject("k");
@@ -520,7 +516,8 @@ public class SyncHelper {
 			String access_oathS, String access_oath, String access_uid,
 			String stats_uid, String stats_os, String stats_language, String stats_version) throws ClientProtocolException, IOException, org.json.JSONException 
 	{
-		Log.d("SyncHelper::postData", "Preparing the post dat data");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Preparing the post dat data");
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost(POST_URL); //"http://qweex.com/sync.php");
@@ -552,7 +549,7 @@ public class SyncHelper {
         //service
         nameValuePairs.add(new BasicNameValuePair("service", service));
         
-        Log.d("SyncHelper::postData", "Doing dat post...");
+        Log.d(TAG, "Doing dat post...");
         // Execute HTTP Post Request
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpclient.execute(httppost);

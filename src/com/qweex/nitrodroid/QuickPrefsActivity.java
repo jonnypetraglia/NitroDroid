@@ -15,6 +15,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -24,6 +25,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.qweex.utils.QweexUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -77,7 +79,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-    	Log.d("QuickPrefsActivity", "Creating the Prefs Activity");
+        String TAG= QweexUtils.TAG();
+    	Log.d(TAG, "Creating the Prefs Activity");
         super.onCreate(savedInstanceState);
         Locale.setDefault(new java.util.Locale(ListsActivity.locale));
         addPreferencesFromResource(R.xml.preferences);
@@ -95,7 +98,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         ((Preference) findPreference("donate")).setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Log.d("DERP", "Donate");
+                String TAG= QweexUtils.TAG();
+                Log.d(TAG, "Donate");
                 Uri uri = Uri.parse("market://details?id=com.qweex.donation");
                 Intent intent = new Intent (Intent.ACTION_VIEW, uri);
                 startActivity(intent);
@@ -107,7 +111,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         //Force Phone preference
         if(!ListsActivity.forcePhone && !ListsActivity.isTablet)
         {
-        	Log.d("QuickPrefsActivity", "Updating the pref for forcePhone");
+        	Log.d(TAG, "Updating the pref for forcePhone");
         	((PreferenceCategory)findPreference("advanced")).removePreference(findPreference("force_phone"));
 /*        	if(((PreferenceCategory)findPreference("advanced")).getPreferenceCount()==0)
         		getPreferenceScreen().removePreference(findPreference("advanced"));*/
@@ -140,7 +144,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         //Create AboutWindow
     	aboutWindow = new PopupWindow(this);
         View cv = getLayoutInflater().inflate(R.layout.about, null, false);
-        LinearLayout cv2 = (LinearLayout) cv.findViewById(R.id.aboutMain);
+        //LinearLayout cv2 = (LinearLayout) cv.findViewById(R.id.aboutMain);
+        LinearLayout cv2 = new LinearLayout(this);
         for(int i=0; i<cv2.getChildCount(); i++)
         {
             if(cv2.getChildAt(i).getClass()!=TextView.class)
@@ -177,31 +182,50 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 	@SuppressLint("NewApi")
 	void updateSyncPrefs()
     {
+        String TAG= QweexUtils.TAG();
+
 	    if(getPreferenceScreen().getSharedPreferences().getString("service", null)!=null)
 	    {
-	    	Log.d("QuickPrefsActivity::updateSyncPrefs", "Updating sync prefs: is set up");
+	    	Log.d(TAG, "Updating sync prefs: is set up");
 	    	sync.setEnabled(false);
 	    	sync.setTitle(capitalize(ListsActivity.syncHelper.SERVICE) + ": " + ListsActivity.syncHelper.STATS__EMAIL);
-	    	if(Integer.parseInt(android.os.Build.VERSION.SDK)>=11)
+	    	if(QweexUtils.androidAPIover(11))
 	    	{
 	    		if("dropbox".equals(ListsActivity.syncHelper.SERVICE))
-    				sync.setIcon(R.drawable.dropbox_mini);
+                    setIcon(sync, R.drawable.dropbox_mini);
 	    		else
-	    			sync.setIcon(R.drawable.ubuntu_mini);
+                    setIcon(sync, R.drawable.ubuntu_mini);
 	    		
 	    	}
 	    	notsync.setEnabled(true);
 	    }
 	    else
 	    {
-	    	Log.d("QuickPrefsActivity::updateSyncPrefs", "Updating sync prefs: is not set up");
+	    	Log.d(TAG, "Updating sync prefs: is not set up");
 	    	sync.setEnabled(true);
-	    	sync.setTitle("Set Up");
-	    	if(Integer.parseInt(android.os.Build.VERSION.SDK)>=11)
-//	    		sync.setIcon
-	    		sync.setIcon((android.graphics.drawable.Drawable)null);
+	    	sync.setTitle("Set Up");        //LOCALE
+	    	if(QweexUtils.androidAPIover(11))
+                setIcon(sync, (android.graphics.drawable.Drawable)null);
+	    		//sync.setIcon((android.graphics.drawable.Drawable)null);
+
 	    	notsync.setEnabled(false);
 	    }
+    }
+
+    private void setIcon(Preference p, int i)
+    {
+        try {
+        Method m = p.getClass().getMethod("setIcon", int.class);
+        m.invoke(sync, i);
+        } catch(Exception e) {}
+    }
+
+    private void setIcon(Preference p, android.graphics.drawable.Drawable d)
+    {
+        try {
+            Method m = p.getClass().getMethod("setIcon", d.getClass());
+            m.invoke(sync, d);
+        } catch(Exception e) {}
     }
     
     OnClickListener pressAuth = new OnClickListener()
@@ -220,7 +244,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 
     public void getAuth(String serv)
     {
-    	Log.d("QuickPrefsActivity::getAuth", "Yo dawg setting you up with some auth");
+        String TAG= QweexUtils.TAG();
+    	Log.d(TAG, "Yo dawg setting you up with some auth");
         service = serv;
         Intent auth = new Intent(QuickPrefsActivity.this, AuthorizeActivity.class);
         auth.putExtra("service", serv);
@@ -230,7 +255,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-    	Log.d("QuickPrefsActivity::onActivityResult", "Got result from activity");
+        String TAG= QweexUtils.TAG();
+    	Log.d(TAG, "Got result from activity");
         if(requestCode==SYNC_ID)
         {
             if(resultCode==RESULT_OK)
@@ -249,9 +275,9 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
                     String arg1[] = {"token", result.toString()};
                     String arg2[] = {"service", service};
 
-                    Log.d("QuickPrefsActivity::onActivityResult", "Posting data...");
+                    Log.d(TAG, "Posting data...");
                     String berg = postData(AuthorizeActivity.AUTH_URL, arg1, arg2);
-                    Log.d("QuickPrefsActivity::onActivityResult", "Result: " + berg);
+                    Log.d(TAG, "Result: " + berg);
                     result = new JSONObject(berg);
 
                     //Extract the result
@@ -286,7 +312,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
 
                 } catch(Exception e)
                 {
-                    Log.e("QuickPrefsActivity::onActivityResult", "SERIOUSLY fucked. Something happened in requesting the auth information.");
+                    Log.e(TAG + "::Exception", "SERIOUSLY fucked. Something happened in requesting the auth information.");
                     e.printStackTrace();
                 }
             }
@@ -295,7 +321,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
             if(resultCode==RESULT_OK)
             {
                 String selectedImagePath = getPath(data.getData());
-                System.out.println("DERP: " + selectedImagePath);
+                Log.d(TAG, "..." + selectedImagePath);
                 Editor e = getPreferenceScreen().getSharedPreferences().edit();
                 e.putString("background", selectedImagePath);
                 e.commit();
@@ -313,6 +339,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
 	public static String postData(String URL, String first[], String second[]) throws ClientProtocolException, IOException, org.json.JSONException
 	{
+        String TAG= QweexUtils.TAG();
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost(URL);
 
@@ -321,7 +348,7 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
         nameValuePairs.add(new BasicNameValuePair(second[0], second[1]));
 
 
-        Log.d("QuickPrefsActivity::postData", "Posting data..." + URL);
+        Log.d(TAG, "Posting data..." + URL);
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         HttpResponse response = httpclient.execute(httppost);
 
@@ -347,19 +374,21 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     OnPreferenceClickListener ClickReset = new OnPreferenceClickListener() {
         public boolean onPreferenceClick(Preference preference) {
+            String TAG= QweexUtils.TAG();
        	 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
        		    @Override
        		    public void onClick(DialogInterface dialog, int which) {
+                    String TAG= QweexUtils.TAG();
        		        switch (which){
        		        case DialogInterface.BUTTON_POSITIVE:
-       		        	Log.d("QuickPrefsActivity::ClickReset", "WARNING: Resetting data!");
+       		        	Log.d(TAG, "WARNING: Resetting data!");
        		        	ListsActivity.syncHelper.db.clearEverything(QuickPrefsActivity.this);
        		        	ListsActivity.listAdapter.changeCursor(ListsActivity.syncHelper.db.getAllLists());
        		        case DialogInterface.BUTTON_NEGATIVE:
        		        }
        		    }
        		};
-       		Log.d("QuickPrefsActivity::ClickReset", "User has clicked reset");
+       		Log.d(TAG, "User has clicked reset");
        		AlertDialog.Builder builder = new AlertDialog.Builder(preference.getContext());
        		builder.setTitle(R.string.warning);
        		builder.setMessage(R.string.warning_msg);
@@ -372,7 +401,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     OnPreferenceClickListener ClickAbout = new OnPreferenceClickListener() {
         public boolean onPreferenceClick(Preference preference) {
-        	Log.d("QuickPrefsActivity::ClickAbout", "User has clicked About");
+            String TAG= QweexUtils.TAG();
+        	Log.d(TAG, "User has clicked About");
         	Display display = getWindowManager().getDefaultDisplay(); 
         	int width = display.getWidth();  // deprecated
         	int height = display.getHeight();  // deprecated
@@ -385,7 +415,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     OnPreferenceClickListener ClickSync = new OnPreferenceClickListener() {
         public boolean onPreferenceClick(Preference preference) {
-        	Log.d("QuickPrefsActivity::ClickReset", "User has clicked Sync");
+            String TAG= QweexUtils.TAG();
+        	Log.d(TAG, "User has clicked Sync");
         	Display display = getWindowManager().getDefaultDisplay();
         	int width = display.getWidth();
         	int height = display.getHeight();
@@ -399,7 +430,8 @@ public class QuickPrefsActivity extends PreferenceActivity implements SharedPref
     
     OnPreferenceClickListener ClickLogout = new OnPreferenceClickListener() {
         public boolean onPreferenceClick(Preference preference) {
-        	Log.d("QuickPrefsActivity::ClickReset", "User has clicked Logout");
+            String TAG= QweexUtils.TAG();
+        	Log.d(TAG, "User has clicked Logout");
 			Editor e = getPreferenceScreen().getSharedPreferences().edit();
 			e.remove("service");
 			e.remove("oauth_token");

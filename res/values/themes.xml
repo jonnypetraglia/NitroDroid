@@ -16,15 +16,16 @@ Permission is granted to anyone to use this software for any purpose, including 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
       
-<style name="Widget.CalendarView.Custom" parent="android:Widget.CalendarView">
+<!--<style name="Widget.CalendarView.Custom" parent="android:Widget.CalendarView">
     <item name="android:focusedMonthDateColor">@android:color/black</item>
     <item name="android:weekNumberColor">@android:color/darker_gray</item>
     <item name="android:weekDayTextAppearance">@android:style/TextAppearance.Medium</item>
     <item name="android:dateTextAppearance">@android:style/TextAppearance.Medium</item>
 </style>
+-->
     
-	<style name="Default" parent="android:Theme.Light">
-	    <item name="android:calendarViewStyle">@style/Widget.CalendarView.Custom</item>
+	<style name="Default" >
+	    <!--<item name="android:calendarViewStyle">@style/Widget.CalendarView.Custom</item>-->
     	<item name="header"> @drawable/header_default </item>
     	<item name="action_item_btn"> @drawable/action_item_btn </item>
         <item name="action_item_txt"> #fff </item>
@@ -37,7 +38,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="add"> @drawable/add </item>
     	<item name="delete"> @drawable/delete </item>
     	<item name="sort"> @drawable/sort_old </item>
-    	<item name="background"> @android:color/transparent </item>
+    	<item name="background"> @color/transparent </item>
     	<item name="empty_background"> #66ffffff </item>
     	<item name="tasks_padding_vert"> 0dp </item>
         <item name="tasks_padding_horz"> 0dp </item>
@@ -45,7 +46,7 @@ Permission is granted to anyone to use this software for any purpose, including 
     	<item name="addList_button"> @drawable/addlist_default </item>
     	<item name="addList_border"> @color/addlist_border_default </item>
     	<item name="addList_text"> @color/addList_text_default </item>
-        <item name="header_text"> @android:color/white</item>
+        <item name="header_text"> #fff </item>
         <item name="header_size"> 20dp </item>
         <item name="logo"> @drawable/logo </item>
         <item name="header_padding"> 0dp </item>
@@ -53,8 +54,10 @@ Permission is granted to anyone to use this software for any purpose, including 
         <item name="email"> @drawable/email </item>
         <item name="list_size"> 20dp </item>
         <item name="settings"> @drawable/settings </item>
+        <item name="lists_color">@color/black</item>
+        <item name="tasks_color">@color/black</item>
 	</style>
-	
+
 	<style name="Right" parent="Default"></style>
     
 	<style name="Wunderlist" parent="Default">

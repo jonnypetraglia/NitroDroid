@@ -25,6 +25,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
+import com.qweex.utils.QweexUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -127,6 +128,7 @@ public class DatabaseConnector
 
     public boolean deleteList(String hash)
     {
+        String TAG= QweexUtils.TAG();
         boolean x = database.delete(LISTS_TABLE, "hash='" + hash + "'", null) > 0;
         if(x)
         {
@@ -135,7 +137,7 @@ public class DatabaseConnector
                 c.moveToFirst();
             while(!c.isAfterLast())
             {
-                System.out.println("DELETING: " + c.getString(c.getColumnIndex("name")));
+                Log.i(TAG,"DELETING: " + c.getString(c.getColumnIndex("name")));
                 database.delete(TASKS_TABLE, "hash='" + c.getString(c.getColumnIndex("hash")) + "'", null);
                 database.delete(TASKS_TIME_TABLE, "hash='" + c.getString(c.getColumnIndex("hash")) + "'", null);
                 c.moveToNext();
@@ -148,11 +150,12 @@ public class DatabaseConnector
 
     public boolean modifyList(String hash, String col, String newname)
     {
+        String TAG= QweexUtils.TAG();
         ContentValues args = new ContentValues(), args2 = new ContentValues();
         args.put(col, newname);
         args2.put(col, (new java.util.Date()).getTime());
         boolean x = database.update(LISTS_TABLE, args, "hash='" + hash + "'", null)>0;
-        System.out.println("Updating list" + x);
+        Log.i(TAG,"Updating list" + x);
         if(x)
             database.update(LISTS_TIME_TABLE, args2, "hash='" + hash + "'", null);
         return x;
@@ -162,6 +165,7 @@ public class DatabaseConnector
 	
 	public boolean modifyTask(String hash, String[] columns, String[] new_vals)
 	{
+        String TAG= QweexUtils.TAG();
 		ContentValues args = new ContentValues(), args2 = new ContentValues();
 		long now = (new java.util.Date()).getTime();
 		for(int i=0; i<columns.length; i++)
@@ -169,7 +173,7 @@ public class DatabaseConnector
 			args.put(columns[i], new_vals[i]);
             if(!columns[i].equals("order_num"))
 			    args2.put(columns[i], now);
-            System.out.println("Updating Task (" + columns[i] + ") to " + new_vals[i]);
+            Log.i(TAG,"Updating Task (" + columns[i] + ") to " + new_vals[i]);
 		}
 		boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
         if(x)
@@ -179,11 +183,12 @@ public class DatabaseConnector
 	
 	public boolean modifyTask(String hash, String column, int new_val)
 	{
+        String TAG= QweexUtils.TAG();
 		ContentValues args = new ContentValues(), args2 = new ContentValues();
 	    args.put(column, new_val);
 	    args2.put(column, (new java.util.Date()).getTime());
 	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
-        System.out.println("Updating Task (" + column+ ") to " + new_val + ":" + x);
+        Log.i(TAG, "Updating Task (" + column+ ") to " + new_val + ":" + x);
 		if(x && !column.equals("order_num"))
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
@@ -203,11 +208,12 @@ public class DatabaseConnector
 	
 	public boolean modifyTask(String hash, String column, String new_val)
 	{
+        String TAG= QweexUtils.TAG();
 		ContentValues args = new ContentValues(), args2 = new ContentValues();
 	    args.put(column, new_val);
 	    args2.put(column, (new java.util.Date()).getTime());
 	    boolean x = database.update(TASKS_TABLE, args, "hash='" + hash + "'", null)>0;
-        System.out.println("Updating Task (" + column+ ") to " + new_val + ":" + x);
+        Log.i(TAG,"Updating Task (" + column+ ") to " + new_val + ":" + x);
         if(x && !column.equals("order_num"))
 			database.update(TASKS_TIME_TABLE, args2, "hash='" + hash + "'", null);
 	    return x;
@@ -267,8 +273,9 @@ public class DatabaseConnector
 	
 	public Cursor getTodayTasks(long currentDay)
 	{
+        String TAG= QweexUtils.TAG();
+        Log.i(TAG, "getting today tasks");
 		long msecondsInDay = 60 * 60 * 24 * 1000;
-        Log.d("DERP", currentDay + "");
 		String query = "SELECT * FROM " + TASKS_TABLE + " " + "WHERE ( "
                 + " ( list = 'today' ) "
                 + " OR ( date BETWEEN " + 1 + " AND " + (currentDay+msecondsInDay-1) + " ) "
@@ -281,6 +288,7 @@ public class DatabaseConnector
     public Cursor getTasksOfList(String hash, String sort) { return getTasksOfList(hash, sort, false); }
 	public Cursor getTasksOfList(String hash, String sort, boolean doneOnly)
 	{
+        String TAG= QweexUtils.TAG();
 		if(hash!=null)
 		{
 			if(!hash.equals(""))
@@ -294,7 +302,7 @@ public class DatabaseConnector
 		}
         else
             hash = "logged='0'";
-        Log.d("HERP", hash);
+        Log.i(TAG, hash);
         sort = "logged, " + sort;
 		return database.query(TASKS_TABLE,
 			    new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},
@@ -310,6 +318,7 @@ public class DatabaseConnector
 
     public void moveTask(String hash, String target_list)
     {
+        String TAG= QweexUtils.TAG();
         long new_timestamp = new java.util.Date().getTime();
         String old_list, tasks_in_order;
         Cursor tempCursor, tempCursor2;
@@ -318,19 +327,19 @@ public class DatabaseConnector
         tempCursor.moveToFirst();
         old_list = tempCursor.getString(tempCursor.getColumnIndex("list"));
 
-        Log.d("DERP", "old_list: " + old_list);
+        Log.d(TAG, "old_list: " + old_list);
         //1. Update the "list" field of TASKS
         //2. Update the "list" field of TASKS_TIME
         modifyTask(hash, "list", target_list);
 
         //3. Remove from old "tasks_in_order" field of LISTS
         //4. Update the old "tasks_in_order" field of LISTS_TIME
-        Log.d("DERP", "hash: " + hash);
+        Log.d(TAG, "hash: " + hash);
         tempCursor = database.query(LISTS_TABLE, new String[] {"_id", "hash", "tasks_in_order", "name"},
                 "hash='" + old_list + "'", null, null, null, null);
         tempCursor.moveToFirst();
         tasks_in_order = tempCursor.getString(tempCursor.getColumnIndex("tasks_in_order"));
-        Log.d("DERP", "BEFORE: Tasksinorder: " + tasks_in_order + " [ " + tempCursor.getString(tempCursor.getColumnIndex("name")) + " ]");
+        Log.d(TAG, "BEFORE: Tasksinorder: " + tasks_in_order + " [ " + tempCursor.getString(tempCursor.getColumnIndex("name")) + " ]");
         tasks_in_order = tasks_in_order.replace(hash,"");
         //3.1. Take care of fixing the formatting...
         if(tasks_in_order.startsWith(","))                   // (a) if it's at the beginning (leading ',')
@@ -342,14 +351,14 @@ public class DatabaseConnector
         //3.2 The actual updating
         modifyList(old_list, "tasks_in_order", tasks_in_order);
 
-        Log.d("DERP", "AFTER: Tasksinorder: " + tasks_in_order);
+        Log.d(TAG, "AFTER: Tasksinorder: " + tasks_in_order);
         //5. Update the "tasks_in_order" field of LISTS
         //6. Update the "tasks_in_order" field of LISTS_TIME
         tempCursor2 = database.query(LISTS_TABLE, new String[] {"_id", "hash", "tasks_in_order", "name"},
                 "hash='" + target_list + "'", null, null, null, null);
         tempCursor2.moveToFirst();
         String tasks_in_order2 = tempCursor2.getString(tempCursor2.getColumnIndex("tasks_in_order"));
-        Log.d("DERP", "NEW: Tasksinorder: " + tasks_in_order2 + " [ " + tempCursor2.getString(tempCursor2.getColumnIndex("name")) + " ]");
+        Log.d(TAG, "NEW: Tasksinorder: " + tasks_in_order2 + " [ " + tempCursor2.getString(tempCursor2.getColumnIndex("name")) + " ]");
         if(tasks_in_order2==null)
             tasks_in_order2 = new String();
         else if(tasks_in_order2.equals(""))
@@ -357,7 +366,7 @@ public class DatabaseConnector
         else
             tasks_in_order2 = hash + "," + tasks_in_order2;
         modifyList(target_list, "tasks_in_order", tasks_in_order2);
-        Log.d("DERP", "NEWEST: Tasksinorder: " + tasks_in_order2);
+        Log.d(TAG, "NEWEST: Tasksinorder: " + tasks_in_order2);
     }
 
 	
@@ -433,7 +442,6 @@ public class DatabaseConnector
         Cursor c =  database.query(TASKS_TABLE,
                 new String[] {"_id", "tags"},
                 null, null, null, null, null);
-        System.out.println("asdf");
         if(c.getCount()>0)
             c.moveToFirst();
         while(!c.isAfterLast())

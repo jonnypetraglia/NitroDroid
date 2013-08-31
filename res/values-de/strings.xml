@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Heute</string>
+    <string name="Next">Demnächst</string>
+    <string name="Logbook">Logbuch</string>
+    <string name="AllTasks">Alle Tasks</string>
+    
+    <string name="Low">Niedrig</string>
+    <string name="Medium">Normal</string>
+    <string name="High">Hoch</string>
+    <string name="None">Keine</string>
+<string name="NoTasks">No Tasks in This List</string>
+    
+    <string name="General">Allgemein</string>
+<string name="WeekStartsOn">Week Starts on</string>
+    
+    <string-array name="weekdays">
+<item>Sunday</item>
+<item>Monday</item>
+<item>Tuesday</item>
+<item>Wednesday</item>
+<item>Thursday</item>
+<item>Friday</item>
+<item>Saturday</item>
+	</string-array>
+<string name="weekday1">Sunday</string>
+	<string name="show_others_in_next">Zeige weitere Listen unter DEMNÄCHST</string>
+<string name="clear_data">Clear data</string>
+	<string name="language">Sprache</string>
+	
+	
+
+<string name="theme">Theme</string>
+    <string name="background">Hintergrund ersetzen</string>
+    <string name="default_background">Voreingestellter Hintergrund</string>
+<string name="sync">Sync</string>
+    <string name="logout">Abmelden</string>
+    
+    <string name="warning">Warnung!</string>
+<string name="warning_msg">Are you sure you want to reset Nitro? Your data will be gone forever (a long time)</string>
+    <string name="delete_task">Soll diese Aufgabe gelöscht werden?</string>
+    <string name="delete_list">Soll diese Liste gelöscht werden?</string>
+    <string name="no">Abbrechen</string>
+    <string name="yes">Ja, lösche sie</string>
+<string name="about">About</string>
+    
+    
+<string name="due_yesterday">Due yesterday</string>
+<string name="due_today">Due today</string>
+<string name="due_tomorrow">Due tomorrow</string>
+<string name="days_overdue">days overdue</string>
+<string name="days_left">days left</string>
+
+    <string name="by_magic">Magisch</string>
+    <string name="by_hand">per Hand</string>
+<string name="by_title">By title</string>
+    <string name="by_date">Datum</string>
+    <string name="by_priority">Priorität</string>
+    
+    <string name="default_list">Neue Liste</string>
+    <string name="default_task">Neue Aufgaben</string>
+<string name="add_list">Add List</string>
+    
+<string name="lists">Listen</string>
+<string name="move2logbook">Move $$ completed tasks to Logbook</string>
+    
+</resources>

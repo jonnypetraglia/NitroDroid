@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.database.DataSetObserver;
+import com.qweex.utils.QweexUtils;
 
 public class TaskAdapter extends BaseExpandableListAdapter
 {
@@ -155,7 +156,8 @@ public class TaskAdapter extends BaseExpandableListAdapter
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View row, ViewGroup parent)
     {
-        Log.d("HERP", "Getting parent view");
+        String TAG= QweexUtils.TAG();
+        Log.d(TAG, "Getting parent view");
         if(row==null)
         {
             LayoutInflater inflater=(LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
@@ -185,7 +187,8 @@ public class TaskAdapter extends BaseExpandableListAdapter
 		}
 
         id.setTag(hash);
-        id.setTag(R.id.priority, isMagic ? T.priority : c.getString(c.getColumnIndex("priority")));
+        done.setTag(isMagic ? T.priority : c.getString(c.getColumnIndex("priority")));
+        //id.setTag(R.id.priority, isMagic ? T.priority : c.getString(c.getColumnIndex("priority")));
         //------Name & Done checkmark------
         name.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));
         name_edit.setText((isMagic ? T.name : c.getString(c.getColumnIndex("name"))));

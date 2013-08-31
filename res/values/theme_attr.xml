@@ -39,6 +39,8 @@ Permission is granted to anyone to use this software for any purpose, including 
     <attr format="dimension" name="header_padding" />
     <attr format="dimension" name="logo" />
     <attr format="dimension" name="list_size" />
+    <attr format="color" name="lists_color" />
+    <attr format="color" name="tasks_color" />
 
     <attr format="reference" name="move_to_log" />
 

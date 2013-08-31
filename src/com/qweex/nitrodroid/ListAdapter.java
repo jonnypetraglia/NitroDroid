@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import com.qweex.utils.QweexUtils;
 
 
 public class ListAdapter extends SimpleCursorAdapter
@@ -47,7 +48,8 @@ public class ListAdapter extends SimpleCursorAdapter
 	public ListAdapter(Context context, int layout, Cursor c)
 	{
 		super(context, layout, c, new String[] {}, new int[] {});
-		Log.d("ListAdapter", "Creating a new ListAdapter");
+        String TAG= QweexUtils.TAG();
+		Log.d(TAG, "Creating a new ListAdapter");
 		this.c = c;
 		this.context = context;
 	}

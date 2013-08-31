@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Vandaag</string>
+    <string name="Next">Later</string>
+    <string name="Logbook">Logboek</string>
+    <string name="AllTasks">Alle taken</string>
+    
+    <string name="Low">Laag</string>
+    <string name="Medium">Midden</string>
+    <string name="High">Hoog</string>
+    <string name="None">Geen</string>
+    <string name="NoTasks">Geen taken in Dit lijstje</string>
+    
+    <string name="General">Algemeen</string>
+    <string name="WeekStartsOn">Week begint</string>
+    
+    <string-array name="weekdays">
+	    <item>zondag</item>
+	    <item>maandag</item>
+	    <item>dinsdag</item>
+	    <item>woensdag</item>
+	    <item>donderdag</item>
+	    <item>vrijdag</item>
+	    <item>zaterdag</item>
+	</string-array>
+	<string name="weekday1">zondag</string>
+	<string name="show_others_in_next">Andere lijstjes bij Later tonen</string>
+	<string name="clear_data">Gegevens verwijderen</string>
+	<string name="language">Taal</string>
+	
+	
+
+	<string name="theme">Thema</string>
+    <string name="background">Achtergrond veranderen</string>
+    <string name="default_background">Gebruik de standaardachtergrond</string>
+    <string name="sync">Synchroniseren</string>
+    <string name="logout">Uitloggen</string>
+    
+    <string name="warning">Opgelet!</string>
+    <string name="warning_msg">Weet u zeker dat u Nitro wilt resetten? Uw gegevens zullen voor altijd verloren gaan (dat is lang)</string>
+    <string name="delete_task">Wilt u deze taak echt verwijderen?</string>
+    <string name="delete_list">Wilt u dat lijstje echt verwijderen?</string>
+    <string name="no">Nee, bewaar hem.</string>
+    <string name="yes">Ja, verwijder hem.</string>
+    <string name="about">Over</string>
+    
+    
+    <string name="due_yesterday">uiterlijk gisteren</string>
+    <string name="due_today">uiterlijk vandaag</string>
+    <string name="due_tomorrow">uiterlijk morgen</string>
+    <string name="days_overdue">dagen over tijd</string>
+    <string name="days_left">nog dagen</string>
+
+    <string name="by_magic">Magisch</string>
+    <string name="by_hand">Handmatig</string>
+<string name="by_title">By title</string>
+    <string name="by_date">Op datum</string>
+    <string name="by_priority">Op prioriteit</string>
+    
+    <string name="default_list">Nieuw lijstje</string>
+    <string name="default_task">Nieuwe taak</string>
+    <string name="add_list">Lijstje toevoegen</string>
+    
+    <string name="lists">Lijstjes</string>
+    <string name="move2logbook">$$ voltooide taken naar het logboek verplaatsen</string>
+    
+</resources>

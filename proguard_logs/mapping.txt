@@ -1,0 +1,569 @@
+com.qweex.nitrodroid.AuthorizeActivity -> com.qweex.nitrodroid.AuthorizeActivity:
+    android.webkit.WebView wv -> a
+    java.lang.String authorize_url -> b
+    android.widget.ProgressBar Pbar -> c
+    java.lang.String serv -> d
+    android.os.AsyncTask loadPageAsync -> e
+    void onCreate(android.os.Bundle) -> onCreate
+    void onBackPressed() -> onBackPressed
+    boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    void doBackThings() -> a
+com.qweex.nitrodroid.AuthorizeActivity$1 -> com.qweex.nitrodroid.a:
+    com.qweex.nitrodroid.AuthorizeActivity this$0 -> a
+    java.lang.Void doInBackground(java.lang.Void[]) -> a
+    java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.qweex.nitrodroid.AuthorizeActivity$1$1 -> com.qweex.nitrodroid.b:
+    com.qweex.nitrodroid.AuthorizeActivity$1 this$1 -> a
+    void onProgressChanged(android.webkit.WebView,int) -> onProgressChanged
+com.qweex.nitrodroid.AuthorizeActivity$1$2 -> com.qweex.nitrodroid.c:
+    com.qweex.nitrodroid.AuthorizeActivity$1 this$1 -> a
+    void onReceivedSslError(android.webkit.WebView,android.webkit.SslErrorHandler,android.net.http.SslError) -> onReceivedSslError
+    void onReceivedError(android.webkit.WebView,int,java.lang.String,java.lang.String) -> onReceivedError
+    boolean shouldOverrideUrlLoading(android.webkit.WebView,java.lang.String) -> shouldOverrideUrlLoading
+com.qweex.nitrodroid.DatabaseConnector -> com.qweex.nitrodroid.d:
+    android.database.sqlite.SQLiteDatabase database -> a
+    com.qweex.nitrodroid.DatabaseConnector$DatabaseOpenHelper databaseOpenHelper -> b
+    void open() -> a
+    void close() -> b
+    void insertTask(java.lang.String,java.lang.String,long,long,java.lang.String,java.lang.String,long,java.lang.String,int) -> a
+    void insertTaskTimes(java.lang.String,long,long,long,long,long,long,long) -> a
+    boolean deleteTask(java.lang.String) -> a
+    boolean deleteList(java.lang.String) -> b
+    boolean modifyList(java.lang.String,java.lang.String,java.lang.String) -> a
+    boolean modifyTask(java.lang.String,java.lang.String,int) -> a
+    boolean modifyTask(java.lang.String,java.lang.String,long) -> a
+    boolean modifyTask(java.lang.String,java.lang.String,java.lang.String) -> b
+    void modifyOrder(java.lang.String,int) -> a
+    void modifyListOrder(java.lang.String,java.lang.String) -> a
+    void insertList(java.lang.String,java.lang.String,java.lang.String[]) -> a
+    void insertListTimes(java.lang.String,long,long) -> a
+    android.database.Cursor getAllLists() -> c
+    android.database.Cursor getTodayTasks(long) -> a
+    android.database.Cursor getTasksOfList(java.lang.String,java.lang.String) -> b
+    android.database.Cursor getTasksOfList(java.lang.String,java.lang.String,boolean) -> a
+    void clearEverything(android.content.Context) -> a
+    long getListTime(java.lang.String,java.lang.String) -> c
+    long getTaskTime(java.lang.String,java.lang.String) -> d
+    void insertDeleted(java.lang.String,long) -> a
+    android.database.Cursor getAllDeleted() -> d
+    android.database.Cursor searchTags(java.lang.String,java.lang.String) -> e
+    void createThemTables(android.database.sqlite.SQLiteDatabase) -> a
+com.qweex.nitrodroid.DatabaseConnector$DatabaseOpenHelper -> com.qweex.nitrodroid.e:
+    com.qweex.nitrodroid.DatabaseConnector this$0 -> a
+    void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
+    void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
+com.qweex.nitrodroid.ListAdapter -> com.qweex.nitrodroid.f:
+    int todayCount -> a
+    int totalCount -> b
+    android.view.View clickThisPlz -> c
+    android.os.Handler hd -> d
+    java.lang.Runnable rd -> e
+    android.database.Cursor c -> f
+    android.content.Context context -> g
+    int numberOfTags(java.lang.String) -> a
+    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+com.qweex.nitrodroid.ListAdapter$1 -> com.qweex.nitrodroid.g:
+    com.qweex.nitrodroid.ListAdapter this$0 -> a
+    void run() -> run
+com.qweex.nitrodroid.ListsActivity -> com.qweex.nitrodroid.ListsActivity:
+    boolean v2 -> a
+    int themeID -> b
+    boolean forcePhone -> c
+    java.lang.String locale -> d
+    java.lang.String backgroundPath -> e
+    java.util.Locale realLocale -> f
+    boolean isTablet -> g
+    boolean splashEnabled -> h
+    android.view.View currentList -> i
+    com.qweex.nitrodroid.TasksActivity ta -> j
+    android.widget.ViewFlipper flip -> k
+    com.qweex.nitrodroid.SyncHelper syncHelper -> l
+    float DP -> m
+    java.lang.String lastList -> n
+    int list_normalDrawable -> A
+    int list_selectedDrawable -> B
+    android.widget.EditText newList -> C
+    android.app.AlertDialog$Builder newListDialog -> D
+    android.app.AlertDialog$Builder editListDialog -> E
+    android.content.Context context -> F
+    boolean loadingApp -> G
+    boolean loadingOnCreate -> H
+    android.view.View splash -> I
+    android.widget.ListView mainListView -> J
+    com.qweex.nitrodroid.ListAdapter listAdapter -> o
+    android.widget.ImageButton syncLoading -> p
+    android.widget.ImageView arrow -> q
+    android.graphics.Typeface theTypeface -> r
+    android.os.AsyncTask doCreateAsyncronously -> s
+    android.os.Handler doCreateThingsHandler -> t
+    android.content.DialogInterface$OnClickListener createList -> u
+    android.content.DialogInterface$OnClickListener renameList -> v
+    android.content.DialogInterface$OnClickListener deleteList -> w
+    android.widget.AdapterView$OnItemLongClickListener longSelectList -> x
+    android.widget.AdapterView$OnItemClickListener selectList -> y
+    android.widget.TextView$OnEditorActionListener newListListener -> z
+    void changeLocale() -> a
+    void onCreate(android.os.Bundle) -> onCreate
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    void onResume() -> onResume
+    void onDestroy() -> onDestroy
+    void onBackPressed() -> onBackPressed
+    boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    void onConfigurationChanged(android.content.res.Configuration) -> onConfigurationChanged
+    void doViewStuff() -> b
+    void doCreateStuff() -> c
+    void doCreateStuff(boolean) -> a
+    void doBackThings() -> d
+    void pressCreateList() -> e
+    void reallyCreateList(java.lang.String) -> a
+    boolean isTabletDevice(android.content.Context) -> a
+    android.view.animation.Animation inFromRightAnimation() -> f
+    android.view.animation.Animation outToLeftAnimation() -> g
+    android.view.animation.Animation inFromLeftAnimation() -> h
+    android.view.animation.Animation outToRightAnimation() -> i
+    android.widget.EditText access$000(com.qweex.nitrodroid.ListsActivity) -> a
+    android.content.Context access$100() -> j
+    int access$202(int) -> a
+    int access$302(int) -> b
+    android.widget.EditText access$002(com.qweex.nitrodroid.ListsActivity,android.widget.EditText) -> a
+    android.app.AlertDialog$Builder access$402(com.qweex.nitrodroid.ListsActivity,android.app.AlertDialog$Builder) -> a
+    android.app.AlertDialog$Builder access$502(com.qweex.nitrodroid.ListsActivity,android.app.AlertDialog$Builder) -> b
+    boolean access$602(com.qweex.nitrodroid.ListsActivity,boolean) -> a
+    android.view.View access$700(com.qweex.nitrodroid.ListsActivity) -> b
+    android.app.AlertDialog$Builder access$400(com.qweex.nitrodroid.ListsActivity) -> c
+    int access$200() -> k
+    int access$300() -> l
+    android.app.AlertDialog$Builder access$500(com.qweex.nitrodroid.ListsActivity) -> d
+com.qweex.nitrodroid.ListsActivity$1 -> com.qweex.nitrodroid.h:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
+    void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
+    void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
+com.qweex.nitrodroid.ListsActivity$10 -> com.qweex.nitrodroid.i:
+    android.content.DialogInterface$OnClickListener reallyDelete -> a
+    com.qweex.nitrodroid.ListsActivity this$0 -> b
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.qweex.nitrodroid.ListsActivity$10$1 -> com.qweex.nitrodroid.j:
+    com.qweex.nitrodroid.ListsActivity$10 this$1 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.qweex.nitrodroid.ListsActivity$11 -> com.qweex.nitrodroid.k:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    boolean onItemLongClick(android.widget.AdapterView,android.view.View,int,long) -> onItemLongClick
+com.qweex.nitrodroid.ListsActivity$12 -> com.qweex.nitrodroid.l:
+    void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
+com.qweex.nitrodroid.ListsActivity$12$1 -> com.qweex.nitrodroid.m:
+    com.qweex.nitrodroid.ListsActivity$12 this$0 -> a
+    void run() -> run
+com.qweex.nitrodroid.ListsActivity$13 -> com.qweex.nitrodroid.n:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    boolean onEditorAction(android.widget.TextView,int,android.view.KeyEvent) -> onEditorAction
+com.qweex.nitrodroid.ListsActivity$2 -> com.qweex.nitrodroid.o:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    boolean onDrawableTouch(android.view.MotionEvent) -> a
+com.qweex.nitrodroid.ListsActivity$3 -> com.qweex.nitrodroid.p:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.ListsActivity$4 -> com.qweex.nitrodroid.q:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.ListsActivity$5 -> com.qweex.nitrodroid.r:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
+    void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
+    void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
+com.qweex.nitrodroid.ListsActivity$6 -> com.qweex.nitrodroid.s:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    java.lang.Void doInBackground(java.lang.Void[]) -> a
+    java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.qweex.nitrodroid.ListsActivity$7 -> com.qweex.nitrodroid.t:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    void handleMessage(android.os.Message) -> handleMessage
+com.qweex.nitrodroid.ListsActivity$8 -> com.qweex.nitrodroid.u:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.qweex.nitrodroid.ListsActivity$9 -> com.qweex.nitrodroid.v:
+    com.qweex.nitrodroid.ListsActivity this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.qweex.nitrodroid.QuickPrefsActivity -> com.qweex.nitrodroid.QuickPrefsActivity:
+    int SYNC_ID -> r
+    int IMAGE_ID -> s
+    android.widget.PopupWindow aboutWindow -> a
+    android.widget.PopupWindow syncWindow -> b
+    java.lang.String[] themes -> c
+    java.lang.String authorize_url -> d
+    java.lang.String oauth_token -> e
+    java.lang.String oauth_token_secret -> f
+    java.lang.String service -> g
+    android.preference.Preference sync -> h
+    android.preference.Preference notsync -> i
+    android.preference.Preference bg -> j
+    android.preference.Preference notbg -> k
+    android.view.View$OnClickListener pressAuth -> l
+    android.preference.Preference$OnPreferenceClickListener ClickBG -> m
+    android.preference.Preference$OnPreferenceClickListener ClickReset -> n
+    android.preference.Preference$OnPreferenceClickListener ClickAbout -> o
+    android.preference.Preference$OnPreferenceClickListener ClickSync -> p
+    android.preference.Preference$OnPreferenceClickListener ClickLogout -> q
+    void onCreate(android.os.Bundle) -> onCreate
+    void updateSyncPrefs() -> a
+    void getAuth(java.lang.String) -> a
+    void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    java.lang.String getPath(android.net.Uri) -> a
+    java.lang.String postData(java.lang.String,java.lang.String[],java.lang.String[]) -> a
+    boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
+    java.lang.String capitalize(java.lang.String) -> b
+com.qweex.nitrodroid.QuickPrefsActivity$1 -> com.qweex.nitrodroid.w:
+    com.qweex.nitrodroid.QuickPrefsActivity this$0 -> a
+    boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.qweex.nitrodroid.QuickPrefsActivity$2 -> com.qweex.nitrodroid.x:
+    com.qweex.nitrodroid.QuickPrefsActivity this$0 -> a
+    void run() -> run
+com.qweex.nitrodroid.QuickPrefsActivity$3 -> com.qweex.nitrodroid.y:
+    com.qweex.nitrodroid.QuickPrefsActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.QuickPrefsActivity$4 -> com.qweex.nitrodroid.z:
+    com.qweex.nitrodroid.QuickPrefsActivity this$0 -> a
+    boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.qweex.nitrodroid.QuickPrefsActivity$5 -> com.qweex.nitrodroid.aa:
+    com.qweex.nitrodroid.QuickPrefsActivity this$0 -> a
+    boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.qweex.nitrodroid.QuickPrefsActivity$5$1 -> com.qweex.nitrodroid.ab:
+    com.qweex.nitrodroid.QuickPrefsActivity$5 this$1 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.qweex.nitrodroid.QuickPrefsActivity$6 -> com.qweex.nitrodroid.ac:
+    com.qweex.nitrodroid.QuickPrefsActivity this$0 -> a
+    boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.qweex.nitrodroid.QuickPrefsActivity$7 -> com.qweex.nitrodroid.ad:
+    com.qweex.nitrodroid.QuickPrefsActivity this$0 -> a
+    boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.qweex.nitrodroid.QuickPrefsActivity$8 -> com.qweex.nitrodroid.ae:
+    com.qweex.nitrodroid.QuickPrefsActivity this$0 -> a
+    boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
+com.qweex.nitrodroid.RightDrawableOnTouchListener -> com.qweex.nitrodroid.af:
+    android.graphics.drawable.Drawable drawable -> b
+    int fuzz -> a
+    boolean onDrawableTouch(android.view.MotionEvent) -> a
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+com.qweex.nitrodroid.SyncHelper -> com.qweex.nitrodroid.ag:
+    java.lang.String SERVICE -> a
+    java.lang.String OATH_TOKEN_SECRET -> b
+    java.lang.String OATH_TOKEN -> c
+    java.lang.String UID -> d
+    java.lang.String STATS__EMAIL -> e
+    java.lang.String STATS__LANGUAGE -> f
+    java.lang.String STATS__OS -> p
+    java.lang.String STATS__VERSION -> q
+    org.json.JSONObject jObject -> g
+    org.json.JSONObject jLists -> h
+    org.json.JSONObject jListDetails -> i
+    org.json.JSONObject jTasks -> j
+    com.qweex.nitrodroid.DatabaseConnector db -> k
+    android.content.Context context -> l
+    java.lang.String POST_URL -> m
+    boolean isSyncing -> n
+    java.util.HashMap localeToLanguage -> o
+    org.json.JSONObject writeSQLtoJSON() -> a
+    void readJSONtoSQL(java.lang.String,android.content.Context) -> a
+    java.lang.String[] parseTasksString(org.json.JSONArray) -> a
+    void readAndInsertTask(java.lang.String,int) -> a
+    java.lang.String postData(org.json.JSONObject,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> a
+    java.lang.String convertStreamToString(java.io.InputStream) -> a
+    java.lang.String bit() -> b
+    java.lang.String part() -> c
+    java.lang.String getID() -> d
+com.qweex.nitrodroid.SyncHelper$performSync -> com.qweex.nitrodroid.ah:
+    com.qweex.nitrodroid.SyncHelper this$0 -> a
+    java.lang.Boolean doInBackground(java.lang.Void[]) -> a
+    void onPostExecute(java.lang.Boolean) -> a
+    void onPostExecute(java.lang.Object) -> onPostExecute
+    java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+com.qweex.nitrodroid.TaskAdapter -> com.qweex.nitrodroid.ai:
+    android.database.Cursor c -> j
+    com.qweex.nitrodroid.TasksActivity$taskObject T -> k
+    android.content.Context context -> l
+    int lastClicked -> a
+    java.util.ArrayList a -> b
+    boolean isMagic -> c
+    int ID_TAG -> d
+    java.lang.String[] days -> m
+    int[] drawsB -> e
+    int[] drawsC -> f
+    int[] drawsS -> g
+    int[] v2_clrs -> h
+    java.text.DateFormat sdf -> i
+    void registerDataSetObserver(android.database.DataSetObserver) -> registerDataSetObserver
+    void unregisterDataSetObserver(android.database.DataSetObserver) -> unregisterDataSetObserver
+    boolean isEmpty() -> isEmpty
+    long getGroupId(int) -> getGroupId
+    long getChildId(int,int) -> getChildId
+    int getGroupCount() -> getGroupCount
+    int getChildrenCount(int) -> getChildrenCount
+    boolean areAllItemsEnabled() -> areAllItemsEnabled
+    boolean hasStableIds() -> hasStableIds
+    boolean isChildSelectable(int,int) -> isChildSelectable
+    long getCombinedChildId(long,long) -> getCombinedChildId
+    java.lang.Object getChild(int,int) -> getChild
+    java.lang.Object getGroup(int) -> getGroup
+    void onGroupCollapsed(int) -> onGroupCollapsed
+    android.view.View getGroupView(int,boolean,android.view.View,android.view.ViewGroup) -> getGroupView
+    android.view.View getChildView(int,int,boolean,android.view.View,android.view.ViewGroup) -> getChildView
+    long getCombinedGroupId(long) -> getCombinedGroupId
+    java.lang.String getTimeString(long,android.content.Context) -> a
+com.qweex.nitrodroid.TaskAdapter$Separator -> com.qweex.nitrodroid.aj:
+    android.widget.LinearLayout$LayoutParams params -> a
+com.qweex.nitrodroid.TaskAdapter$TagView -> com.qweex.nitrodroid.ak:
+    boolean isEmpty -> a
+    void create(android.content.Context,java.lang.String) -> a
+com.qweex.nitrodroid.TasksActivity -> com.qweex.nitrodroid.al:
+    android.widget.ExpandableListView lv -> a
+    com.qweex.nitrodroid.TaskAdapter adapter -> b
+    android.view.View lastClicked -> c
+    android.widget.EditText editingTags -> d
+    java.lang.String lastClickedID -> e
+    java.lang.String listName -> f
+    java.lang.String listHash -> g
+    java.lang.String searchTag -> h
+    android.app.Activity context -> i
+    net.londatiga.android.QuickAction sortPopup -> j
+    net.londatiga.android.QuickAction optionsPopup -> k
+    android.graphics.drawable.Drawable selectedDrawable -> l
+    android.graphics.drawable.Drawable normalDrawable -> m
+    android.app.AlertDialog$Builder deleteDialog -> n
+    android.widget.PopupWindow datePickerDialog -> o
+    android.widget.LinearLayout popupLayout -> p
+    android.view.View datePicker -> q
+    int lastDate -> r
+    boolean isSorted -> s
+    android.widget.EditText newTask -> t
+    android.view.View$OnClickListener pressSort -> u
+    android.view.View$OnClickListener pressOptions -> v
+    android.view.View$OnClickListener checkTask -> w
+    android.view.View$OnClickListener clickAdd -> x
+    android.view.View$OnClickListener clickDelete -> y
+    android.content.DialogInterface$OnClickListener confirmDelete -> z
+    net.londatiga.android.QuickAction$OnActionItemClickListener selectOption -> A
+    net.londatiga.android.QuickAction$OnActionItemClickListener selectSort -> B
+    android.widget.TextView$OnEditorActionListener newTaskListener -> C
+    android.view.View$OnClickListener pressPriority -> D
+    android.view.View$OnClickListener pressDate -> E
+    java.lang.String oldname -> F
+    java.lang.String oldnotes -> G
+    android.text.TextWatcher writeName -> H
+    android.text.TextWatcher writeNotes -> I
+    android.widget.ExpandableListView$OnGroupClickListener selectTask -> J
+    int n -> K
+    int m -> L
+    android.widget.HorizontalScrollView s -> M
+    android.view.View$OnClickListener pressTag -> N
+    android.view.View$OnLongClickListener longPressTag -> O
+    void onCreate(android.os.Bundle) -> a
+    android.graphics.drawable.Drawable createTitleDrawable() -> a
+    void doCreateStuff() -> b
+    void createTheAdapterYouSillyGoose() -> c
+    android.database.Cursor getCursor() -> d
+    void createTask(java.lang.String) -> a
+    long getBeginningOfDayInSeconds() -> e
+    void toggleSort() -> f
+    void changeSort(android.database.Cursor) -> a
+    void createCalendar() -> g
+    void updateDate(int,int,int) -> a
+    boolean doBackThings() -> h
+    void removeDuplicateWithOrder(java.util.ArrayList) -> a
+    void getThemTagsSon(android.widget.LinearLayout,java.lang.String) -> a
+com.qweex.nitrodroid.TasksActivity$1 -> com.qweex.nitrodroid.am:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$10 -> com.qweex.nitrodroid.an:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onItemClick(net.londatiga.android.QuickAction,int,int) -> a
+com.qweex.nitrodroid.TasksActivity$11 -> com.qweex.nitrodroid.ao:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onItemClick(net.londatiga.android.QuickAction,int,int) -> a
+com.qweex.nitrodroid.TasksActivity$12 -> com.qweex.nitrodroid.ap:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    boolean onEditorAction(android.widget.TextView,int,android.view.KeyEvent) -> onEditorAction
+com.qweex.nitrodroid.TasksActivity$13 -> com.qweex.nitrodroid.aq:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$14 -> com.qweex.nitrodroid.ar:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$15 -> com.qweex.nitrodroid.as:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$16 -> com.qweex.nitrodroid.at:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onSelectedDayChange(android.widget.CalendarView,int,int,int) -> onSelectedDayChange
+com.qweex.nitrodroid.TasksActivity$17 -> com.qweex.nitrodroid.au:
+    void afterTextChanged(android.text.Editable) -> afterTextChanged
+    void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+com.qweex.nitrodroid.TasksActivity$18 -> com.qweex.nitrodroid.av:
+    void afterTextChanged(android.text.Editable) -> afterTextChanged
+    void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+com.qweex.nitrodroid.TasksActivity$19 -> com.qweex.nitrodroid.aw:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    boolean onGroupClick(android.widget.ExpandableListView,android.view.View,int,long) -> onGroupClick
+com.qweex.nitrodroid.TasksActivity$2 -> com.qweex.nitrodroid.ax:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    boolean onDrawableTouch(android.view.MotionEvent) -> a
+com.qweex.nitrodroid.TasksActivity$20 -> com.qweex.nitrodroid.ay:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$21 -> com.qweex.nitrodroid.az:
+    boolean onLongClick(android.view.View) -> onLongClick
+com.qweex.nitrodroid.TasksActivity$21$1 -> com.qweex.nitrodroid.ba:
+    com.qweex.nitrodroid.TasksActivity$21 this$0 -> a
+    boolean onEditorAction(android.widget.TextView,int,android.view.KeyEvent) -> onEditorAction
+com.qweex.nitrodroid.TasksActivity$3 -> com.qweex.nitrodroid.bb:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void run() -> run
+com.qweex.nitrodroid.TasksActivity$4 -> com.qweex.nitrodroid.bc:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$5 -> com.qweex.nitrodroid.bd:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$6 -> com.qweex.nitrodroid.be:
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$7 -> com.qweex.nitrodroid.bf:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$8 -> com.qweex.nitrodroid.bg:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+com.qweex.nitrodroid.TasksActivity$9 -> com.qweex.nitrodroid.bh:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.qweex.nitrodroid.TasksActivity$MagicComparator -> com.qweex.nitrodroid.bi:
+    com.qweex.nitrodroid.TasksActivity this$0 -> a
+    int compare(com.qweex.nitrodroid.TasksActivity$taskObject,com.qweex.nitrodroid.TasksActivity$taskObject) -> a
+    int compare(java.lang.Object,java.lang.Object) -> compare
+com.qweex.nitrodroid.TasksActivity$taskObject -> com.qweex.nitrodroid.bj:
+    java.lang.String hash -> a
+    java.lang.String name -> b
+    java.lang.String notes -> c
+    java.lang.String list -> d
+    java.lang.String tags -> e
+    int priority -> f
+    long logged -> g
+    long date -> h
+    int dateWorth -> i
+    com.qweex.nitrodroid.TasksActivity this$0 -> j
+    int getDateWorth() -> a
+com.qweex.nitrodroid.procUtils -> com.qweex.nitrodroid.bk:
+    double CPUFreq -> a
+    double getCPUFreq() -> a
+net.londatiga.android.ActionItem -> a.a.a.a:
+    android.graphics.drawable.Drawable icon -> a
+    java.lang.String title -> b
+    int actionId -> c
+    boolean sticky -> d
+    java.lang.String getTitle() -> a
+    android.graphics.drawable.Drawable getIcon() -> b
+    int getActionId() -> c
+    boolean isSticky() -> d
+net.londatiga.android.PopupWindows -> a.a.a.b:
+    android.content.Context mContext -> a
+    android.widget.PopupWindow mWindow -> b
+    android.view.View mRootView -> c
+    android.graphics.drawable.Drawable mBackground -> d
+    android.view.WindowManager mWindowManager -> e
+    void onDismiss() -> onDismiss
+    void onShow() -> a
+    void preShow() -> b
+    void setBackgroundDrawable(android.graphics.drawable.Drawable) -> a
+    void setContentView(android.view.View) -> a
+    void dismiss() -> c
+net.londatiga.android.PopupWindows$1 -> a.a.a.c:
+    net.londatiga.android.PopupWindows this$0 -> a
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+net.londatiga.android.QuickAction -> a.a.a.d:
+    android.view.View mRootView -> f
+    android.widget.ImageView mArrowUp -> g
+    android.widget.ImageView mArrowDown -> h
+    android.view.LayoutInflater mInflater -> i
+    android.view.ViewGroup mTrack -> j
+    android.widget.ScrollView mScroller -> k
+    net.londatiga.android.QuickAction$OnActionItemClickListener mItemClickListener -> l
+    net.londatiga.android.QuickAction$OnDismissListener mDismissListener -> m
+    java.util.List actionItems -> n
+    boolean mDidAction -> o
+    int mChildPos -> p
+    int mInsertPos -> q
+    int mAnimStyle -> r
+    int mOrientation -> s
+    int rootWidth -> t
+    net.londatiga.android.ActionItem getActionItem(int) -> a
+    void setRootViewId(int) -> b
+    void setOnActionItemClickListener(net.londatiga.android.QuickAction$OnActionItemClickListener) -> a
+    void addActionItem(net.londatiga.android.ActionItem) -> a
+    void show(android.view.View) -> b
+    void setAnimationStyle(int,int,boolean) -> a
+    void onDismiss() -> onDismiss
+    net.londatiga.android.QuickAction$OnActionItemClickListener access$000(net.londatiga.android.QuickAction) -> a
+    boolean access$102(net.londatiga.android.QuickAction,boolean) -> a
+net.londatiga.android.QuickAction$1 -> a.a.a.e:
+    int val$pos -> a
+    int val$actionId -> b
+    net.londatiga.android.QuickAction this$0 -> c
+    void onClick(android.view.View) -> onClick
+net.londatiga.android.QuickAction$OnActionItemClickListener -> a.a.a.f:
+    void onItemClick(net.londatiga.android.QuickAction,int,int) -> a
+net.londatiga.android.QuickAction$OnDismissListener -> a.a.a.g:
+    void onDismiss() -> a
+org.json.JSONArray -> b.a.a:
+    java.util.ArrayList myArrayList -> a
+    java.lang.Object get(int) -> a
+    java.lang.String getString(int) -> b
+    java.lang.String join(java.lang.String) -> a
+    int length() -> a
+    java.lang.Object opt(int) -> c
+    org.json.JSONArray put(java.lang.Object) -> a
+    java.lang.String toString() -> toString
+org.json.JSONException -> b.a.b:
+    java.lang.Throwable cause -> a
+    java.lang.Throwable getCause() -> getCause
+org.json.JSONObject -> b.a.c:
+    java.util.HashMap myHashMap -> b
+    java.lang.Object NULL -> a
+    java.lang.Object get(java.lang.String) -> a
+    double getDouble(java.lang.String) -> b
+    org.json.JSONArray getJSONArray(java.lang.String) -> c
+    org.json.JSONObject getJSONObject(java.lang.String) -> d
+    long getLong(java.lang.String) -> e
+    java.lang.String getString(java.lang.String) -> f
+    java.util.Iterator keys() -> a
+    org.json.JSONArray names() -> b
+    java.lang.String numberToString(java.lang.Number) -> a
+    java.lang.Object opt(java.lang.String) -> g
+    org.json.JSONObject put(java.lang.String,boolean) -> a
+    org.json.JSONObject put(java.lang.String,long) -> a
+    org.json.JSONObject put(java.lang.String,java.lang.Object) -> a
+    java.lang.String quote(java.lang.String) -> h
+    java.lang.Object remove(java.lang.String) -> i
+    void testValidity(java.lang.Object) -> a
+    java.lang.String toString() -> toString
+    java.lang.String valueToString(java.lang.Object) -> b
+org.json.JSONObject$1 -> b.a.d:
+org.json.JSONObject$Null -> b.a.e:
+    java.lang.Object clone() -> clone
+    boolean equals(java.lang.Object) -> equals
+    java.lang.String toString() -> toString
+org.json.JSONString -> b.a.f:
+    java.lang.String toJSONString() -> a
+org.json.JSONTokener -> b.a.g:
+    int myIndex -> a
+    java.lang.String mySource -> b
+    void back() -> a
+    boolean more() -> b
+    char next() -> c
+    java.lang.String next(int) -> a
+    char nextClean() -> d
+    java.lang.String nextString(char) -> a
+    java.lang.Object nextValue() -> e
+    org.json.JSONException syntaxError(java.lang.String) -> a
+    java.lang.String toString() -> toString

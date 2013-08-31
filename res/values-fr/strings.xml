@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Aujourd\'hui</string>
+    <string name="Next">Prochainement</string>
+    <string name="Logbook">Journal de bord</string>
+    <string name="AllTasks">Toutes les tâches</string>
+    
+    <string name="Low">Basse</string>
+    <string name="Medium">Moyenne</string>
+    <string name="High">Importante</string>
+    <string name="None">Aucune</string>
+    <string name="NoTasks">Aucune tâche dans Cette liste-ci</string>
+    
+    <string name="General">Géneral</string>
+    <string name="WeekStartsOn">Le semaine commence</string>
+    
+    <string-array name="weekdays">
+	    <item>Dimanche</item>
+	    <item>Lundi</item>
+	    <item>Mardi</item>
+	    <item>Mercredi</item>
+	    <item>Jeudi</item>
+	    <item>Vendredi</item>
+	    <item>Samedi</item>
+	</string-array>
+	<string name="weekday1">Dimanche</string>
+	<string name="show_others_in_next">Montrer d\'autres listes dans Prochainement</string>
+	<string name="clear_data">Effacer mes données</string>
+	<string name="language">Langue</string>
+	
+	
+
+	<string name="theme">Thème</string>
+<string name="background">Change the Background</string>
+    <string name="default_background">Utiliser l\'arrière-plan par défaut</string>
+<string name="sync">Sync</string>
+    <string name="logout">Se déconnecter</string>
+    
+    <string name="warning">Attention!</string>
+    <string name="warning_msg">Êtes-vous certain que vous veuillez remettre Nitro? Vos données seront supprimer pour toujours</string>
+    <string name="delete_task">Voulez-vous vraiment supprimer cette tâche-là?</string>
+    <string name="delete_list">Êtes-vous certain que vous veuillez supprimer cette liste-là?</string>
+    <string name="no">Non, je veux la garder</string>
+    <string name="yes">Oui, je veux la supprimer</string>
+<string name="about">About</string>
+    
+    
+    <string name="due_yesterday">à l’échéance hier</string>
+    <string name="due_today">à l’échéance aujourd’hui</string>
+    <string name="due_tomorrow">à l’échéance demain</string>
+    <string name="days_overdue">jours en retard</string>
+    <string name="days_left">jours jusqu’à l’échéance</string>
+
+    <string name="by_magic">Magique</string>
+    <string name="by_hand">Par la main</string>
+    <string name="by_title">Par le titre</string>
+    <string name="by_date">Par date</string>
+    <string name="by_priority">Par priorité</string>
+    
+    <string name="default_list">Nouvelle liste</string>
+    <string name="default_task">Nouvelle tâche</string>
+    <string name="add_list">Ajouter une liste</string>
+    
+    <string name="lists">Listes</string>
+    <string name="move2logbook">Bouger $$ tâches accomplies au « Journal de bord »</string>
+    
+</resources>

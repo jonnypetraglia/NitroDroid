@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">T\'day</string>
+    <string name="Next">T\'morrow</string>
+    <string name="Logbook">Log</string>
+    <string name="AllTasks">All hands on deck!</string>
+    
+    <string name="Low">Bilge</string>
+    <string name="Medium">Rum</string>
+    <string name="High">Treasure</string>
+    <string name="None">Empty</string>
+    <string name="NoTasks">Arr! The seas be calm and the sails be still.</string>
+    
+    <string name="General">Rules o\' the sea</string>
+    <string name="WeekStartsOn">We set sail</string>
+    
+    <string-array name="weekdays">
+	    <item>Sundarrr</item>
+	    <item>Mondarrr</item>
+	    <item>Tuesdarrr</item>
+	    <item>Wednesdarrr</item>
+	    <item>Thursdarrr</item>
+	    <item>Fridarrr</item>
+	    <item>Saturdarrr</item>
+	</string-array>
+	<string name="weekday1">Sundarrr</string>
+	<string name="show_others_in_next">Show ye landlubbers in next</string>
+	<string name="clear_data">Walk the plank!</string>
+	<string name="language">Language, ye scurvy dog!</string>
+	
+	
+
+	<string name="theme">Lookin\'s</string>
+    <string name="background">Paint th\' poop deck</string>
+    <string name="default_background">Scrub th\' poop deck</string>
+    <string name="sync">Aim ye data cannons</string>
+    <string name="logout">Put ye cannon away</string>
+    
+    <string name="warning">Avast!</string>
+    <string name="warning_msg">Arr ye sure ye want to walk the plank of Nitro? All ye booty shall be lost to Davy Jones\' Locker!</string>
+    <string name="delete_task">Burn this scribblin\'?</string>
+    <string name="delete_list">Toss this parchment?</string>
+    <string name="no">Nay</string>
+    <string name="yes">Aye</string>
+    <string name="about">About</string>
+    
+    
+    <string name="due_yesterday">Ye barely missed it</string>
+    <string name="due_today">Yo ho! It be here!</string>
+    <string name="due_tomorrow">It be upon us soon</string>
+    <string name="days_overdue">days afore</string>
+    <string name="days_left">days \'til</string>
+
+    <string name="by_magic">By the powers!</string>
+    <string name="by_hand">By hook</string>
+    <string name="by_title">By name</string>
+    <string name="by_date">By records</string>
+    <string name="by_priority">By rank</string>
+    
+    <string name="default_list">Parchment</string>
+    <string name="default_task">Scribblin\'s</string>
+    <string name="add_list">Write parchment</string>
+    
+    <string name="lists">Parchments</string>
+    <string name="move2logbook">Drop $$ anchors to ye logbook!</string>
+    
+</resources>

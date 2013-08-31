@@ -38,6 +38,7 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="NitroDroid 1.5"
+            android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="40dp" />
 
@@ -45,18 +46,21 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
             android:text="By Jon Petraglia" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
             android:text="Copyright © 2012 Qweex" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
             android:text="Licensed under the zlib license" />
 
         <TextView
@@ -65,7 +69,8 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:paddingTop="30dp"
             android:paddingLeft="5dp"
             android:text="Special Thanks"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,7 +92,7 @@ Permission is granted to anyone to use this software for any purpose, including 
             android:paddingLeft="30dp"
             android:text="• The 14 people who bought NitroDroid and did not uninstall. Thank you for believing and giving it the benefit of the doubt."
             android:textAppearance="?android:attr/textAppearanceSmall" />
-        
+
     </LinearLayout>
 
 </ScrollView>

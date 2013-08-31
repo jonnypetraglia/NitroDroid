@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) 2012-2013 Qweex
+Copyright (c) 2012-2013 Jon Petraglia
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+    1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+    2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+    3. This notice may not be removed or altered from any source distribution.
+ -->
+<resources>
+
+    <string name="Today">Oggi</string>
+    <string name="Next">Prossimo</string>
+<string name="Logbook">Logbook</string>
+    <string name="AllTasks">Tutti i task</string>
+    
+    <string name="Low">Priorità bassa</string>
+    <string name="Medium">Priorità media</string>
+    <string name="High">Importante</string>
+    <string name="None">Nessuna priorità</string>
+    <string name="NoTasks">Nessun task in Questa lista</string>
+    
+    <string name="General">Generale</string>
+    <string name="WeekStartsOn">La settimana inizia di</string>
+    
+    <string-array name="weekdays">
+	    <item>Domenica</item>
+	    <item>Lunedì</item>
+	    <item>Martedì</item>
+	    <item>Mercoledì</item>
+	    <item>Giovedì</item>
+	    <item>Venerdì</item>
+	    <item>Sabato</item>
+	</string-array>
+	<string name="weekday1">Domenica</string>
+	<string name="show_others_in_next">Mostra le altre liste in Prossimi</string>
+	<string name="clear_data">Cancellare i dati</string>
+	<string name="language">Lingua</string>
+	
+	
+
+	<string name="theme">Tema</string>
+    <string name="background">Rimpiazza predefinito</string>
+    <string name="default_background">Usa il seguente sfondo</string>
+    <string name="sync">Sincronizzare</string>
+<string name="logout">Logout</string>
+    
+    <string name="warning">Attenzione!</string>
+    <string name="warning_msg">Si è sicuri di voler resettare Nitro? I tuoi dati andranno persi PER SEMPRE.</string>
+    <string name="delete_task">Vuoi veramente eliminare questa attività?</string>
+    <string name="delete_list">Si è sicuri di voler eliminare questa lista?</string>
+    <string name="no">No, lasciala</string>
+    <string name="yes">Si, eliminala</string>
+<string name="about">About</string>
+    
+    
+<string name="due_yesterday">Due yesterday</string>
+<string name="due_today">Due today</string>
+<string name="due_tomorrow">Due tomorrow</string>
+<string name="days_overdue">days overdue</string>
+<string name="days_left">days left</string>
+
+<string name="by_magic">Magic</string>
+    <string name="by_hand">Manuale</string>
+    <string name="by_title">Manuale</string>
+    <string name="by_date">Data</string>
+    <string name="by_priority">Priorità</string>
+    
+    <string name="default_list">Nuovo elenco</string>
+    <string name="default_task">Nuova attività</string>
+    <string name="add_list">Aggiungere lista</string>
+    
+    <string name="lists">Liste</string>
+<string name="move2logbook">Move $$ completed tasks to Logbook</string>
+    
+</resources>

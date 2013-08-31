@@ -23,4 +23,6 @@ Permission is granted to anyone to use this software for any purpose, including 
     <color name="ubuntu_bgstart">#FFB4684A</color>
     <color name="ubuntu_bgend">#FF794A37</color>
     <color name="sync_text">#DD444444</color>
+    <color name="transparent">#00000000</color>
+    <color name="black">#ff000000</color>
 </resources>
