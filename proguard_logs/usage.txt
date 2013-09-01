@@ -1,3 +1,5 @@
+android.annotation.SuppressLint
+android.annotation.TargetApi
 com.qweex.nitrodroid.AuthorizeActivity:
     static final java.lang.String REQUEST_URL
     static final java.lang.String AUTH_URL
@@ -9,16 +11,16 @@ com.qweex.nitrodroid.DatabaseConnector:
     private static final java.lang.String LISTS_TABLE
     private static final java.lang.String LISTS_TIME_TABLE
     private static final java.lang.String TASKS_DEL_TABLE
-    165:177:public boolean modifyTask(java.lang.String,java.lang.String[],java.lang.String[])
-    349:357:public long getDelete(java.lang.String)
-    369:381:public java.util.Set getTags()
+    168:181:public boolean modifyTask(java.lang.String,java.lang.String[],java.lang.String[])
+    423:431:public long getDelete(java.lang.String)
+    443:454:public java.util.Set getTags()
 com.qweex.nitrodroid.ListsActivity:
     public static java.lang.String listHash
     public static com.qweex.nitrodroid.SyncHelper_v2 syncHelper2
     public static final int ANIMATION_DURATION
 com.qweex.nitrodroid.QuickPrefsActivity:
     public static final java.lang.String DONATION_APP
-    460:466:public static boolean packageExists(java.lang.String,android.content.Context)
+    495:501:public static boolean packageExists(java.lang.String,android.content.Context)
 com.qweex.nitrodroid.R
 com.qweex.nitrodroid.R$anim
 com.qweex.nitrodroid.R$array
@@ -29,14 +31,14 @@ com.qweex.nitrodroid.R$id
 com.qweex.nitrodroid.R$layout
 com.qweex.nitrodroid.R$string
 com.qweex.nitrodroid.R$style
+com.qweex.nitrodroid.R$styleable
 com.qweex.nitrodroid.R$xml
 com.qweex.nitrodroid.SyncHelper:
-    144:163:public void testRead()
-    312:320:static void debugPrint(java.lang.String)
+    148:168:public void testRead()
 com.qweex.nitrodroid.SyncHelper_v2
 com.qweex.nitrodroid.SyncHelper_v2$Triple
 com.qweex.nitrodroid.TaskAdapter$TagView:
-    369:373:public TaskAdapter$TagView(android.content.Context,boolean)
+    384:388:public TaskAdapter$TagView(android.content.Context,boolean)
 com.qweex.nitrodroid.TasksActivity:
     private static final int ID_MAGIC
     private static final int ID_HAND
@@ -49,6 +51,10 @@ com.qweex.nitrodroid.TasksActivity:
     private static final int ID_SHARE
 com.qweex.nitrodroid.procUtils:
     17:17:public procUtils()
+com.qweex.utils.QweexUtils:
+    28:28:public QweexUtils()
+    113:116:public static void scrollToPosition(android.widget.ListView,int)
+    122:125:public static void scrollByOffset(android.widget.ListView,int)
 io.socket.IOAcknowledge
 io.socket.IOCallback
 io.socket.IOConnection

@@ -44,12 +44,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_launcher_old.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/DatabaseConnector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/SyncHelper.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/SyncHelper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" afterPath="$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project.properties" afterPath="$PROJECT_DIR$/project.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proguard_logs/dump.txt" afterPath="$PROJECT_DIR$/proguard_logs/dump.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proguard_logs/mapping.txt" afterPath="$PROJECT_DIR$/proguard_logs/mapping.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proguard_logs/seeds.txt" afterPath="$PROJECT_DIR$/proguard_logs/seeds.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proguard_logs/usage.txt" afterPath="$PROJECT_DIR$/proguard_logs/usage.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="NitroDroid.iws" />
@@ -58,7 +57,7 @@
     <file path="/fragment.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377977803962" ignored="false" />
     <file path="$PROJECT_DIR$/../Callisto/gen/com/qweex/callisto/R.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356423650879" ignored="false" />
     <file path="/TaskAdapter.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377902638451" ignored="false" />
-    <file path="/TasksActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1377991381456" ignored="false" />
+    <file path="/TasksActivity.java" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1378022036188" ignored="false" />
     <file path="/tasks.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1359788667374" ignored="false" />
     <file path="/a.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1356431487469" ignored="false" />
     <file path="/task_item_details.xml" changelist="11645be7-acf2-4d4e-bd26-5a4a6e28a4d6" time="1358356773082" ignored="false" />
@@ -232,35 +231,54 @@
       <file leaf-file-name="TasksActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="757" column="8" selection-start="29877" selection-end="29877" vertical-scroll-proportion="0.52729887">
+            <state line="778" column="0" selection-start="30432" selection-end="30432" vertical-scroll-proportion="0.59297216">
               <folding>
+                <element signature="e#0#46136#0" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#8041#8848#0" expanded="true" />
-                <element signature="e#8837#8838#0" expanded="true" />
-                <element signature="e#11380#11630#0" expanded="true" />
-                <element signature="e#11623#11624#0" expanded="true" />
-                <element signature="e#11668#11809#0" expanded="true" />
-                <element signature="e#11802#11803#0" expanded="true" />
-                <element signature="e#11851#13134#0" expanded="true" />
-                <element signature="e#13127#13128#0" expanded="true" />
-                <element signature="e#14896#15055#0" expanded="true" />
-                <element signature="e#15048#15049#0" expanded="true" />
-                <element signature="e#17610#17779#0" expanded="true" />
-                <element signature="e#17775#17776#0" expanded="true" />
-                <element signature="e#17832#19767#0" expanded="true" />
-                <element signature="e#19763#19764#0" expanded="true" />
-                <element signature="e#25214#26603#0" expanded="true" />
-                <element signature="e#26599#26600#0" expanded="true" />
-                <element signature="e#26636#27975#0" expanded="true" />
-                <element signature="e#27971#27972#0" expanded="true" />
-                <element signature="e#28852#29278#0" expanded="true" />
-                <element signature="e#29263#29264#0" expanded="true" />
-                <element signature="e#30546#30878#0" expanded="true" />
-                <element signature="e#30870#30871#0" expanded="true" />
-                <element signature="e#39158#40023#0" expanded="true" />
-                <element signature="e#40016#40017#0" expanded="true" />
-                <element signature="e#42638#43838#0" expanded="true" />
-                <element signature="e#43831#43832#0" expanded="true" />
+                <element signature="e#8066#8873#0" expanded="true" />
+                <element signature="e#8862#8863#0" expanded="true" />
+                <element signature="e#11245#11366#0" expanded="true" />
+                <element signature="e#11355#11356#0" expanded="true" />
+                <element signature="e#11405#11655#0" expanded="true" />
+                <element signature="e#11648#11649#0" expanded="true" />
+                <element signature="e#11693#11834#0" expanded="true" />
+                <element signature="e#11827#11828#0" expanded="true" />
+                <element signature="e#11876#13159#0" expanded="true" />
+                <element signature="e#13152#13153#0" expanded="true" />
+                <element signature="e#14921#15080#0" expanded="true" />
+                <element signature="e#15073#15074#0" expanded="true" />
+                <element signature="e#17635#17804#0" expanded="true" />
+                <element signature="e#17800#17801#0" expanded="true" />
+                <element signature="e#17857#19792#0" expanded="true" />
+                <element signature="e#19788#19789#0" expanded="true" />
+                <element signature="e#20602#21001#0" expanded="true" />
+                <element signature="e#20994#20995#0" expanded="true" />
+                <element signature="e#21067#22471#0" expanded="true" />
+                <element signature="e#21375#21387#0" expanded="true" />
+                <element signature="e#22467#22468#0" expanded="true" />
+                <element signature="e#23112#23572#0" expanded="true" />
+                <element signature="e#23565#23566#0" expanded="true" />
+                <element signature="e#25239#26628#0" expanded="true" />
+                <element signature="e#26624#26625#0" expanded="true" />
+                <element signature="e#26661#28033#0" expanded="true" />
+                <element signature="e#28029#28030#0" expanded="true" />
+                <element signature="e#29483#29813#0" expanded="true" />
+                <element signature="e#29798#29799#0" expanded="true" />
+                <element signature="e#32481#32875#0" expanded="true" />
+                <element signature="e#32864#32865#0" expanded="true" />
+                <element signature="e#35963#37327#0" expanded="true" />
+                <element signature="e#37320#37321#0" expanded="true" />
+                <element signature="e#37955#37963#0" expanded="true" />
+                <element signature="docComment;method#removeDuplicateWithOrder#0;class#TasksActivity#0" expanded="true" />
+                <element signature="e#40460#40468#0" expanded="true" />
+                <element signature="e#41452#42317#0" expanded="true" />
+                <element signature="e#42310#42311#0" expanded="true" />
+                <element signature="e#42363#44889#0" expanded="true" />
+                <element signature="e#43077#43965#0" expanded="true" />
+                <element signature="e#43959#43960#0" expanded="true" />
+                <element signature="e#44882#44883#0" expanded="true" />
+                <element signature="e#44932#46132#0" expanded="true" />
+                <element signature="e#46125#46126#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -269,9 +287,16 @@
       <file leaf-file-name="ListsActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="734" column="0" selection-start="26761" selection-end="26761" vertical-scroll-proportion="0.0">
+            <state line="510" column="9" selection-start="18624" selection-end="18624" vertical-scroll-proportion="-5.24">
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#16312#16502#0" expanded="true" />
+                <element signature="e#16491#16492#0" expanded="true" />
+                <element signature="e#18703#18704#0" expanded="true" />
+                <element signature="e#18776#19037#0" expanded="true" />
+                <element signature="e#19025#19026#0" expanded="true" />
+                <element signature="e#19073#19575#0" expanded="true" />
+                <element signature="e#19570#19571#0" expanded="true" />
                 <element signature="e#24353#25068#0" expanded="true" />
                 <element signature="e#25061#25062#0" expanded="true" />
                 <element signature="e#25958#26364#0" expanded="true" />
@@ -413,24 +438,69 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NitroDroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NitroDroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qweex" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NitroDroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NitroDroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qweex" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nitrodroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="ExportedApkPath" value="C:/Steampunk/Documents/Android/NitroDroid/NitroDroid_1.5.apk" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
+    <property name="ExportedApkPath" value="$USER_HOME$/NitroDroid_Oscar.apk" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="ExportedModule" value="NitroDroid" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../AndroidCalendarView/CalendarView" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="nitrodroid" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="1.6" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Tablet" />
     <property name="AndroidTargetDevices" value="emulator-5556" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
@@ -441,11 +511,13 @@
     <property name="AndroidProguardConfigPath" value="$PROJECT_DIR$/proguard-project.txt" />
     <property name="options.lastSelected" value="web.server" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="A10000199B6229" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="emulator-5554" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="AndroidRunProguardForReleaseBuild" value="true" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
     <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
   </component>
@@ -858,13 +930,13 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.670247" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22556391" sideWeight="0.38367128" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3304721" sideWeight="0.35538954" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295699" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289183" sideWeight="0.49786553" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22532189" sideWeight="0.6157951" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22532189" sideWeight="0.6157951" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.582618" sideWeight="0.64461046" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3304721" sideWeight="0.64461046" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32760474" sideWeight="0.49573106" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17545748" sideWeight="0.81214845" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32849464" sideWeight="0.69205296" order="3" side_tool="false" content_ui="tabs" />
@@ -1080,9 +1152,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/ListsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="734" column="0" selection-start="26761" selection-end="26761" vertical-scroll-proportion="0.0">
+        <state line="510" column="9" selection-start="18624" selection-end="18624" vertical-scroll-proportion="-5.24">
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#16312#16502#0" expanded="true" />
+            <element signature="e#16491#16492#0" expanded="true" />
+            <element signature="e#18703#18704#0" expanded="true" />
+            <element signature="e#18776#19037#0" expanded="true" />
+            <element signature="e#19025#19026#0" expanded="true" />
+            <element signature="e#19073#19575#0" expanded="true" />
+            <element signature="e#19570#19571#0" expanded="true" />
             <element signature="e#24353#25068#0" expanded="true" />
             <element signature="e#25061#25062#0" expanded="true" />
             <element signature="e#25958#26364#0" expanded="true" />
@@ -1095,35 +1174,54 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/qweex/nitrodroid/TasksActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="757" column="8" selection-start="29877" selection-end="29877" vertical-scroll-proportion="0.52729887">
+        <state line="778" column="0" selection-start="30432" selection-end="30432" vertical-scroll-proportion="0.59297216">
           <folding>
+            <element signature="e#0#46136#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#8041#8848#0" expanded="true" />
-            <element signature="e#8837#8838#0" expanded="true" />
-            <element signature="e#11380#11630#0" expanded="true" />
-            <element signature="e#11623#11624#0" expanded="true" />
-            <element signature="e#11668#11809#0" expanded="true" />
-            <element signature="e#11802#11803#0" expanded="true" />
-            <element signature="e#11851#13134#0" expanded="true" />
-            <element signature="e#13127#13128#0" expanded="true" />
-            <element signature="e#14896#15055#0" expanded="true" />
-            <element signature="e#15048#15049#0" expanded="true" />
-            <element signature="e#17610#17779#0" expanded="true" />
-            <element signature="e#17775#17776#0" expanded="true" />
-            <element signature="e#17832#19767#0" expanded="true" />
-            <element signature="e#19763#19764#0" expanded="true" />
-            <element signature="e#25214#26603#0" expanded="true" />
-            <element signature="e#26599#26600#0" expanded="true" />
-            <element signature="e#26636#27975#0" expanded="true" />
-            <element signature="e#27971#27972#0" expanded="true" />
-            <element signature="e#28852#29278#0" expanded="true" />
-            <element signature="e#29263#29264#0" expanded="true" />
-            <element signature="e#30546#30878#0" expanded="true" />
-            <element signature="e#30870#30871#0" expanded="true" />
-            <element signature="e#39158#40023#0" expanded="true" />
-            <element signature="e#40016#40017#0" expanded="true" />
-            <element signature="e#42638#43838#0" expanded="true" />
-            <element signature="e#43831#43832#0" expanded="true" />
+            <element signature="e#8066#8873#0" expanded="true" />
+            <element signature="e#8862#8863#0" expanded="true" />
+            <element signature="e#11245#11366#0" expanded="true" />
+            <element signature="e#11355#11356#0" expanded="true" />
+            <element signature="e#11405#11655#0" expanded="true" />
+            <element signature="e#11648#11649#0" expanded="true" />
+            <element signature="e#11693#11834#0" expanded="true" />
+            <element signature="e#11827#11828#0" expanded="true" />
+            <element signature="e#11876#13159#0" expanded="true" />
+            <element signature="e#13152#13153#0" expanded="true" />
+            <element signature="e#14921#15080#0" expanded="true" />
+            <element signature="e#15073#15074#0" expanded="true" />
+            <element signature="e#17635#17804#0" expanded="true" />
+            <element signature="e#17800#17801#0" expanded="true" />
+            <element signature="e#17857#19792#0" expanded="true" />
+            <element signature="e#19788#19789#0" expanded="true" />
+            <element signature="e#20602#21001#0" expanded="true" />
+            <element signature="e#20994#20995#0" expanded="true" />
+            <element signature="e#21067#22471#0" expanded="true" />
+            <element signature="e#21375#21387#0" expanded="true" />
+            <element signature="e#22467#22468#0" expanded="true" />
+            <element signature="e#23112#23572#0" expanded="true" />
+            <element signature="e#23565#23566#0" expanded="true" />
+            <element signature="e#25239#26628#0" expanded="true" />
+            <element signature="e#26624#26625#0" expanded="true" />
+            <element signature="e#26661#28033#0" expanded="true" />
+            <element signature="e#28029#28030#0" expanded="true" />
+            <element signature="e#29483#29813#0" expanded="true" />
+            <element signature="e#29798#29799#0" expanded="true" />
+            <element signature="e#32481#32875#0" expanded="true" />
+            <element signature="e#32864#32865#0" expanded="true" />
+            <element signature="e#35963#37327#0" expanded="true" />
+            <element signature="e#37320#37321#0" expanded="true" />
+            <element signature="e#37955#37963#0" expanded="true" />
+            <element signature="docComment;method#removeDuplicateWithOrder#0;class#TasksActivity#0" expanded="true" />
+            <element signature="e#40460#40468#0" expanded="true" />
+            <element signature="e#41452#42317#0" expanded="true" />
+            <element signature="e#42310#42311#0" expanded="true" />
+            <element signature="e#42363#44889#0" expanded="true" />
+            <element signature="e#43077#43965#0" expanded="true" />
+            <element signature="e#43959#43960#0" expanded="true" />
+            <element signature="e#44882#44883#0" expanded="true" />
+            <element signature="e#44932#46132#0" expanded="true" />
+            <element signature="e#46125#46126#0" expanded="true" />
           </folding>
         </state>
       </provider>

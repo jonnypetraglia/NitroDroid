@@ -15,6 +15,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 package com.qweex.nitrodroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -89,6 +90,7 @@ public class TasksActivity
 
 	public void onCreate(Bundle savedInstanceState)
 	{
+        String TAG = QweexUtils.TAG();
         moveLogString = context.getResources().getString(R.string.move2logbook);
         sortPopup = new QuickAction(context, QuickAction.VERTICAL);
         sortPopup.addActionItem(new ActionItem(ID_MAGIC, context.getResources().getString(R.string.by_magic), context.getResources().getDrawable(R.drawable.sort_magic)));
@@ -130,8 +132,6 @@ public class TasksActivity
 		datePickerDialog.setBackgroundDrawable(new BitmapDrawable());
 		datePickerDialog.setAnimationStyle(R.style.CalendarShow);
 		createCalendar();
-        //DEBUG
-        //datePickerDialog.showAsDropDown(((ViewFlipper)context.findViewById(R.id.FLIP)).getCurrentView());
 
         if(move2log==null)
         {
@@ -144,6 +144,7 @@ public class TasksActivity
             move2log.setOnClickListener(moveFinishedToLog);
         }
 
+        Log.i(TAG, "done with onCreate");
         doCreateStuff();
 	}
 
@@ -176,6 +177,7 @@ public class TasksActivity
 	public void doCreateStuff()
 	{
         String TAG= QweexUtils.TAG();
+        Log.i(TAG, "doCreateStuff");
         ImageButton backButton = ((ImageButton)context.findViewById(R.id.backbutton));
         backButton.setOnClickListener(new OnClickListener()
         {
@@ -695,7 +697,7 @@ public class TasksActivity
             if(dateL>0)
 			    date.setTimeInMillis(dateL);
             lastDate = date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+date.get(Calendar.DAY_OF_MONTH);
-            Log.i(TAG, "Pressed date");
+            Log.i(TAG, "Pressed date : " + datePicker);
 			if(datePicker.getClass()==DatePicker.class)//QweexUtils.androidAPIover(11))
 			{
 				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
@@ -703,13 +705,13 @@ public class TasksActivity
 																   date.get(Calendar.DATE)); //*/
 			} else
 			{
-                //((CalendarView)datePicker).setDate(dateL);
+                //((android.widget.CalendarView)datePicker).setDate(dateL);
                 int ix = 1;
                 try {
                     ix = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("week_starts_on", "3"));
                 }catch(Exception e) {}
 
-				((android.widget.CalendarView)datePicker).setFirstDayOfWeek(ix);
+				//((android.widget.CalendarView)datePicker).setFirstDayOfWeek(ix);
 			}
 
 			//datePickerDialog.showAtLocation(context.findViewById(R.id.FLIP), android.view.Gravity.CENTER, 0, 0);
@@ -722,40 +724,61 @@ public class TasksActivity
 
 	void createCalendar()
 	{
-        if(true==true)return;
         String TAG = QweexUtils.TAG();
-        if(//QweexUtils.androidAPIover(11) ||
-                PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean("force_spinner", false))
-		{
-			android.widget.DatePicker datePicker_ = new android.widget.DatePicker(context);
-			datePicker = datePicker_;
-            ((android.widget.DatePicker)datePicker).setForegroundGravity(Gravity.CENTER);
-			datePicker.setPadding((int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP));
-			Button confirm = new Button(context);
-			confirm.setPadding((int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP));
-			confirm.setText(R.string.confirm);
-			confirm.setOnClickListener(new OnClickListener() {
+        try {
+        if(QweexUtils.androidAPIover(11) &&
+                !PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean("force_spinner", false))
+        {
+            Class<?> c = Class.forName("android.widget.CalendarView");
+            Constructor<?> ctor = c.getConstructor(Context.class);
+            View o = (View) ctor.newInstance(context);   //datePicker_
+
+            //Set first day of week
+            int x;
+            try {
+                x = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("week_starts_on", "1"));
+            } catch(Exception e) {
+                x = 0;
+            }
+            o.getClass().getMethod("setFirstDayOfWeek", int.class).invoke(o, x);
+
+            o.getClass().getMethod("setBackgroundColor", int.class).invoke(o, 0xffffffff);
+            o.getClass().getMethod("setShowWeekNumber", boolean.class).invoke(o, false);
+
+
+            //onDateChangeListener
+            Class listnrC = Class.forName("android.widget.CalendarView$OnDateChangeListener");
+            Log.i(TAG, "listnrC: " + listnrC.getName());
+            for (Class<?> cls : c.getDeclaredClasses()) {
+                Log.i(TAG, cls.getName() + "!");
+            }
+            Object listnr = Proxy.newProxyInstance(listnrC.getClassLoader(), new Class[] { listnrC }, new InvocationHandler() {
                 @Override
-                public void onClick(View v) {
-                    updateDate(((android.widget.DatePicker) datePicker).getYear(),
-                            ((android.widget.DatePicker) datePicker).getMonth(),
-                            ((android.widget.DatePicker) datePicker).getDayOfMonth());
-                    datePickerDialog.dismiss();
+                public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
+                    String name = method.getName();
+                    System.out.println("Proxied!::::" + name);
+                    return null;
                 }
             });
-			popupLayout.addView(datePicker);
-			popupLayout.addView(confirm);
-            popupLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.splash_bg));
-			
-			datePicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-			confirm.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-			datePickerDialog.setWidth(datePicker.getMeasuredWidth());
-			datePickerDialog.setHeight((int) (datePicker.getMeasuredHeight() + 20*ListsActivity.DP + confirm.getMeasuredHeight()));
-			datePickerDialog.setOutsideTouchable(true);
-			return;
-		}
 
-        android.widget.CalendarView datePicker_ = new CalendarView(context); // = (CalendarView) datePicker;
+            datePicker = o;
+            Log.i(TAG,"Setting datePicker::::" + datePicker);
+            int w = (int)(300*ListsActivity.DP),
+                h = (int)(300*ListsActivity.DP);
+            popupLayout.addView(datePicker, w, h);
+
+
+            o.getClass().getMethod("setOnDateChangeListener", listnrC).invoke(o, listnr);
+
+            datePicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            datePickerDialog.setWidth(w);
+            datePickerDialog.setHeight(h);
+            datePickerDialog.setOutsideTouchable(true);
+            Log.i(TAG, "Creating the calendar");
+
+
+            return;
+        /*android.widget.CalendarView datePicker_ = new android.widget.CalendarView(context); // = (CalendarView) datePicker;
 		datePicker = datePicker_;
         try {
         datePicker_.setFirstDayOfWeek(   Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("week_starts_on", "1"))  );
@@ -764,7 +787,7 @@ public class TasksActivity
             datePicker_.setFirstDayOfWeek(0);
         }
         popupLayout.addView(datePicker_, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
-		
+
 		datePicker_.setBackgroundColor(0x00FFFFFF);
 		datePicker_.setShowWeekNumber(false);
 		datePicker_.setOnDateChangeListener(new android.widget.CalendarView.OnDateChangeListener() {
@@ -776,15 +799,43 @@ public class TasksActivity
 	        	    updateDate(year, month, dayOfMonth);
 	        }
 	    });
-		
+
 		datePicker_.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 		datePickerDialog.setWidth(datePicker.getMeasuredWidth());
 		datePickerDialog.setHeight((datePicker.getMeasuredHeight()));
 		datePickerDialog.setOutsideTouchable(true);
         Log.i(TAG, "Creating the calendar");
+        */
+        }
+        }catch(Exception e){ e.printStackTrace(); }
+
+
+        android.widget.DatePicker datePicker_ = new android.widget.DatePicker(context);
+        datePicker = datePicker_;
+        ((android.widget.DatePicker)datePicker).setForegroundGravity(Gravity.CENTER);
+        datePicker.setPadding((int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP), (int)(10*ListsActivity.DP));
+        Button confirm = new Button(context);
+        confirm.setPadding((int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP), (int) (10 * ListsActivity.DP));
+        confirm.setText(R.string.confirm);
+        confirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateDate(((android.widget.DatePicker) datePicker).getYear(),
+                        ((android.widget.DatePicker) datePicker).getMonth(),
+                        ((android.widget.DatePicker) datePicker).getDayOfMonth());
+                datePickerDialog.dismiss();
+            }
+        });
+        popupLayout.addView(datePicker);
+        popupLayout.addView(confirm);
+        popupLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.splash_bg));
+
+        datePicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        confirm.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        datePickerDialog.setWidth(datePicker.getMeasuredWidth());
+        datePickerDialog.setHeight((int) (datePicker.getMeasuredHeight() + 20*ListsActivity.DP + confirm.getMeasuredHeight()));
+        datePickerDialog.setOutsideTouchable(true);
 	}
-
-
 
 
 	
