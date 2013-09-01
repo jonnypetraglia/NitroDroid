@@ -14,9 +14,7 @@ Permission is granted to anyone to use this software for any purpose, including 
  */
 package com.qweex.nitrodroid;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -132,6 +130,8 @@ public class TasksActivity
 		datePickerDialog.setBackgroundDrawable(new BitmapDrawable());
 		datePickerDialog.setAnimationStyle(R.style.CalendarShow);
 		createCalendar();
+        //DEBUG
+        //datePickerDialog.showAsDropDown(((ViewFlipper)context.findViewById(R.id.FLIP)).getCurrentView());
 
         if(move2log==null)
         {
@@ -240,7 +240,7 @@ public class TasksActivity
         if(searchTerm!=null)
             theTitle = "\"" + searchTerm + "\"";
         else if(searchTag!=null)
-            theTitle = (context.getResources().getString(R.string.tag) + ": " + searchTag);
+            theTitle = "#" + searchTag;
         else
             theTitle = listName;
         //if(!ListsActivity.v2)
@@ -308,9 +308,11 @@ public class TasksActivity
 
 	void createTheAdapterYouSillyGoose()
 	{
+        String TAG = QweexUtils.TAG();
 		Cursor r;
         if(searchTerm!=null)
         {
+            Log.i(TAG, "creating adapter with search: " + searchTerm);
             r = ListsActivity.syncHelper.db.searchAll(searchTerm, listHash, null);
             adapter = new TaskAdapter(context, R.layout.task_item, r);
             lv.setAdapter(adapter);
@@ -318,10 +320,11 @@ public class TasksActivity
         }
 		if(listHash==null)
 			return;
+        Log.i(TAG, "creating adapter with " + searchTag + " in " + listHash);
         if(searchTag!=null)
         {
-            listHash = null;
-            r = ListsActivity.syncHelper.db.searchTags(searchTag, null);
+            Log.i(TAG, "creating adapter with search: #" + searchTag);
+            r = ListsActivity.syncHelper.db.searchTags(searchTag, listHash, null); //TODO: is correct for list and bool?
             adapter = new TaskAdapter(context, R.layout.task_item, r);
             lv.setAdapter(adapter);
             return;
@@ -330,13 +333,13 @@ public class TasksActivity
 		{
 			//listHash = null;
 			System.out.println("Time: " + getBeginningOfDayInSeconds());
-			r = ListsActivity.syncHelper.db.getTodayTasks(getBeginningOfDayInSeconds());
+			r = ListsActivity.syncHelper.db.getTodayTasks(getBeginningOfDayInSeconds(), null);
             adapter = new TaskAdapter(context, R.layout.task_item, r);
 			lv.setAdapter(adapter);
 			return;
 		}
-		else if(listHash.equals("all"))			//All
-			listHash = null;
+		//else if(listHash.equals("all"))			//All
+			//listHash = null;
 		
 		r = getCursor();
         adapter = new TaskAdapter(context, R.layout.task_item, r);
@@ -459,7 +462,7 @@ public class TasksActivity
                 }
 
                 //Update today
-                ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+                ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds(),null).getCount();
                 try {
                     TextView todayCountView = (TextView) context.findViewById(android.R.id.list).findViewWithTag("today").findViewById(R.id.listNumber);
                     todayCountView.setText(Integer.toString(ListsActivity.listAdapter.todayCount));
@@ -683,42 +686,46 @@ public class TasksActivity
 	
 	OnClickListener pressDate = new OnClickListener()
 	{
-		@TargetApi(11)
 		@Override
 		public void onClick(View v)
 		{
+            String TAG = QweexUtils.TAG();
 			long dateL = (Long)v.getTag();
 			Calendar date = Calendar.getInstance();
             if(dateL>0)
 			    date.setTimeInMillis(dateL);
             lastDate = date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+date.get(Calendar.DAY_OF_MONTH);
-			
-			if(QweexUtils.androidAPIover(11))
+            Log.i(TAG, "Pressed date");
+			if(datePicker.getClass()==DatePicker.class)//QweexUtils.androidAPIover(11))
 			{
 				((android.widget.DatePicker)datePicker).updateDate(date.get(Calendar.YEAR),
 																   date.get(Calendar.MONTH),
 																   date.get(Calendar.DATE)); //*/
-			}else
+			} else
 			{
-				//((android.widget.CalendarView)datePicker).setDate(dateL);
+                //((CalendarView)datePicker).setDate(dateL);
                 int ix = 1;
                 try {
                     ix = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("week_starts_on", "3"));
                 }catch(Exception e) {}
 
-				//((android.widget.CalendarView)datePicker).setFirstDayOfWeek(ix);
+				((android.widget.CalendarView)datePicker).setFirstDayOfWeek(ix);
 			}
 
-			datePickerDialog.showAtLocation(context.findViewById(R.id.FLIP), android.view.Gravity.CENTER, 0, 0);
-            datePickerDialog.update(0, 0, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			//datePickerDialog.showAtLocation(context.findViewById(R.id.FLIP), android.view.Gravity.CENTER, 0, 0);
+            //datePickerDialog.update(0, 0, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            datePickerDialog.showAsDropDown(v);
+            Log.i(TAG, "Showing dialog");
 		}
 	};
 	
 
 	void createCalendar()
 	{
-        if(QweexUtils.androidAPIover(11)
-                || PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean("force_spinner", false))
+        if(true==true)return;
+        String TAG = QweexUtils.TAG();
+        if(//QweexUtils.androidAPIover(11) ||
+                PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean("force_spinner", false))
 		{
 			android.widget.DatePicker datePicker_ = new android.widget.DatePicker(context);
 			datePicker = datePicker_;
@@ -748,66 +755,7 @@ public class TasksActivity
 			return;
 		}
 
-        //Time for some fucking reflection
-
-        try {
-            Class<?> c = null;
-            c = Class.forName("android.widget.CalendarView");
-            Constructor<?> ctor = c.getConstructor(Intent.class);
-            View o = (View) ctor.newInstance(new Object[] {context});
-
-            int x;
-            try {
-                x = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("week_starts_on", "1"));
-            } catch(Exception e) {
-                x = 0;
-            }
-            o.getClass().getMethod("setFirstDayOfWeek", int.class).invoke(o, x);
-
-            o.getClass().getMethod("setBackgroundColor", int.class).invoke(o, 0x00ffffff);
-            o.getClass().getMethod("setShowWeekNumber", boolean.class).invoke(o, false);
-
-
-            String interfaceName = "android.widget.CalendarView.OnDateChangeListener";
-            ClassLoader classLoader = Class.forName(interfaceName).getClassLoader();
-            Class<?>[] interfaces = new Class<?>[] { Class.forName(interfaceName) };
-            InvocationHandler handler = new AnyInvocationHandler();
-            Proxy.newProxyInstance(classLoader, interfaces, handler);
-
-            //Constructor<?> ctor2 = c2.getConstructor();
-            //Object o2 = ctor2.newInstance();
-            //o.getClass().getMethod("setOnDateChangeListener", c2);
-
-
-            o.getClass().getMethod("setOnDateChangeListener", boolean.class).invoke(o, false);
-
-            popupLayout.addView(o, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
-        } catch(ClassNotFoundException e) {
-
-        } catch(InstantiationException e) {
-
-        } catch(IllegalAccessException e) {
-
-        } catch(NoSuchMethodException e) {
-
-        } catch (InvocationTargetException e) {
-
-        }
-    }
-
-    public class AnyInvocationHandler implements InvocationHandler {
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-            System.out.println("AnyInvocationHandler " + method.toString());
-
-            return method.invoke(proxy, args);
-        }
-    }
-
-        /*
-        android.widget.CalendarView datePicker_ = new android.widget.CalendarView(context); // = (CalendarView) datePicker;
+        android.widget.CalendarView datePicker_ = new CalendarView(context); // = (CalendarView) datePicker;
 		datePicker = datePicker_;
         try {
         datePicker_.setFirstDayOfWeek(   Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString("week_starts_on", "1"))  );
@@ -815,7 +763,7 @@ public class TasksActivity
         {
             datePicker_.setFirstDayOfWeek(0);
         }
-		popupLayout.addView(datePicker_, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
+        popupLayout.addView(datePicker_, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
 		
 		datePicker_.setBackgroundColor(0x00FFFFFF);
 		datePicker_.setShowWeekNumber(false);
@@ -833,8 +781,8 @@ public class TasksActivity
 		datePickerDialog.setWidth(datePicker.getMeasuredWidth());
 		datePickerDialog.setHeight((datePicker.getMeasuredHeight()));
 		datePickerDialog.setOutsideTouchable(true);
-
-	}*/
+        Log.i(TAG, "Creating the calendar");
+	}
 
 
 
@@ -854,7 +802,7 @@ public class TasksActivity
     	((android.widget.TextView)lastClicked.findViewById(R.id.taskTime)).setText(TaskAdapter.getTimeString(c.getTimeInMillis(), context));
 
         //Update today
-        ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+        ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds(),null).getCount();
         try {
             TextView todayCountView = (TextView) context.findViewById(android.R.id.list).findViewWithTag("today").findViewById(R.id.listNumber);
             todayCountView.setText(Integer.toString(ListsActivity.listAdapter.todayCount));
@@ -1069,8 +1017,8 @@ public class TasksActivity
         public void onClick(View view)
         {
             searchTag = ((TextView)view).getText().toString();
-            listHash=null;
-            listName=null;
+            //listHash=null; //DO NOT unset this
+            //listName=null;
             lastClicked=null;
             lastClickedID=null;
             Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.fade_out);
@@ -1175,7 +1123,7 @@ public class TasksActivity
             ((ViewGroup)move2log.getParent()).removeView(move2log);
 
             //Update today
-            ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
+            ListsActivity.listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds(),null).getCount();
             try {
                 TextView todayCountView = (TextView) context.findViewById(android.R.id.list).findViewWithTag("today").findViewById(R.id.listNumber);
                 todayCountView.setText(Integer.toString(ListsActivity.listAdapter.todayCount));

@@ -283,7 +283,7 @@ public class SyncHelper {
 		}
 		} catch(Exception e)
 		{
-			Log.e(TAG + "::Exception", "No Tasks Found");
+			Log.e(TAG + "::Exception", "No Tasks Found: " + e.getMessage());
 		}
 		//------DELETED------
 		try {
@@ -299,7 +299,7 @@ public class SyncHelper {
 		}
 		} catch(Exception e)
 		{
-			Log.e(TAG + "::Exception", "No Deleted Found");
+			Log.e(TAG + "::Exception", "No Deleted Found: " + e.getMessage());
 		}
 
 		jLists.put("k", (long)0);				//TODO FUCK MUFFINS

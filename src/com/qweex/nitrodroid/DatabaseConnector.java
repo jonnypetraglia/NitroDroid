@@ -271,16 +271,18 @@ public class DatabaseConnector
 				null, null, null, null, null);
 	}
 	
-	public Cursor getTodayTasks(long currentDay)
+	public Cursor getTodayTasks(long currentDay, String tag)
 	{
         String TAG= QweexUtils.TAG();
         Log.i(TAG, "getting today tasks");
 		long msecondsInDay = 60 * 60 * 24 * 1000;
 		String query = "SELECT * FROM " + TASKS_TABLE + " " + "WHERE ( "
                 + " ( list = 'today' ) "
-                + " OR ( date BETWEEN " + 1 + " AND " + (currentDay+msecondsInDay-1) + " ) "
+                + " OR ( date BETWEEN " + 1 + " AND " + (currentDay+msecondsInDay-1) + " ) ";
                 //+ " OR ( date < " + currentDay/1000/100 + " )"
-                + ") ";
+        if(tag!=null)
+            query = query + " AND tags like '%" + tag + "%'";
+        query = query + ") ";
 		return database.rawQuery(query, null);
 	}
 
@@ -289,7 +291,7 @@ public class DatabaseConnector
 	public Cursor getTasksOfList(String hash, String sort, boolean doneOnly)
 	{
         String TAG= QweexUtils.TAG();
-		if(hash!=null)
+		if(hash!=null && !"all".equals(hash))
 		{
 			if(!hash.equals(""))
 			{
@@ -452,13 +454,19 @@ public class DatabaseConnector
         return derp;
     }
 
-    public Cursor searchTags(String term, String sortby)
+    public Cursor searchTags(String tag, String list, String sortby)
     {
-        term = "tags like '%" + term + "%'";
+        String TAG = QweexUtils.TAG();
+        String s = "tags like '%" + tag + "%'";
+        if("logbook".equals(list))
+            s = s + " AND logged>0";
+        else if(!("all".equals(list)))
+            s = s + " AND list='" + list + "' AND logged=0";
+        Log.i(TAG, "searching tags for " + s);
         //term = term + " AND logged='0'";
         return database.query(TASKS_TABLE,
                 new String[] {"_id", "hash", "name", "priority", "date", "notes", "list", "logged", "tags"},
-                term, null, null, null, sortby);
+                s, null, null, null, sortby);
     }
 
     public Cursor searchAll(String term, String listHash, String sortby)

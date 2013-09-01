@@ -272,6 +272,7 @@ public class ListsActivity extends Activity
 		boolean new_force = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("force_phone", false);
 		String new_locale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("language", "en");
 
+
 		//If any of them have changed, rebuild the UI
 		if(ta==null || new_themeID!=themeID || new_force!=forcePhone || !new_locale.equals(locale) || new_background==null || !new_background.equals(backgroundPath))
 		{
@@ -312,7 +313,6 @@ public class ListsActivity extends Activity
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             doBackThings();
-            Log.i(TAG, "keydown " + flip + " " + loadingApp + "   " + isTablet + " " + flip.getCurrentView() + "==" + flip.getChildAt(1));
             return flip!=null &&
                    !loadingApp &&
                    !isTablet &&
@@ -547,8 +547,8 @@ public class ListsActivity extends Activity
          //Create the ListAdapter & set it
          Cursor r = syncHelper.db.getAllLists();
          listAdapter = new ListAdapter(context, R.layout.list_item, r);
-         listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds()).getCount();
-         listAdapter.totalCount = ListsActivity.syncHelper.db.getTasksOfList(null, "order_num").getCount();
+         listAdapter.todayCount = ListsActivity.syncHelper.db.getTodayTasks(TasksActivity.getBeginningOfDayInSeconds(), null).getCount();
+         listAdapter.totalCount = ListsActivity.syncHelper.db.getTasksOfList("all", "order_num").getCount();
             Log.d(TAG, "Total count=" + listAdapter.totalCount);
          
          if(r.getCount()<3)
